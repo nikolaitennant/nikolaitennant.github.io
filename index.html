@@ -48,17 +48,7 @@
 
         <!--Old browser  JS-->
         <script src="assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
-        <script src="https://www.google.com/recaptcha/api.js?render=6LdrGKwmAAAAAOscW9Yjyxr2uKtA6tjMS_I99v5V"></script>
 
-        <script>
-            grecaptcha.ready(function() {
-                grecaptcha.execute('6LdrGKwmAAAAAOscW9Yjyxr2uKtA6tjMS_I99v5V', {action: 'homepage'})
-                .then(function(token) {
-                    document.getElementById('captchaResponse').value = token;
-                });
-            });
-        </script>
-        
     </head>
 
     <body data-spy="scroll" data-target="#scrollspy">
@@ -450,6 +440,7 @@
                                                     <h2>Get in Touch</h2>
                                                 </div>
                                                 <div class="single_contant_right">
+                                            
                                                     <form action="https://getform.io/f/6d2c5cbd-5a2c-4368-b4b3-d19cc5861acb" method="POST" id="formid">
                                                         <div class="row">
                                                             <div class="col-md-12">
@@ -458,6 +449,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
@@ -482,8 +474,6 @@
                                                                 <input type="submit" value="Send message">
                                                             </div>
                                                         </div>
-                                                        <!-- Hidden reCAPTCHA v3 field -->
-                                                        <input type="hidden" id="captchaResponse" name="g-recaptcha-response">
                                                     </form>
                                                 </div>
                                                 <!-- Copyright -->
@@ -517,6 +507,10 @@
                     </div><!-- End of row -->
                 </div><!-- End of container -->
             </section><!-- End of Contactus Section -->
+
+
+        </div>
+
 
 
         <script src="assets/js/vendor/jquery-1.11.2.min.js"></script>

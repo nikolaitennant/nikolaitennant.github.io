@@ -59,10 +59,14 @@ navLinks.forEach(link => {
     elemToggleFunc(navbar);
     elemToggleFunc(document.body);
     
-    // Navigate to the link's href
-    window.location.href = link.getAttribute('href');
+    // Smoothly navigate to the link's href (assuming it's a local anchor)
+    const dest = document.querySelector(link.getAttribute('href'));
+    if (dest) {
+      dest.scrollIntoView({ behavior: 'smooth' });
+    }
   });
 });
+
 
 
 /**

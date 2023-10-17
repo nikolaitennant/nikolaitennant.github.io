@@ -1,530 +1,801 @@
-<!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Nikolai Tennant: My Portfolio</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <link rel="icon" type="image/png" href="assets/images/myicon.png">
+<!DOCTYPE html>
+<html lang="en">
 
-        <!-- Raleway Google fonts  -->
-        <link href='https://fonts.googleapis.com/css?family=Raleway:400,100,200,300,400italic,500,100italic,700' rel='stylesheet' type='text/css'>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/images/myicon.png">
+  <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+  <title>Nikolai Tennant - personal portfolio</title>
 
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <!-- Compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
 
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
 
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Roboto:wght@400;700&family=Saira+Stencil+One&display=swap"
+    rel="stylesheet">
+</head>
 
-        <link rel="stylesheet" href="assets/css/normalize.css">
-        <link rel="stylesheet" href="assets/css/fonticons.css">
-        <link rel="stylesheet" href="assets/css/magnific-popup.css">
-        <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="assets/css/bootstrap.css">
+<body id="top" class="dark_theme">
 
-        <!-- For navmenu css -->
-        <link rel="stylesheet" href="assets/css/navmenu.css" />
+  <!-- 
+    - #HEADER
+  -->
 
-        <!--For Plugins external css-->
-        <link rel="stylesheet" href="assets/css/plugins.css" />
+  <header class="header" data-header>
+    <div class="container">
 
-        <!--Theme custom css -->
-        <link rel="stylesheet" href="assets/css/style.css">
+      <div class="navbar-actions">
 
-        <!--Theme Responsive css-->
-        <link rel="stylesheet" href="assets/css/responsive.css" />
+        <button class="theme-btn" aria-label="Change Theme" title="Change Theme" data-theme-btn>
+          <span class="icon"></span>
+        </button>
 
-        <!--Theme Colors css-->
-        <!--<link rel="stylesheet" href="assets/css/white.css">-->
+      </div>
 
+      <button class="nav-toggle-btn" aria-label="Toggle Menu" title="Toggle Menu" data-nav-toggle-btn>
+        <span class="one"></span>
+        <span class="two"></span>
+        <span class="three"></span>
+      </button>
 
+      <nav class="navbar" data-navbar>
+        <ul class="navbar-list">
 
-        <!--Old browser  JS-->
-        <script src="assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+          <li>
+            <a href="#home" class="navbar-link">Home</a>
+          </li>
 
-    </head>
+          <li>
+            <a href="#about" class="navbar-link">About</a>
+          </li>
 
-    <body data-spy="scroll" data-target="#scrollspy">
+          <li>
+            <a href="#skills" class="navbar-link">Skills</a>
+          </li>
 
+          <li>
+            <a href="#portfolio" class="navbar-link">Portfolio</a>
+          </li>
 
+          <li>
+            <a href="#artwork" class="navbar-link">Art</a>
+          </li>
 
-        <div class="main_figur">
+          <li>
+            <a href="#contact" class="navbar-link">Contact</a>
+          </li>
 
-            <div class="preloader">
-                <h2>Nikolai Tennant | Deep Learning & Computational Biologist | Data Scientist</h2>
-                <div class="loaded hexdots-loader">Loading…</div>
-            </div><!-- End off Preloader -->
+        </ul>
+      </nav>
 
-            <div class="container">
-                <div class="div-menu">
-                    <header class="cd-header">
-                        <a href="#home" class="brand-logo text-left"><img src="assets/images/logo.png" alt="Nikolai Tennant's Logo" /></a>
-                        <a class="cd-menu-trigger" href="#main-nav"><span></span></a>
-                    </header>
-                </div>
-
-                <nav id="main-nav">
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Me</a></li>
-                        <li><a href="#work">My Work</a></li>
-                        <li><a href="#portfolio">My Art</a></li>
-                        <li><a href="#publication">Contact</a></li>
-                    </ul>
-                    <a href="#" class="cd-close-menu">Close<span></span></a>
-                </nav>
-            </div>
-
-
-            <!-- Home Section -->
-            <section id="home" class="home">
-                <div class="overlay"></div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 ">
-
-                            <div class="main_home text-center wow fadeInUp" data-wow-duration="700ms">
-                                <h1> Hi, I'm Nikolai Tennant,<br /> 
-                                     a data scientist specializing in computational biology, deep learning, and genomics.</h1>
-                                <ul class="list-inline">
-                                    <li><a href="#home">Home</a></li>
-                                    <li><a href="#about">About Me</a></li>
-                                    <li><a href="#work">My Work</a></li>
-                                    <li><a href="#portfolio">My Art</a></li>
-                                    <li><a href="#publication">Contact</a></li>
-                                    <li><a href="assets/pdfs/Resume.pdf" download style="color: red;">Resume</a></li>
-                                </ul>
-                            </div>
-                            
-                            <div class="scrolldown">
-                                <a href="#about"><i class="fa fa-long-arrow-down"></i></a>
-                            </div>
-                            
-                        </div><!-- End of col-md-12 -->
-                    </div><!-- End of row -->
-                </div><!-- End of Container -->
-            </section><!-- End of Home Section -->
-        
-
-            <!-- About Section -->
-            <section id="about" class="about">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 ">
-                            <div class="main_about_area p-t-3">
-                                <div class="head_title m-y-3 wow fadeInUp">
-                                    <div class="row align-items-center"> 
-                                        <div class="col-md-4 d-flex align-items-center justify-content-center"> <!-- Add 'justify-content-center' to center the content vertically -->
-                                            <h2 class="w-100 text-center">About Me</h2>
-                                            <div class="single_team m-t-2">
-                                                <div class="team_socail_area text-center m-b-1">
-                                                    <a href="mailto:nikolaitennant@gmail.com"><i class="fa fa-envelope"></i></a>
-                                                    <a href="https://linkedin.com/in/nikolai-tennant-stambler"><i class="fa fa-linkedin"></i></a>
-                                                    <a href="https://github.com/Niktennant"><i class="fa fa-github"></i></a>
-                                                </div>
-                                                <img src="assets/images/profile_pic.png" alt="" class="img-fluid rounded-circle"/> <!-- Add 'img-fluid' and 'rounded-circle' to make the image responsive and circular -->
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8 d-flex align-items-center"> 
-                                            <h6 class="w-100 text"> 
-                                                Pioneering a path from History to Computational Biology, 
-                                                fuelled by Data Science and Deep Learning
-                                            </h6>
-                                            <div class="about-me-paragraph padded-text">
-                                               <p>I hold an MSc in Data Science and a BA in History with a minor in Data Science both from Brown University.</p> 
-                                                            
-                                                <p>I've applied my skills in several impactful projects, including the development of 'SenID', a revolutionary deep-learning 
-                                                methodology for cellular senescence identification. This project received recognition in a Hackathon, placing second amongst over 225 participants 
-                                                and a research paper based on my SenID project will be published next year.</p>
-                                
-                                                <p>My professional journey includes experience as an Assosiate Data Scientist at Dunnhumby and a Research Scientist role at Singh Lab: 
-                                                Deep Learning Genomics Lab, where I contributed to cutting-edge research at the intersection of deep learning and genomics. 
-                                                I also served as a Project Team Lead at Brown University Data Science and was a Machine Learning Research Assistant at Brown University.</p>
-                                        
-                                                <p>I'm fluent in English, conversational in French, and proficient in Python, SQL, R, Tensorflow, and Adobe Creative Cloud. Beyond my professional 
-                                                    interests, I am a big fan of Lacrosse and Football (Soccer), and I enjoy keeping up with advancements in AI, Robotics, and Deep Learning. 
-                                        
-                                                <p>I'm proud of the work I've done and excited about what's next.</p>
-                                        
-                                                <p>Lastly, as a holder of dual US/UK citizenship, I am authorized to work for any employer in these countries.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                
-                                <div class="about_content center p-b-3 wow fadeInUp" data-wow-duration="700ms">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="single_abt single_about m-y-3">
-                                            <i class="fa fa-lightbulb-o"></i>
-                                            <h3>Innovative</h3>
-                                            <p>Constantly exploring the boundaries of data science to deliver innovative and efficient solutions in computational biology, genomics, and general data science applications.</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="single_abt single_about m-y-3">
-                                            <i class="fa fa-toggle-off"></i>
-                                            <h3>Adaptable</h3>
-                                            <p>Swiftly adapt to new technologies and techniques in a rapidly evolving field, to deliver the most effective results in any given situation.</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="single_abt single_about m-y-3">
-                                            <i class="fa fa-lock"></i>
-                                            <h3>Ethical</h3>
-                                            <p>Meticulous in safeguarding data integrity and privacy, following stringent data ethics standards and guidelines in all projects.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr />
-                        </div><!-- End of col-md-12 -->
-                    </div><!-- End of row -->
-                </div><!-- End of Container-fluid -->
-            </section><!-- End of Home Section -->
+    </div>
+  </header>
 
 
-            <!-- Work Section -->
-            <section id="work" class="work colorsbg">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="main_work_area">
-                                <div class="head_title m-y-3 p-t-3 wow fadeInUp">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <h2>My Work</h2>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <h6>Leveraging data science, machine learning and deep learning, I focus on unraveling complex patterns and generating 
-                                                impactful insights. My work spans a broad range of fields, including computational biology, sports analytics, 
-                                                and crime pattern analysis, showcasing a commitment to problem-solving and innovation in diverse contexts
-                                            </h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="main_work_content">
-                                    <div class="single_work_area m-t-3 p-t-2">
-                                        <div class="row">
-                                            <div class="col-md-6 no-padding">
-                                                <div class="signle_work_left text-sm-center wow fadeInleft">
-                                                    <img src="assets/images/work/cell.jpg" alt="" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5 col-md-push-1">
-                                                <div class="single_work p-r-1 wow fadeInUp">
-                                                    <h2 class="m-b-2">SenID: Deep Learning-Based Cellular Senescence Identification</h2>
-                                                    <p>"Revolutionizing cellular senescence identification through a novel deep-learning methodology, 
-                                                        combining cross-species data and CNNs, which notably outperformed previous studies, 
-                                                        unlocking new avenues for research into age-related diseases."
-                                                    <p>I currently have a paper in development that should be published by June 2024.</p>
-                                                    
-                                                    <div class="social-icons">
-                                                        <a href="https://github.com/Niktennant/SenID"><i class="fa fa-github"></i></a>
-                                                        <a href="assets/pdfs/SenID_report.pdf" download> <i class="fa fa-file-text-o"></i> Report</a>
-                                                        <a href="assets/pdfs/SenID_pres.pdf"><i class="fa fa-file-pdf-o"></i> Presentation</a>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- End of single work area -->
+  <main>
+    
+    <div class="typewriter-container">
+      <div class="line-common line-1 anim-typewriter-1">Hi! My name is Nikolai</div>
+      <div class="line-common line-middle anim-typewriter-middle">I'm a data scientist 👨🏻‍💻</div>
+      <div class="line-common line-2 anim-typewriter-2">located in London, UK.</div>
+  </div>
 
-                                    <div class="single_work_area  m-t-3 p-t-3">
-                                        <div class="row">
-                                            <div class="col-md-6 col-md-push-6 no-padding">
-                                                <div class="signle_work_left text-sm-center wow fadeInRight">
-                                                    <img src="assets/images/work/pl_work.webp" alt="" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-5 col-md-pull-6">
-                                                <div class="single_work single_work_left_text wow fadeInUp">
-                                                    <h2 class="m-b-2">Machine Learning Model for Premier League Soccer Outcome Forecasting</h2>
-                                                    <p>Using machine learning, I developed a robust model that improved the forecasting accuracy of Premier League 
-                                                        football (soccer) match outcomes by 20%, thereby enhancing the predictive performance in the realm of sports analytics.</p>
-                                                        
-                                                        <div class="social-icons">
-                                                            <a href="https://github.com/Niktennant/Premier-League-Result-Projections"><i class="fa fa-github"></i></a>
-                                                            <a href="assets/pdfs/football_report.pdf" download> <i class="fa fa-file-text-o"></i> Report</a>
-                                                            <a href="assets/pdfs/football_pres.pdf"><i class="fa fa-file-pdf-o"></i> Presentation</a>
-                                                        </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div><!-- End of single service area -->
-
-                                    <div class="single_work_area m-t-3 p-t-3">
-                                        <div class="row">
-                                            <div class="col-md-6  no-padding">
-                                                <div class="signle_work_left text-sm-center wow fadeInleft">
-                                                    <img src="assets/images/work/homicides.webp" alt="" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5 col-md-push-1">
-                                                <div class="single_work p-r-1 wow fadeInUp">
-                                                    <h2 class="m-b-2">Analysis of Crime Trends in Major U.S. Cities Using Cluster Analysis</h2>
-                                                    <p>Through the application of cluster analysis, I undertook a comprehensive analysis of crime trends across 
-                                                        major U.S. cities over 40 years, revealing distinct patterns in homicide rates and contributing actionable 
-                                                        insights to inform crime prevention strategies.</p>
-
-                                                        <div class="social-icons">
-                                                            <a href="https://github.com/Niktennant/homiciderates"><i class="fa fa-github"></i></a>
-                                                            <a href="assets/pdfs/homicide_report.pdf" download> <i class="fa fa-file-text-o"></i> Report</a>
-                                                            <a href="assets/pdfs/homicide_pres.pdf"><i class="fa fa-file-pdf-o"></i> Presentation</a>
-                                                        </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- End of single work area -->
+    <article class="container">
 
 
-                                </div><!-- End of main work content -->
+      <section class="hero" id="home">
 
-                            </div><!-- End of main work area -->
-                        </div><!-- End of col-md-12 -->
-                    </div><!-- End of row -->
-                </div><!-- End of container -->
-            </section><!-- End of Work Section -->
+        <div class="hero-content">
 
+          <!-- <h2 class="h2 hero-title">We Design & Build Creative Products</h2> -->
 
-            <!-- Portfolio Section -->
-            <section id="portfolio" class="portfolio">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="main_portfolio_area">
-                                <div class="head_title m-y-3 p-y-3 wow fadeInUp">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <h2>My Art</h2>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <h6> <p>Beyond the realm of data science and technology, I have a deep-rooted passion for art. This portfolio section showcases a collection of my artwork and
-                                                 photography, which I have nurtured and refined over the years.</p>
-                                                 
-                                                 <p>While not directly related to data science, I believe that incorporating my artistic 
-                                                 pursuits into my work portfolio provides a holistic view of my skills, interests, and creative mindset. It serves as a testament to my multifaceted 
-                                                 nature and the diverse range of experiences that have shaped me as both an artist and a data scientist.</p>
-                                            </h6>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="main_portfolio_content">
-                                    <div class="row">
-                                        <div class="col-md-5 col-xs-12">
-                                            <div class="row">
-                                                <div class="col-md-4  col-xs-12">
-                                                    <div class="single_portfolio">
-                                                        <img src="assets/images/art/art1.jpeg" alt="" />
-                                                        <div class="single_portfolio_overlay">
-                                                            <div class="icon_area text-center">
-                                                                <a href="assets/images/art/art2.jpeg" class="gallery-img"><img src="assets/images/plus.png" alt="" /></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-8  col-xs-12">
-                                                    <div class="single_portfolio">
-                                                        <img src="assets/images/art/art2.jpeg" alt="" />
-                                                        <div class="single_portfolio_overlay">
-                                                            <div class="icon_area text-center">
-                                                                <a href="assets/images/art/art2.jpeg" class="gallery-img"><img src="assets/images/plus.png" alt="" /></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-8  col-xs-12">
-                                                    <div class="single_portfolio">
-                                                        <img src="assets/images/art/art2.jpeg" alt="" />
-                                                        <div class="single_portfolio_overlay">
-                                                            <div class="icon_area text-center">
-                                                                <a href="assets/images/art/art2.jpeg" class="gallery-img"><img src="assets/images/plus.png" alt="" /></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4  col-xs-12">
-                                                    <div class="single_portfolio">
-                                                        <img src="assets/images/art/art2.jpeg" alt="" />
-                                                        <div class="single_portfolio_overlay">
-                                                            <div class="icon_area text-center">
-                                                                <a href="assets/images/art/art2.jpeg" class="gallery-img"><img src="assets/images/plus.png" alt="" /></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12  col-xs-12">
-                                                    <div class="single_portfolio">
-                                                        <img src="assets/images/art/art2.jpeg" alt="" />
-                                                        <div class="single_portfolio_overlay">
-                                                            <div class="icon_area text-center">
-                                                                <a href="assets/images/art/art2.jpeg" class="gallery-img"><img src="assets/images/plus.png" alt="" /></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> 
-                                        </div>
-                                        <div class="col-md-4  col-xs-12">
-                                            <div class="single_portfolio">
-                                                <img src="assets/images/art/art2.jpeg" alt="" />
-                                                <div class="single_portfolio_overlay">
-                                                    <div class="icon_area text-center">
-                                                        <a href="assets/images/art/art2.jpeg" class="gallery-img"><img src="assets/images/plus.png" alt="" /></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="single_portfolio height_1">
-                                                <img src="assets/images/art/art2.jpeg" alt="" />
-                                                <div class="single_portfolio_overlay">
-                                                    <div class="icon_area text-center">
-                                                        <a href="assets/images/art/art2.jpeg" class="gallery-img"><img src="assets/images/plus.png" alt="" /></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3  col-xs-12">
-                                            <div class="single_portfolio height_1">
-                                                <img src="assets/images/art/art2.jpeg" alt="" />
-                                                <div class="single_portfolio_overlay">
-                                                    <div class="icon_area text-center">
-                                                        <a href="assets/images/art/art2.jpeg" class="gallery-img"><img src="assets/images/plus.png" alt="" /></a>
-                                                    </div>
-                                                </div>
-                                            </div> 
-
-                                            <div class="single_portfolio">
-                                                <img src="assets/images/art/art2.jpeg" alt="" />
-                                                <div class="single_portfolio_overlay">
-                                                    <div class="icon_area text-center">
-                                                        <a href="assets/images/art/art2.jpeg" class="gallery-img"><img src="assets/images/plus.png" alt="" /></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div><!-- End of main Portfolio area -->
-                        </div><!-- End of col-md-12 -->
-                    </div><!-- End of row -->
-                </div><!-- End of container -->
-            </section><!-- End of Portfolio Section -->
-
-            <!-- Contact Section -->
-            <section id="publication" class="publication">
-                <div class="main_background_area">
-                    <div class="overlay"></div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <section id="contactus" class="contactus colorsbg">
-                                    <div class="container">
-                                        <div class="main_contactus_area">
-                                            <div class="main_contact_area p-t-2 p-x-3">
-                                                <div class="head_title">
-                                                    <h2>Get in Touch</h2>
-                                                </div>
-                                                <div class="single_contant_right">
-                                            
-                                                    <form action="https://getform.io/f/6d2c5cbd-5a2c-4368-b4b3-d19cc5861acb" method="POST" id="formid">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <input type="text" class="form-control" name="name" placeholder="Your Name..." required="">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <input type="text" class="form-control" name="phone" placeholder="Phone" required="">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <input type="email" class="form-control" name="email" placeholder="Your Email Address" required="">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <textarea class="form-control" name="message" rows="8" placeholder="Your Message"></textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="m-b-2 m-t-2">
-                                                                <input type="submit" value="Send message">
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <!-- Copyright -->
-                                                <div class="row">
-                                                    <div class="main_footer">
-                                                        <div class="col-md-3">
-                                                            <div class="footer_logo text-xs-center m-b-2">
-                                                                <a href="#home"><img src="assets/images/logo.png" alt="" /></a>
-                                                            </div>
-                                                        </div>
-                                                
-                                                        <div class="col-md-8">
-                                                            <div class="copyright_text margin-top-20 center">
-                                                                <p class="wow fadeInRight animated" data-wow-duration="1s">&copy; 2023 Nikolai Alexis Baronoff Tennant, All Rights Reserved</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-1 no-padding">
-                                                            <div class="scrollup center">
-                                                                <a href="#"><i class="fa fa-chevron-up"></i></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div><!-- End of row -->                               
-                                            </div><!-- End of main contact area -->
-                                        </div><!-- End of main_contactus_area -->
-                                    </div><!-- End of container -->
-                                    </section><!-- End of Contactus Section -->
-                                </div><!-- End of col-md-6 -->
-                            </div>
-                        </div>
-                    </div><!-- End of row -->
-                </div><!-- End of container -->
-            </section><!-- End of Contactus Section -->
-
+          <a href="#contact" class="btn btn-primary">Get in touch</a>
 
         </div>
 
+        <ul class="hero-social-list">
+
+          <li>
+            <a href="https://github.com/nikolaitennant" class="hero-social-link">
+              <ion-icon name="logo-github"></ion-icon>
+
+              <div class="tooltip">Github</div>
+            </a>
+          </li>
+
+          <li>
+            <a href="https://www.linkedin.com/in/nikolai-tennant/" class="hero-social-link">
+              <ion-icon name="logo-linkedin"></ion-icon>
+
+              <div class="tooltip">Linkedin</div>
+            </a>
+          </li>
+
+        </ul>
+
+        <a href="#stats" class="scroll-down">Scroll</a>
 
 
-        <script src="assets/js/vendor/jquery-1.11.2.min.js"></script>
-        <script src="assets/js/vendor/bootstrap.min.js"></script>
+      </section>
 
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
-        <script src="assets/js/jquery.easing.1.3.js"></script>
-        <script src="assets/js/materialize.js"></script>
-        <script src="assets/js/jquery.magnific-popup.js"></script>
-        <script src="http://maps.google.com/maps/api/js"></script>
-        <script src="assets/js/gmaps.min.js"></script>
-        <script src="assets/js/plugins.js"></script>
-        <script src="assets/js/main.js"></script>
 
-    </body>
+      <!-- 
+        - #ABOUT
+      -->
+      
+      <section class="about" id="about">
+
+        <figure class="about-banner">
+          <img src="./assets/images/profile.png" alt="Brown Unviersity Grad Photo"
+            class="w-100">
+        </figure>
+
+        <div class="about-content section-content">
+
+          <p class="section-subtitle">About me</p>
+
+          <p class="h3 section-title">Data Scientist | Computational Biologist</p>
+
+          <p class="section-text">
+            Hi, I'm Nikolai Tennant! I’m a data scientist and computational biologist. hold both a MSc in Data Science and a BA in History with a minor in Data Science from Brown University.  I'm currently working at dunnhumby, contributing to the Tesco Mobile Applied Data Science team, however in six months will transition to the Data Engineering team.
+            <br><br>
+            My research leans into deep learning in genomics, with projects like "SenID" (2nd place at a Hackathon) and "IISAGE" that dive into cell senescence and sexual dimorphism in aging, respectively. These projects have led to two upcoming publications. Skill-wise, I'm well-versed in Machine Learning, Deep Learning, PySpark, SQL, and Python. Off the clock, I love Lacrosse, Football (Soccer), and staying updated on AI. Lastly, as a dual US/UK citizen, I'm eligible to work in both countries.
+          </p>
+      
+          <div class="btn-group">
+            <button class="btn btn-secondary">Download CV</button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- 
+        - #SKILLS
+      -->
+
+      <section class="skills" id="skills">
+
+        <div class="skills-content section-content">
+
+          <p class="section-subtitle">My skills</p>
+
+          <h2 class="h3 section-title">What My Programming Skills Included?</h2>
+
+          <p class="section-text">
+            I develop simple, intuitive and responsive user interface that helps users get things done with less effort
+            and time
+            with those technologies.
+          </p>
+
+          <div class="skills-toggle" data-toggle-box>
+            <button class="toggle-btn active" data-toggle-btn>Skills</button>
+
+            <button class="toggle-btn" data-toggle-btn>Tools</button>
+          </div>
+
+        </div>
+
+        <div class="skills-box" data-skills-box>
+
+          <ul class="skills-list">
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">HTML5</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/html5.png" alt="HTML5 logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">CSS3</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/css3.png" alt="CSS3 logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">JavaScript</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/javascript.png" alt="JavaScript logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">TypeScript</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/typescript.png" alt="TypeScript logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">jQuery</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/jquery.png" alt="jQuery logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Bootstrap</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/bootstrap.png" alt="Bootstrap logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Angular</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/angular.png" alt="Angular logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">React</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/react.png" alt="React logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Vue</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/vue.png" alt="Vue logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Firebase</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/firebase.png" alt="Firebase logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">PugJs</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/pugjs.png" alt="PugJs logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">SASS</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/sass.png" alt="SASS logo">
+                </div>
+              </div>
+            </li>
+
+          </ul>
+
+          <ul class="tools-list">
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Ajax</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/ajax.png" alt="Ajax logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Gulp</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/gulp.png" alt="Gulp logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Webpack</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/webpack.png" alt="Webpack logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Git</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/git.png" alt="Git logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Npm</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/npm.png" alt="Npm logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Command Line</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/command.png" alt="Command Line logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">VS Code</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/vs-code.png" alt="VS Code logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Trello</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/trello.png" alt="Trello logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">ClickUp</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/clickup.png" alt="ClickUp logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Slack</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/slack.png" alt="Slack logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Photoshop</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/photoshop.png" alt="Photoshop logo">
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="skill-card">
+                <div class="tooltip">Adobe XD</div>
+
+                <div class="card-icon">
+                  <img src="./assets/images/adobe-xd.png" alt="Adobe XD logo">
+                </div>
+              </div>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </section>
+
+
+
+
+      <!-- 
+        - #PROJECTS
+      -->
+
+      <section class="project" id="portfolio">
+
+        <ul class="project-list">
+
+          <li>
+            <div class="project-content section-content">
+
+              <p class="section-subtitle">My Works</p>
+
+              <h2 class="h3 section-title">See My Works Which Will Amaze You!</h2>
+
+              <p class="section-text">
+                We develop the best quality website that serves for the long-term. Well-documented, clean, easy and
+                elegant interface
+                helps any non-technical clients.
+              </p>
+
+            </div>
+          </li>
+
+          <li>
+            <a href="#" class="project-card">
+
+              <figure class="card-banner">
+                <img src="./assets/images/project-1.png" class="w-100" alt="A macintosh on a yellow background.">
+              </figure>
+
+              <div class="card-content">
+                <h3 class="h4 card-title">Lorem Ipsum Dolor 01</h3>
+
+                <time class="publish-date" datetime="2022-04">April 2022</time>
+              </div>
+
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="project-card">
+
+              <figure class="card-banner">
+                <img src="./assets/images/project-2.png" class="w-100" alt="On a Blue background, a Wacom and a mouse.">
+              </figure>
+
+              <div class="card-content">
+                <h3 class="h4 card-title">Lorem Ipsum Dolor 02</h3>
+
+                <time class="publish-date" datetime="2022-04">April 2022</time>
+              </div>
+
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="project-card">
+
+              <figure class="card-banner">
+                <img src="./assets/images/project-3.png" class="w-100"
+                  alt="A Cassette tape on a mellow apricot background.">
+              </figure>
+
+              <div class="card-content">
+                <h3 class="h4 card-title">Lorem Ipsum Dolor 03</h3>
+
+                <time class="publish-date" datetime="2022-04">April 2022</time>
+              </div>
+
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="project-card">
+
+              <figure class="card-banner">
+                <img src="./assets/images/project-4.png" class="w-100"
+                  alt="Blue digital watch on a dark liver background.">
+              </figure>
+
+              <div class="card-content">
+                <h3 class="h4 card-title">Lorem Ipsum Dolor 04</h3>
+
+                <time class="publish-date" datetime="2022-04">April 2022</time>
+              </div>
+
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="project-card">
+
+              <figure class="card-banner">
+                <img src="./assets/images/project-5.png" class="w-100"
+                  alt="On a dark liver background, Airport luggage car carrying a luggage.">
+              </figure>
+
+              <div class="card-content">
+                <h3 class="h4 card-title">Lorem Ipsum Dolor 05</h3>
+
+                <time class="publish-date" datetime="2022-04">April 2022</time>
+              </div>
+
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="project-card">
+
+              <figure class="card-banner">
+                <img src="./assets/images/project-6.png" class="w-100"
+                  alt="On a yellow background, a digital watch and a glass.">
+              </figure>
+
+              <div class="card-content">
+                <h3 class="h4 card-title">Lorem Ipsum Dolor 06</h3>
+
+                <time class="publish-date" datetime="2022-04">April 2022</time>
+              </div>
+
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="project-card">
+
+              <figure class="card-banner">
+                <img src="./assets/images/project-7.png" class="w-100"
+                  alt="A fujifilm instant camera on a dark electric blue background.">
+              </figure>
+
+              <div class="card-content">
+                <h3 class="h4 card-title">Lorem Ipsum Dolor 07</h3>
+
+                <time class="publish-date" datetime="2022-04">April 2022</time>
+              </div>
+
+            </a>
+          </li>
+
+        </ul>
+
+      </section>
+
+
+
+
+
+      <!-- 
+        - #CONTACT
+      -->
+
+      <section class="contact" id="contact">
+
+        <div class="contact-content section-content">
+
+          <p class="section-subtitle">Contact</p>
+
+          <h2 class="h3 section-title">Interested in My Work? Let's Connect!</h2>
+
+          <p class="section-text">
+              Whether you have questions about my projects, want to discuss potential collaborations, or simply want to connect and chat about data science and technology, I'd love to hear from you. Fill out the form, and I'll get back to you as soon as I can.
+          </p>
+
+
+          <ul class="contact-list">
+
+            <li class="contact-list-item">
+
+            </li>
+
+            <li class="contact-list-item">
+
+              <div class="contact-item-icon">
+                <ion-icon name="call-outline"></ion-icon>
+              </div>
+
+              <div class="wrapper">
+                <h3 class="h4 contact-item-title">Phone:</h3>
+
+                <a href="tel:01234567789" class="contact-info">+44 7931 794345</a>
+
+              </div>
+
+            </li>
+
+            <li class="contact-list-item">
+
+              <div class="contact-item-icon">
+                <ion-icon name="mail-outline"></ion-icon>
+              </div>
+
+              <div class="wrapper">
+                <h3 class="h4 contact-item-title">Email:</h3>
+
+                <a href="mailto:info@jack.com" class="contact-info">nikolaitennant@gmail.com</a>
+
+              </div>
+
+            </li>
+
+            <li>
+              <ul class="contac-social-list">
+
+                <li>
+                  <a href="https://github.com/nikolaitennant" class="contact-social-link">
+                    <div class="tooltip">GitHub</div>
+
+                    <ion-icon name="logo-github"></ion-icon>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="https://www.linkedin.com/in/nikolai-tennant" class="contact-social-link">
+                    <div class="tooltip">Linkedin</div>
+
+                    <ion-icon name="logo-linkedin"></ion-icon>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+          </ul>
+
+        </div>
+
+        <form action="" class="contact-form">
+
+          <div class="form-wrapper">
+
+            <label for="name" class="form-label">Name</label>
+
+            <div class="input-wrapper">
+
+              <input type="text" name="name" id="name" required placeholder="e.g John Doe" class="input-field">
+
+              <ion-icon name="person-circle"></ion-icon>
+
+            </div>
+
+          </div>
+
+          <div class="form-wrapper">
+
+            <label for="email" class="form-label">Email</label>
+
+            <div class="input-wrapper">
+
+              <input type="email" name="email" id="email" required placeholder="e.g johndoe@mail.com"
+                class="input-field">
+
+              <ion-icon name="mail"></ion-icon>
+
+            </div>
+
+          </div>
+
+          <div class="form-wrapper">
+
+            <label for="phone" class="form-label">Phone</label>
+
+            <div class="input-wrapper">
+
+              <input type="tel" name="phone" id="phone" required placeholder="Phone Number" class="input-field">
+
+              <ion-icon name="call"></ion-icon>
+
+            </div>
+
+          </div>
+
+          <div class="form-wrapper">
+
+            <label for="message" class="form-label">Message</label>
+
+            <div class="input-wrapper">
+
+              <textarea name="message" id="message" required placeholder="Write message..."
+                class="input-field"></textarea>
+
+              <ion-icon name="chatbubbles"></ion-icon>
+
+            </div>
+
+          </div>
+
+          <button type="submit" class="btn btn-primary">Send</button>
+
+        </form>
+
+      </section>
+
+    </article>
+  </main>
+
+
+
+
+
+  <!-- 
+    - #FOOTER
+  -->
+
+  <footer class="footer">
+    <div class="container">
+
+      <p class="h1 logo">
+        <a href="#">
+          NIKOLAI TENNANT<span>.</span>
+        </a>
+      </p>
+
+      <p class="copyright">
+        &copy; 2023. <a href="#"></a> All rights reserved
+      </p>
+
+    </div>
+  </footer>
+
+
+
+
+
+  <!-- 
+    - #GO TO TOP
+  -->
+
+  <a href="#top" class="go-top" data-go-top title="Go to Top">
+    <ion-icon name="arrow-up"></ion-icon>
+  </a>
+
+
+
+
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="./assets/js/script.js"></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
 </html>

@@ -37,35 +37,21 @@ const navToggleBtn = document.querySelector("[data-nav-toggle-btn]");
 const navbar = document.querySelector("[data-navbar]");
 
 navToggleBtn.addEventListener("click", function () {
-
   elemToggleFunc(navToggleBtn);
   elemToggleFunc(navbar);
-  elemToggleFunc(document.body);
-
+  document.body.classList.toggle('active');
 });
-
-
-
-
 
 const navLinks = document.querySelectorAll("[data-navbar] a");
 
 navLinks.forEach(link => {
-  link.addEventListener("click", function(e) {
-    e.preventDefault();
-    
-    // Close the navbar
+  link.addEventListener("click", function() {
     elemToggleFunc(navToggleBtn);
     elemToggleFunc(navbar);
-    elemToggleFunc(document.body);
-    
-    // Smoothly navigate to the link's href (assuming it's a local anchor)
-    const dest = document.querySelector(link.getAttribute('href'));
-    if (dest) {
-      dest.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.body.classList.remove('active');
   });
 });
+
 
 
 
@@ -86,6 +72,7 @@ for (let i = 0; i < toggleBtns.length; i++) {
 
   });
 }
+
 
 
 

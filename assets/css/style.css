@@ -452,7 +452,7 @@ body.active { overflow: hidden; }
   position: absolute;
   top: 50%;
   transform: translateY(-50%); /* This will vertically center .navbar-actions with respect to its parent container */
-  right: 0px; /* Adjust this as needed for horizontal spacing from the right edge */
+  right: 10px; /* Adjust this as needed for horizontal spacing from the right edge */
 }
 
 
@@ -473,7 +473,8 @@ main { overflow-x: hidden; }
   justify-content: center;
   align-items: center;
   padding-top: 115px;
-  margin-bottom: var(--section-padding);
+  margin-bottom: 0px; 
+
 }
 
 .hero-banner {
@@ -1252,12 +1253,13 @@ textarea.input-field {
 
   .about {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
     gap: 30px;
   }
 
-  .about-banner { margin-bottom: 0; }
+  .about-banner { margin-bottom: 0;
+  max-width: 700px; }
 
 
 
@@ -1341,7 +1343,7 @@ textarea.input-field {
 
   .container { max-width: 1150px; }
 
-  .section-title { max-width: 460px; }
+  .section-title { max-width: 800px; }
 
 
 
@@ -1361,6 +1363,6 @@ textarea.input-field {
    * ABOUT
    */
 
-  .about-banner { max-width: 450px; }
+  .about-banner { max-width: 850px; }
 
 }

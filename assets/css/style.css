@@ -449,10 +449,12 @@ body.active { overflow: hidden; }
 }
 
 .navbar-actions {
-  position: absolute;  /* This will pull out the theme-btn out of the normal flow and position it to the top right corner */
-  top: 15px;  /* Adjust this as needed for vertical positioning */
-  right: 15px;  /* Adjust this as needed for horizontal spacing from the right edge */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); /* This will vertically center .navbar-actions with respect to its parent container */
+  right: 0px; /* Adjust this as needed for horizontal spacing from the right edge */
 }
+
 
 
 

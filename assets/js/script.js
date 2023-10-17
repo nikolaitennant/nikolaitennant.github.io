@@ -46,6 +46,25 @@ navToggleBtn.addEventListener("click", function () {
 
 
 
+
+
+const navLinks = document.querySelectorAll("[data-navbar] a");
+
+navLinks.forEach(link => {
+  link.addEventListener("click", function(e) {
+    e.preventDefault();
+    
+    // Close the navbar
+    elemToggleFunc(navToggleBtn);
+    elemToggleFunc(navbar);
+    elemToggleFunc(document.body);
+    
+    // Navigate to the link's href
+    window.location.href = link.getAttribute('href');
+  });
+});
+
+
 /**
  * skills toggle
  */
@@ -66,40 +85,46 @@ for (let i = 0; i < toggleBtns.length; i++) {
 
 
 
-/**
- * dark & light theme toggle
- */
+// /**
+//  * dark & light theme toggle
+//  */
 
 const themeToggleBtn = document.querySelector("[data-theme-btn]");
 
-themeToggleBtn.addEventListener("click", function () {
+function setDarkTheme() {
+  themeToggleBtn.classList.remove("active");
+  document.body.classList.add("dark_theme");
+  document.body.classList.remove("light_theme");
+  localStorage.setItem("theme", "dark_theme");
+}
 
-  elemToggleFunc(themeToggleBtn);
-
-  if (themeToggleBtn.classList.contains("active")) {
-    document.body.classList.remove("dark_theme");
-    document.body.classList.add("light_theme");
-
-    localStorage.setItem("theme", "light_theme");
-  } else {
-    document.body.classList.add("dark_theme");
-    document.body.classList.remove("light_theme");
-
-    localStorage.setItem("theme", "dark_theme");
-  }
-
-});
-
-/**
- * check & apply last time selected theme from localStorage
- */
-
-if (localStorage.getItem("theme") === "light_theme") {
+function setLightTheme() {
   themeToggleBtn.classList.add("active");
   document.body.classList.remove("dark_theme");
   document.body.classList.add("light_theme");
-} else {
-  themeToggleBtn.classList.remove("active");
-  document.body.classList.remove("light_theme");
-  document.body.classList.add("dark_theme");
+  localStorage.setItem("theme", "light_theme");
 }
+
+// Determine initial theme based on OS preference and local hours
+const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+const prefersLightScheme = window.matchMedia("(prefers-color-scheme: light)").matches;
+const currentHour = new Date().getHours();
+
+if (prefersDarkScheme) {
+  setDarkTheme();
+} else if (prefersLightScheme) {
+  setLightTheme();
+} else {  // For 'no-preference', 'auto' or in case of any other unexpected scenario
+  if (currentHour >= 19 || currentHour < 6) {
+    setDarkTheme();
+  } else {
+    setLightTheme();
+  }
+}
+themeToggleBtn.addEventListener("click", function() {
+  if (themeToggleBtn.classList.contains("active")) {
+    setDarkTheme();
+  } else {
+    setLightTheme();
+  }
+});

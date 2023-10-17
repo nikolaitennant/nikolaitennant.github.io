@@ -607,10 +607,13 @@ main { overflow-x: hidden; }
   margin-bottom: 80px;
 }
 
+
 .about .btn {
-  max-width: unset;
-  width: 100%;
+  width: 80%; /* adjust this as per your requirement */
+  margin-left: auto;
+  margin-right: auto;
 }
+
 
 .about .btn-secondary { margin-bottom: 10px; }
 
@@ -982,7 +985,6 @@ textarea.input-field {
   .section-title { max-width: 380px; }
 
 
-
   /**
    * PROJECT
    */
@@ -1027,6 +1029,8 @@ textarea.input-field {
     align-items: center;
     gap: 20px;
   }
+
+  
 
   .about .btn { max-width: max-content; }
 

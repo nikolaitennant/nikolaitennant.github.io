@@ -13,7 +13,7 @@ export const personalInfo = {
 
 export const experience = [
   {
-    title: "Associate Research Engineer, Customer Decision Sciences", 
+    title: "Research Engineer, Customer Decision Sciences", 
     company: "dunnhumby",
     location: "London, England",
     period: "September 2023 - Present",

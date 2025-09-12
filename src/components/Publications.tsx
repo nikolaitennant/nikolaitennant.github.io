@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { FileText, Users, Calendar, BookOpen, Award } from 'lucide-react';
-import { publications, interests } from '../data/portfolio';
+import { publications, researchProjects, personalInterests } from '../data/portfolio';
 
 const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDelay: number = 0) => {
   const [displayedText, setDisplayedText] = useState('');
@@ -333,69 +333,144 @@ const Publications: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Personal Interests */}
+          {/* Research Projects */}
           <motion.div variants={itemVariants}>
             <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-2xl shadow-xl p-8">
               <h3 className="text-2xl font-semibold text-center mb-8 gradient-text font-mono">
-                <span className="text-primary-400">{'>'}</span> Beyond Research
+                <span className="text-primary-400">{'>'}</span> Research Projects
               </h3>
               
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-8">
+                {researchProjects.map((project, index) => (
+                  <div key={index} className="border border-terminal-600 rounded-xl p-6 bg-terminal-700/30">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <h4 className="text-xl font-bold text-terminal-100 mb-2 font-mono">
+                          {project.title}
+                        </h4>
+                        {project.achievement && (
+                          <span className="inline-block px-3 py-1 bg-accent-500/20 border border-accent-500/30 text-accent-400 rounded-full text-sm font-medium font-mono mb-3">
+                            {project.achievement}
+                          </span>
+                        )}
+                        <p className="text-terminal-300 text-base leading-relaxed font-mono mb-4">
+                          {project.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <p className="text-terminal-300 text-sm leading-relaxed font-mono mb-4">
+                        {project.longDescription}
+                      </p>
+                    </div>
+
+                    <div className="mb-4">
+                      <h5 className="text-sm font-semibold text-terminal-100 mb-2 font-mono">
+                        <span className="text-primary-400">{'>'}</span> Key Findings:
+                      </h5>
+                      <ul className="space-y-1">
+                        {project.keyFindings.map((finding, i) => (
+                          <li key={i} className="flex items-start text-sm text-terminal-300 font-mono">
+                            <span className="text-bio-400 mr-2 flex-shrink-0">•</span>
+                            {finding}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="mb-4">
+                      <h5 className="text-sm font-semibold text-terminal-100 mb-2 font-mono">
+                        <span className="text-primary-400">{'>'}</span> Technologies:
+                      </h5>
+                      <div className="flex flex-wrap gap-2">
+                        {project.technologies.map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-2 py-1 bg-terminal-700 border border-primary-500/30 text-primary-400 rounded text-xs font-medium font-mono"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="bg-terminal-700/50 border border-bio-500/30 rounded-lg p-3">
+                      <div className="flex items-center text-bio-400 mb-1">
+                        <Award className="w-4 h-4 mr-2" />
+                        <span className="font-medium text-sm font-mono">Impact:</span>
+                      </div>
+                      <p className="text-sm text-bio-400 font-mono">
+                        {project.impact}
+                      </p>
+                      {project.collaboration && (
+                        <p className="text-xs text-terminal-300 font-mono mt-2">
+                          {project.collaboration}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Research Interests */}
+          <motion.div variants={itemVariants}>
+            <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-2xl shadow-xl p-8">
+              <h3 className="text-2xl font-semibold text-center mb-8 gradient-text font-mono">
+                <span className="text-primary-400">{'>'}</span> {researchInterests.title}
+              </h3>
+              
+              <div className="mb-6">
+                <p className="text-terminal-300 text-lg leading-relaxed font-mono text-center mb-8">
+                  {researchInterests.overview}
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6 mb-8">
+                {researchInterests.areas.map((area, index) => (
+                  <div key={index} className="bg-terminal-700/30 border border-terminal-600 rounded-xl p-4">
+                    <h4 className="text-lg font-bold text-terminal-100 mb-2 font-mono">
+                      {area.title}
+                    </h4>
+                    <p className="text-terminal-300 text-sm font-mono mb-3">
+                      {area.description}
+                    </p>
+                    <ul className="space-y-1">
+                      {area.focus.map((item, i) => (
+                        <li key={i} className="flex items-start text-xs text-terminal-300 font-mono">
+                          <span className="text-primary-400 mr-2 flex-shrink-0">▸</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="text-lg font-semibold text-terminal-100 mb-4 font-mono">
-                    Personal Interests
+                  <h4 className="text-lg font-semibold text-terminal-100 mb-3 font-mono">
+                    <span className="text-primary-400">{'>'}</span> Current Projects:
                   </h4>
-                  <ul className="space-y-3">
-                    {interests.map((interest, index) => (
-                      <li key={index} className="flex items-start text-terminal-300">
-                        <div className="w-2 h-2 bg-primary-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                        <span className="font-mono">{interest}</span>
+                  <ul className="space-y-2">
+                    {researchInterests.currentProjects.map((project, i) => (
+                      <li key={i} className="flex items-start text-sm text-terminal-300 font-mono">
+                        <span className="text-bio-400 mr-2 flex-shrink-0">▸</span>
+                        {project}
                       </li>
                     ))}
                   </ul>
                 </div>
 
                 <div>
-                  <h4 className="text-lg font-semibold text-terminal-100 mb-4 font-mono">
-                    Academic Involvement
+                  <h4 className="text-lg font-semibold text-terminal-100 mb-3 font-mono">
+                    <span className="text-primary-400">{'>'}</span> Future Directions:
                   </h4>
-                  <div className="space-y-3">
-                    <div className="flex items-start">
-                      <div className="w-2 h-2 bg-accent-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                      <div>
-                        <span className="text-terminal-100 font-medium font-mono">
-                          IISAGE Initiative
-                        </span>
-                        <p className="text-terminal-300 text-sm mt-1 font-mono">
-                          Multi-institutional collaboration on ageing research across 11 research labs
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start">
-                      <div className="w-2 h-2 bg-accent-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                      <div>
-                        <span className="text-terminal-100 font-medium font-mono">
-                          Brown University Alumni
-                        </span>
-                        <p className="text-terminal-300 text-sm mt-1 font-mono">
-                          Active participant in university research communities and academic networks
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start">
-                      <div className="w-2 h-2 bg-accent-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                      <div>
-                        <span className="text-terminal-100 font-medium font-mono">
-                          Industry Leadership
-                        </span>
-                        <p className="text-terminal-300 text-sm mt-1 font-mono">
-                          Former President of Ecology Club, Varsity Lacrosse Captain, and leadership roles
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <p className="text-terminal-300 text-sm leading-relaxed font-mono">
+                    {researchInterests.futureDirections}
+                  </p>
                 </div>
               </div>
             </div>

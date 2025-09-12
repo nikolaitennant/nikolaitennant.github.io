@@ -1,7 +1,43 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { Mail, Phone, MapPin, Github, Linkedin, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { personalInfo } from '../data/portfolio';
+
+const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDelay: number = 0) => {
+  const [displayedText, setDisplayedText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [shouldStart, setShouldStart] = useState(false);
+  
+  const startTyping = () => {
+    if (!shouldStart) {
+      setShouldStart(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!text || !shouldStart) return;
+    
+    const startTimer = setTimeout(() => {
+      setIsTyping(true);
+      let i = 0;
+      const timer = setInterval(() => {
+        if (i < text.length) {
+          setDisplayedText(text.slice(0, i + 1));
+          i++;
+        } else {
+          setIsTyping(false);
+          clearInterval(timer);
+        }
+      }, delay);
+      
+      return () => clearInterval(timer);
+    }, startDelay);
+
+    return () => clearTimeout(startTimer);
+  }, [text, delay, startDelay, shouldStart]);
+
+  return { displayedText, isTyping, startTyping, shouldStart };
+};
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +47,21 @@ const Contact: React.FC = () => {
     message: ''
   });
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  
+  // Terminal commands with scroll trigger
+  const pingCommand = useScrollTriggeredTypewriter("$ ping nikolai@contact.net", 80, 500);
+  const establishingCommand = useScrollTriggeredTypewriter("# Establishing connection...", 70, 500 + (pingCommand.displayedText.length > 0 ? 27 * 80 + 800 : 0));
+  const responseCommand = useScrollTriggeredTypewriter("# Response time: <24hrs", 70, 500 + (pingCommand.displayedText.length > 0 ? 27 * 80 + 1600 : 0));
+
+  useEffect(() => {
+    if (isInView) {
+      pingCommand.startTyping();
+      setTimeout(() => establishingCommand.startTyping(), 500 + 27 * 80 + 800);
+      setTimeout(() => responseCommand.startTyping(), 500 + 27 * 80 + 1600);
+    }
+  }, [isInView]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -92,7 +143,93 @@ const Contact: React.FC = () => {
   ];
 
   return (
-    <section id="contact" className="section-padding bg-white dark:bg-gray-800">
+    <section id="contact" className="section-padding bg-terminal-900 relative overflow-hidden" ref={ref}>
+      {/* Background animations */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Floating particles */}
+        <motion.div 
+          className="absolute inset-0 opacity-40"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.4 }}
+          viewport={{ once: true }}
+          transition={{ duration: 2 }}
+        >
+          <motion.div 
+            className="absolute top-1/4 left-1/5 w-3 h-3 bg-primary-400 rounded-full float-animation pulse-glow" 
+            style={{animationDelay: '0s'}}
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          ></motion.div>
+          <motion.div 
+            className="absolute top-1/2 right-1/4 w-2.5 h-2.5 bg-bio-400 rounded-full float-animation pulse-glow" 
+            style={{animationDelay: '1s'}}
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+          ></motion.div>
+          <motion.div 
+            className="absolute bottom-1/3 left-1/3 w-4 h-4 bg-accent-400 rounded-full float-animation pulse-glow" 
+            style={{animationDelay: '2s'}}
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.9 }}
+          ></motion.div>
+        </motion.div>
+
+        {/* Connection lines */}
+        <motion.div 
+          className="absolute inset-0 opacity-20"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.2 }}
+          viewport={{ once: true }}
+          transition={{ duration: 3, delay: 1 }}
+        >
+          <svg className="w-full h-full" viewBox="0 0 1200 800" fill="none">
+            <motion.path
+              d="M200,300 Q600,100 1000,400"
+              stroke="rgba(34, 197, 94, 0.8)"
+              strokeWidth="2"
+              fill="none"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 2, delay: 1.5 }}
+            />
+            <motion.path
+              d="M100,600 Q500,200 900,500"
+              stroke="rgba(239, 68, 68, 0.7)"
+              strokeWidth="1.5"
+              fill="none"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 2, delay: 2 }}
+            />
+          </svg>
+        </motion.div>
+      </div>
+      
+      {/* Terminal Command Header */}
+      <div className="absolute top-8 left-8 text-primary-400 font-mono text-sm opacity-40 space-y-1">
+        <div className="flex items-center space-x-2 mb-2">
+          <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+          <div className="w-3 h-3 rounded-full bg-accent-500 animate-pulse" style={{animationDelay: '0.3s'}}></div>
+          <div className="w-3 h-3 rounded-full bg-bio-500 animate-pulse" style={{animationDelay: '0.6s'}}></div>
+        </div>
+        <div>
+          {pingCommand.displayedText}
+        </div>
+        <div className="text-xs text-accent-400 mt-1">
+          {establishingCommand.displayedText}
+        </div>
+        <div className="text-xs text-bio-400 mt-1">
+          {responseCommand.displayedText}
+        </div>
+      </div>
       <div className="container-custom">
         <motion.div
           initial="hidden"
@@ -102,26 +239,18 @@ const Contact: React.FC = () => {
         >
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="gradient-text">Get In Touch</span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 font-mono">
+              <span className="text-primary-400">{'>'}</span> <span className="gradient-text">Get In Touch</span>
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-terminal-300 max-w-3xl mx-auto font-mono">
               Available to discuss professional opportunities and technical projects.
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Information */}
-            <motion.div variants={itemVariants} className="space-y-8">
-              <div>
-                <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
-                  Let's Connect
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
-                  Available to discuss technical questions about projects and potential professional opportunities in data science and computational biology.
-                </p>
-              </div>
-
+          {/* Two Column Layout: Contact Info + Form */}
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Left Column - Contact Methods */}
+            <motion.div variants={itemVariants} className="space-y-6">
               {/* Contact Methods */}
               <div className="space-y-4">
                 {contactMethods.map((method) => {
@@ -137,30 +266,30 @@ const Contact: React.FC = () => {
                           href={method.href}
                           target={method.href.startsWith('http') ? '_blank' : undefined}
                           rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300 group-hover:shadow-lg"
+                          className="flex items-center p-4 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl hover:bg-terminal-700 hover:border-primary-500/50 transition-all duration-300 group-hover:shadow-lg"
                         >
                           <div className={`p-3 rounded-lg bg-gradient-to-r ${method.color} text-white mr-4`}>
                             <Icon className="w-5 h-5" />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                            <h4 className="font-semibold text-terminal-100 group-hover:text-primary-400 transition-colors font-mono">
                               {method.label}
                             </h4>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm">
+                            <p className="text-terminal-300 text-sm font-mono">
                               {method.value}
                             </p>
                           </div>
                         </a>
                       ) : (
-                        <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                        <div className="flex items-center p-4 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl">
                           <div className={`p-3 rounded-lg bg-gradient-to-r ${method.color} text-white mr-4`}>
                             <Icon className="w-5 h-5" />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-gray-800 dark:text-gray-200">
+                            <h4 className="font-semibold text-terminal-100 font-mono">
                               {method.label}
                             </h4>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm">
+                            <p className="text-terminal-300 text-sm font-mono">
                               {method.value}
                             </p>
                           </div>
@@ -174,29 +303,29 @@ const Contact: React.FC = () => {
               {/* Response Time */}
               <motion.div 
                 variants={itemVariants}
-                className="bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-xl p-6"
+                className="bg-terminal-800/50 backdrop-blur-sm border border-accent-500/30 rounded-xl p-6"
               >
-                <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                  Response Time
+                <h4 className="font-semibold text-terminal-100 mb-2 font-mono">
+                  <span className="text-accent-400">{'>'}</span> Response Time
                 </h4>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">
+                <p className="text-terminal-300 text-sm font-mono">
                   I typically respond to messages within 24-48 hours. For urgent matters, 
                   feel free to reach out via phone or LinkedIn.
                 </p>
               </motion.div>
             </motion.div>
 
-            {/* Contact Form */}
+            {/* Right Column - Contact Form */}
             <motion.div variants={itemVariants}>
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-2xl p-8">
-                <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
-                  Send a Message
+              <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-2xl p-8 h-full flex flex-col">
+                <h3 className="text-2xl font-semibold text-terminal-100 mb-6 font-mono">
+                  <span className="text-primary-400">{'>'}</span> Send a Message
                 </h3>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
+                <form onSubmit={handleSubmit} className="space-y-4 flex-1 flex flex-col">
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label htmlFor="name" className="block text-sm font-medium text-terminal-100 mb-2 font-mono">
                         Name *
                       </label>
                       <input
@@ -206,12 +335,12 @@ const Contact: React.FC = () => {
                         required
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors"
+                        className="w-full px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colors"
                         placeholder="Your Name"
                       />
                     </div>
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label htmlFor="email" className="block text-sm font-medium text-terminal-100 mb-2 font-mono">
                         Email *
                       </label>
                       <input
@@ -221,14 +350,14 @@ const Contact: React.FC = () => {
                         required
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors"
+                        className="w-full px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colors"
                         placeholder="your@email.com"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label htmlFor="subject" className="block text-sm font-medium text-terminal-100 mb-2 font-mono">
                       Subject *
                     </label>
                     <input
@@ -238,23 +367,22 @@ const Contact: React.FC = () => {
                       required
                       value={formData.subject}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors"
+                      className="w-full px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colors"
                       placeholder="What's this about?"
                     />
                   </div>
 
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <div className="flex-1 flex flex-col">
+                    <label htmlFor="message" className="block text-sm font-medium text-terminal-100 mb-2 font-mono">
                       Message *
                     </label>
                     <textarea
                       id="message"
                       name="message"
                       required
-                      rows={6}
                       value={formData.message}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors resize-none"
+                      className="w-full flex-1 px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colors resize-none"
                       placeholder="Tell me about your project, collaboration idea, or just say hello..."
                     />
                   </div>
@@ -263,7 +391,7 @@ const Contact: React.FC = () => {
                   <motion.button
                     type="submit"
                     disabled={formStatus === 'sending'}
-                    className={`w-full flex items-center justify-center px-8 py-4 rounded-lg font-semibold transition-all duration-300 ${
+                    className={`w-full flex items-center justify-center px-8 py-4 rounded-lg font-semibold transition-all duration-300 font-mono ${
                       formStatus === 'success'
                         ? 'bg-green-600 text-white'
                         : formStatus === 'error'

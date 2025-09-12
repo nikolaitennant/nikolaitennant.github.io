@@ -1,7 +1,7 @@
 export const personalInfo = {
   name: "Nikolai Tennant",
   title: "Research Engineer & Machine Learning Specialist",
-  subtitle: "Developing deep learning solutions for biological discovery and commercial applications",
+  subtitle: "I build ML models for retail at dunnhumby and research ageing with deep learning at Brown University",
   location: "London, UK",
   email: "nikolaitennant@gmail.com",
   phone: "+44 7931 794345",
@@ -67,22 +67,6 @@ export const skills = {
 
 export const projects = [
   {
-    title: "TimeFlies - Ageing Clock for Drosophila",
-    description: "Deep learning methodology utilising CNNs and RNA-seq data to develop ageing biomarkers in Drosophila melanogaster.",
-    longDescription: "Deep learning approach for ageing research combining convolutional neural networks with genomic data to identify ageing patterns in Drosophila. Research conducted as part of NSF-funded IISAGE initiative examining sexual dimorphism in ageing processes.",
-    technologies: ["Python", "Deep Learning", "CNN", "RNA-seq", "Genomics", "Bioinformatics"],
-    features: [
-      "Cross-species data integration and nuclear morphology analysis",
-      "Novel ageing biomarker identification",
-      "Advanced genomic feature extraction",
-      "Statistical validation of ageing patterns",
-      "Applications in understanding ageing mechanisms"
-    ],
-    publications: "Manuscript accepted, undergoing final review",
-    category: "Research",
-    collaboration: "Part of NSF-funded IISAGE initiative"
-  },
-  {
     title: "RAG Scholar AI",
     description: "Research assistant application using Retrieval-Augmented Generation for academic literature analysis and synthesis.",
     longDescription: "Application combining large language models with retrieval systems for academic research assistance. Features include document processing, contextual Q&A with source citations, and multi-document synthesis using vector databases and custom embedding models.",
@@ -99,23 +83,6 @@ export const projects = [
     impact: "Demonstrates practical application of RAG architecture for scientific literature processing and analysis",
     category: "Deep Learning",
     timeline: "2023 - Present"
-  },
-  {
-    title: "SenID - Cell Senescence Identification", 
-    description: "Deep learning approach for identifying senescent cells using computer vision techniques (2nd place, hackathon).",
-    longDescription: "Machine learning system for senescent cell identification using morphological analysis. Developed during hackathon competition, achieving 2nd place. Implementation includes computer vision techniques for cell classification with applications in ageing research.",
-    technologies: ["Python", "Deep Learning", "Computer Vision", "Cell Biology", "Machine Learning"],
-    achievement: "🥈 2nd Place Winner - Hackathon",
-    features: [
-      "Advanced cell morphology analysis",
-      "High-accuracy senescence detection",
-      "Scalable processing pipeline", 
-      "Real-time analysis capabilities",
-      "Applications in ageing and cancer research"
-    ],
-    impact: "Demonstrates computer vision application to cellular biology with competitive performance validation",
-    category: "Deep Learning",
-    timeline: "January 2023 - May 2023"
   },
   {
     title: "Premier League Result Projections",
@@ -137,18 +104,116 @@ export const projects = [
 
 export const publications = [
   {
-    title: "TimeFlies: an RNA-seq aging clock for the comprehensive study of tissue-specific aging clocks Collection",
+    title: "TimeFlies: an RNA-seq ageing clock for the comprehensive study of tissue-specific ageing clocks Collection",
     authors: "Tennant, N.*, Okonkwo, A.*, O'Connor-Giles, K., Larshen, E.T., & Singh, P.T.",
     status: "Manuscript accepted, undergoing final review (Preprint)",
     journal: "Nature Scientific Reports - Aging Clocks Collection",
-    description: "Comprehensive study developing novel aging biomarkers using RNA-seq data and deep learning methodologies."
+    preprint: "https://pubmed.ncbi.nlm.nih.gov/39896546/",
+    description: "Comprehensive study developing novel ageing biomarkers using RNA-seq data and deep learning methodologies to understand tissue-specific ageing patterns in Drosophila melanogaster."
   }
 ];
 
-export const interests = [
-  "Sports: Lacrosse, Football (Soccer)",
-  "Technology: Latest AI developments and applications", 
-  "Research: Aging, genomics, and computational biology",
-  "Travel: Exploring different cultures and scientific communities",
-  "Innovation: Bridging academic research with real-world applications"
+export const researchProjects = [
+  {
+    title: "TimeFlies - Ageing Clock Development",
+    description: "Developing deep learning methodologies to create tissue-specific ageing clocks using RNA-seq data from Drosophila melanogaster",
+    longDescription: "As part of the NSF-funded IISAGE initiative, I'm developing novel computational approaches to understand ageing processes across different tissues. This work combines convolutional neural networks with genomic data analysis to identify ageing biomarkers that could translate to understanding human ageing mechanisms.",
+    technologies: ["Python", "Deep Learning", "CNNs", "RNA-seq Analysis", "Genomics", "Bioinformatics", "Statistical Modeling"],
+    keyFindings: [
+      "Identified tissue-specific ageing signatures across multiple Drosophila tissues",
+      "Developed novel CNN architectures for genomic sequence analysis",
+      "Discovered potential ageing marker genes with cross-species relevance",
+      "Validated sexual dimorphism patterns in ageing processes"
+    ],
+    collaboration: "NSF-funded IISAGE initiative across 11 research institutions",
+    impact: "Contributing to fundamental understanding of ageing biology with potential applications in longevity research"
+  },
+  {
+    title: "SenID - Cellular Senescence Detection",
+    description: "Computer vision system for identifying senescent cells using morphological analysis (2nd place, hackathon competition)",
+    longDescription: "Developed during an intensive hackathon, this project applies computer vision techniques to identify cellular senescence - a key hallmark of ageing. The system analyzes cell morphology to detect senescent phenotypes, which is crucial for understanding age-related diseases and potential therapeutic interventions.",
+    technologies: ["Python", "Computer Vision", "Deep Learning", "Cell Biology", "Image Processing", "Machine Learning"],
+    keyFindings: [
+      "Achieved high accuracy in senescent cell identification using morphological features",
+      "Developed scalable image processing pipeline for cellular analysis",
+      "Demonstrated real-time analysis capabilities for research applications",
+      "Created interpretable models showing which morphological features indicate senescence"
+    ],
+    achievement: "🥈 2nd Place Winner - Hackathon Competition",
+    impact: "Provides researchers with automated tools for senescence studies, accelerating ageing and cancer research"
+  }
 ];
+
+export const researchInterests = {
+  title: "Research Focus & Interests",
+  subtitle: "Bridging computational biology and ageing research",
+  overview: "My research sits at the intersection of computational biology, machine learning, and ageing science. I'm passionate about using advanced computational methods to understand fundamental biological processes, particularly how organisms age and how we can potentially intervene in age-related decline.",
+  areas: [
+    {
+      title: "Computational Ageing Biology",
+      description: "Developing AI/ML approaches to understand ageing mechanisms across species",
+      focus: [
+        "Tissue-specific ageing patterns and biomarker discovery",
+        "Cross-species comparative ageing studies",
+        "Sexual dimorphism in ageing processes",
+        "Molecular mechanisms of cellular senescence"
+      ]
+    },
+    {
+      title: "Genomics & Deep Learning",
+      description: "Applying neural networks to genomic data for biological insight",
+      focus: [
+        "RNA-seq data analysis and interpretation",
+        "Convolutional neural networks for sequence analysis",
+        "Multi-omics data integration",
+        "Genomic feature engineering and selection"
+      ]
+    },
+    {
+      title: "Translational Research",
+      description: "Bridging fundamental research with practical applications",
+      focus: [
+        "Biomarker development for clinical applications",
+        "Drug discovery and therapeutic target identification",
+        "Precision medicine approaches to ageing",
+        "Commercial applications of biological insights"
+      ]
+    }
+  ],
+  currentProjects: [
+    "NSF IISAGE Initiative: Multi-institutional ageing research collaboration",
+    "X chromosome dosage compensation studies in Drosophila",
+    "Cross-species ageing biomarker validation",
+    "Development of interpretable AI models for biological discovery"
+  ],
+  futureDirections: "I'm interested in expanding this work to mammalian systems, developing clinical ageing biomarkers, and exploring how machine learning can accelerate drug discovery for age-related diseases."
+};
+
+export const personalInterests = {
+  title: "Beyond Research",
+  subtitle: "Personal Interests",
+  interests: [
+    "Sports: University lacrosse captain, football enthusiast",
+    "Technology: Following cutting-edge AI research and applications", 
+    "Research: Ageing biology, genomics, and computational methods",
+    "Travel: Exploring different cultures and international research communities",
+    "Innovation: Translating academic research into commercial applications"
+  ],
+  academicInvolvement: {
+    title: "Academic Involvement",
+    items: [
+      {
+        title: "IISAGE Initiative",
+        description: "Multi-institutional collaboration on ageing research across 11 research labs"
+      },
+      {
+        title: "Brown University Alumni",
+        description: "Active participant in university research communities and academic networks"
+      }
+    ]
+  },
+  leadership: {
+    title: "Industry Leadership",
+    description: "Former President of Ecology Club, Varsity Lacrosse Captain, and leadership roles"
+  }
+};

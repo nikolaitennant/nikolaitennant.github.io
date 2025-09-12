@@ -1,9 +1,60 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { GraduationCap, Briefcase, Award, MapPin, Users, Calendar } from 'lucide-react';
 import { personalInfo, experience, education } from '../data/portfolio';
 
+const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDelay: number = 0) => {
+  const [displayedText, setDisplayedText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [shouldStart, setShouldStart] = useState(false);
+  
+  const startTyping = () => {
+    if (!shouldStart) {
+      setShouldStart(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!text || !shouldStart) return;
+    
+    const startTimer = setTimeout(() => {
+      setIsTyping(true);
+      let i = 0;
+      const timer = setInterval(() => {
+        if (i < text.length) {
+          setDisplayedText(text.slice(0, i + 1));
+          i++;
+        } else {
+          setIsTyping(false);
+          clearInterval(timer);
+        }
+      }, delay);
+      
+      return () => clearInterval(timer);
+    }, startDelay);
+
+    return () => clearTimeout(startTimer);
+  }, [text, delay, startDelay, shouldStart]);
+
+  return { displayedText, isTyping, startTyping, shouldStart };
+};
+
 const About: React.FC = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const [expandedEducation, setExpandedEducation] = useState<number | null>(null);
+  
+  // Terminal commands with scroll trigger
+  const grepCommand = useScrollTriggeredTypewriter("$ grep -i \"background\" profile.json", 80, 500);
+  const executingCommand = useScrollTriggeredTypewriter("# Executing query...", 70, 500 + (grepCommand.displayedText.length > 0 ? 32 * 80 + 800 : 0));
+
+  useEffect(() => {
+    if (isInView) {
+      grepCommand.startTyping();
+      setTimeout(() => executingCommand.startTyping(), 500 + 32 * 80 + 800);
+    }
+  }, [isInView]);
+
   const fadeInVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -24,8 +75,119 @@ const About: React.FC = () => {
     }
   };
 
+  const achievementVariants = {
+    hidden: { scale: 0, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100, damping: 15 }
+    }
+  };
+
   return (
-    <section id="about" className="section-padding bg-white dark:bg-gray-800">
+    <section id="about" className="section-padding bg-gradient-to-br from-slate-900/40 via-slate-900/40 to-gray-900/30 relative overflow-hidden" ref={ref}>
+      {/* Background animations */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Geometric patterns */}
+        <motion.div 
+          className="absolute inset-0 opacity-10"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 0.1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 3 }}
+        >
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-bio-500/20 to-accent-500/20 rounded-full blur-xl"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-gradient-to-r from-primary-500/20 to-bio-500/20 rounded-full blur-lg"></div>
+        </motion.div>
+
+        {/* Floating particles */}
+        <motion.div 
+          className="absolute inset-0 opacity-25"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.25 }}
+          viewport={{ once: true }}
+          transition={{ duration: 2, delay: 0.5 }}
+        >
+          <motion.div 
+            className="absolute top-1/3 right-1/5 w-2 h-2 bg-bio-400 rounded-full float-animation" 
+            style={{animationDelay: '0.5s'}}
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 1 }}
+          ></motion.div>
+          <motion.div 
+            className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-primary-400 rounded-full float-animation" 
+            style={{animationDelay: '1.5s'}}
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 1.2 }}
+          ></motion.div>
+          <motion.div 
+            className="absolute top-1/2 left-1/4 w-2.5 h-2.5 bg-accent-400 rounded-full float-animation" 
+            style={{animationDelay: '2.5s'}}
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 1.4 }}
+          ></motion.div>
+        </motion.div>
+
+        {/* Connection lines */}
+        <motion.div 
+          className="absolute inset-0 opacity-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.08 }}
+          viewport={{ once: true }}
+          transition={{ duration: 3, delay: 1 }}
+        >
+          <svg className="w-full h-full" viewBox="0 0 1200 800" fill="none">
+            <motion.path
+              d="M300,200 Q700,100 900,300"
+              stroke="rgba(34, 197, 94, 0.5)"
+              strokeWidth="1"
+              fill="none"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 2, delay: 1.5 }}
+            />
+            <motion.path
+              d="M100,500 Q500,300 800,600"
+              stroke="rgba(239, 68, 68, 0.4)"
+              strokeWidth="0.8"
+              fill="none"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 2, delay: 2 }}
+            />
+          </svg>
+        </motion.div>
+      </div>
+
+      {/* Terminal Command Header */}
+      <div className="absolute top-8 left-8 text-primary-400 font-mono text-sm opacity-40 space-y-1">
+        <div className="flex items-center space-x-2 mb-2">
+          <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+          <div className="w-3 h-3 rounded-full bg-accent-500 animate-pulse" style={{animationDelay: '0.3s'}}></div>
+          <div className="w-3 h-3 rounded-full bg-bio-500 animate-pulse" style={{animationDelay: '0.6s'}}></div>
+        </div>
+        <div>
+          {grepCommand.displayedText}
+        </div>
+        <div className="text-xs text-accent-400 mt-1">
+          {executingCommand.displayedText}
+        </div>
+      </div>
+      
+      {/* DNA Pattern Overlay */}
+      <div className="absolute bottom-8 right-8 text-bio-400 font-mono text-xs opacity-15">
+        <div className="text-primary-400 mb-1"># Gene Expression: ACTIVE</div>
+        <div>BRCA1, TP53, APOE4...</div>
+      </div>
+      
       <div className="container-custom">
         <motion.div
           initial="hidden"
@@ -35,10 +197,10 @@ const About: React.FC = () => {
         >
           {/* Section Header */}
           <motion.div variants={fadeInVariants} className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="gradient-text">About Me</span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 font-mono">
+              <span className="text-primary-400">{'>'}</span> <span className="gradient-text">About Me</span>
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-terminal-300 max-w-3xl mx-auto font-mono">
               Background in data science and computational biology with experience in both research and industry applications
             </p>
           </motion.div>
@@ -46,52 +208,52 @@ const About: React.FC = () => {
           <div className="grid lg:grid-cols-2 gap-12 mb-16">
             {/* Bio Section */}
             <motion.div variants={fadeInVariants} className="space-y-6">
-              <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                My Journey
+              <h3 className="text-2xl font-semibold text-terminal-100 mb-4 font-mono">
+                <span className="text-primary-400">$</span> cat profile.md
               </h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+              <p className="text-terminal-300 leading-relaxed text-lg font-mono">
                 {personalInfo.bio}
               </p>
               
-              <div className="bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-xl p-6">
+              <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 hover:border-primary-500/50 transition-colors">
                 <div className="flex items-center mb-3">
-                  <Users className="w-5 h-5 text-primary-600 mr-2" />
-                  <span className="font-semibold text-gray-800 dark:text-gray-200">Citizenship</span>
+                  <Users className="w-5 h-5 text-primary-400 mr-2" />
+                  <span className="font-semibold text-terminal-100 font-mono">Citizenship</span>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300">{personalInfo.citizenship}</p>
+                <p className="text-terminal-300 font-mono">{personalInfo.citizenship}</p>
               </div>
 
-              <div className="flex items-center text-gray-600 dark:text-gray-300">
-                <MapPin className="w-5 h-5 mr-2 text-primary-600" />
+              <div className="flex items-center text-terminal-300 font-mono">
+                <MapPin className="w-5 h-5 mr-2 text-primary-400" />
                 <span>Currently based in {personalInfo.location}</span>
               </div>
             </motion.div>
 
             {/* Stats/Highlights */}
             <motion.div variants={fadeInVariants} className="space-y-6">
-              <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                Key Highlights
+              <h3 className="text-2xl font-semibold text-terminal-100 mb-4 font-mono">
+                <span className="text-primary-400">$</span> ls -la achievements/
               </h3>
               
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-6 text-center">
-                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">4.0</div>
-                  <div className="text-sm font-medium text-gray-600 dark:text-gray-300">MSc GPA</div>
+                <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 text-center hover:border-primary-500/50 transition-colors">
+                  <div className="text-3xl font-bold text-primary-400 mb-2 font-mono">4.0</div>
+                  <div className="text-sm font-medium text-terminal-300 font-mono">MSc GPA</div>
                 </div>
                 
-                <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl p-6 text-center">
-                  <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">2nd</div>
-                  <div className="text-sm font-medium text-gray-600 dark:text-gray-300">Hackathon Place</div>
+                <div className="bg-terminal-800/50 backdrop-blur-sm border border-bio-500/30 rounded-xl p-6 text-center hover:border-bio-500/50 transition-colors">
+                  <div className="text-3xl font-bold text-bio-400 mb-2 font-mono">2nd</div>
+                  <div className="text-sm font-medium text-terminal-300 font-mono">Hackathon Place</div>
                 </div>
                 
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl p-6 text-center">
-                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">2+</div>
-                  <div className="text-sm font-medium text-gray-600 dark:text-gray-300">Publications</div>
+                <div className="bg-terminal-800/50 backdrop-blur-sm border border-accent-500/30 rounded-xl p-6 text-center hover:border-accent-500/50 transition-colors">
+                  <div className="text-3xl font-bold text-accent-400 mb-2 font-mono">2+</div>
+                  <div className="text-sm font-medium text-terminal-300 font-mono">Publications</div>
                 </div>
                 
-                <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-xl p-6 text-center">
-                  <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">5+</div>
-                  <div className="text-sm font-medium text-gray-600 dark:text-gray-300">ML Projects</div>
+                <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 text-center hover:border-primary-500/50 transition-colors">
+                  <div className="text-3xl font-bold text-primary-400 mb-2 font-mono">5+</div>
+                  <div className="text-sm font-medium text-terminal-300 font-mono">ML Projects</div>
                 </div>
               </div>
             </motion.div>
@@ -99,13 +261,13 @@ const About: React.FC = () => {
 
           {/* Experience Timeline */}
           <motion.div variants={fadeInVariants} className="mb-16">
-            <h3 className="text-3xl font-semibold text-center mb-12 gradient-text">
-              Professional Experience
+            <h3 className="text-3xl font-semibold text-center mb-12 gradient-text font-mono">
+              <span className="text-primary-400">$</span> cat work_history.log
             </h3>
             
             <div className="relative">
               {/* Timeline Line */}
-              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-400 to-accent-400"></div>
+              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-400 to-bio-400"></div>
               
               <div className="space-y-8">
                 {experience.map((exp, index) => (
@@ -115,21 +277,21 @@ const About: React.FC = () => {
                     className="relative flex items-start"
                   >
                     {/* Timeline Dot */}
-                    <div className="absolute left-6 w-4 h-4 bg-primary-500 rounded-full border-4 border-white dark:border-gray-800 shadow-lg"></div>
+                    <div className="absolute left-6 w-4 h-4 bg-primary-500 rounded-full border-4 border-terminal-900 shadow-lg animate-pulse"></div>
                     
                     {/* Content */}
-                    <div className="ml-20 bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 card-hover">
+                    <div className="ml-20 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 hover:border-primary-500/50 transition-all duration-300">
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
                         <div>
-                          <h4 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-1">
-                            {exp.title}
+                          <h4 className="text-xl font-semibold text-terminal-100 mb-1 font-mono">
+                            <span className="text-primary-400">{'>'}</span> {exp.title}
                           </h4>
-                          <div className="flex items-center text-primary-600 dark:text-primary-400 font-medium mb-2">
+                          <div className="flex items-center text-bio-400 font-medium mb-2 font-mono">
                             <Briefcase className="w-4 h-4 mr-2" />
                             {exp.company}
                           </div>
                         </div>
-                        <div className="flex flex-col lg:text-right text-gray-500 dark:text-gray-400">
+                        <div className="flex flex-col lg:text-right text-terminal-400 font-mono">
                           <div className="flex items-center lg:justify-end mb-1">
                             <Calendar className="w-4 h-4 mr-1" />
                             {exp.period}
@@ -141,7 +303,7 @@ const About: React.FC = () => {
                         </div>
                       </div>
                       
-                      <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                      <p className="text-terminal-300 mb-4 leading-relaxed font-mono">
                         {exp.description}
                       </p>
                       
@@ -149,7 +311,7 @@ const About: React.FC = () => {
                         {exp.technologies.map((tech) => (
                           <span
                             key={tech}
-                            className="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium"
+                            className="px-3 py-1 bg-terminal-700/50 border border-bio-500/30 text-bio-400 rounded text-sm font-medium font-mono hover:border-bio-500/50 transition-colors"
                           >
                             {tech}
                           </span>
@@ -164,8 +326,8 @@ const About: React.FC = () => {
 
           {/* Education */}
           <motion.div variants={fadeInVariants}>
-            <h3 className="text-3xl font-semibold text-center mb-12 gradient-text">
-              Education
+            <h3 className="text-3xl font-semibold text-center mb-12 gradient-text font-mono">
+              <span className="text-primary-400">$</span> cat education.json
             </h3>
             
             <div className="grid md:grid-cols-2 gap-8">
@@ -173,25 +335,27 @@ const About: React.FC = () => {
                 <motion.div
                   key={index}
                   variants={fadeInVariants}
-                  className="bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 card-hover"
+                  className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 hover:border-primary-500/50 transition-all duration-300 cursor-pointer"
+                  onHoverStart={() => edu.achievements && edu.achievements.length > 6 && setExpandedEducation(index)}
+                  onHoverEnd={() => setExpandedEducation(null)}
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h4 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
-                        {edu.degree}
+                      <h4 className="text-xl font-semibold text-terminal-200 mb-2 font-mono">
+                        <span className="text-primary-400">{'>'}</span> {edu.degree}
                       </h4>
-                      <div className="flex items-center text-primary-600 dark:text-primary-400 font-medium mb-2">
+                      <div className="flex items-center text-primary-400 font-medium mb-2 font-mono">
                         <GraduationCap className="w-4 h-4 mr-2" />
                         {edu.school}
                       </div>
-                      <div className="flex items-center text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center text-terminal-300 font-mono">
                         <MapPin className="w-4 h-4 mr-1" />
                         {edu.location} • {edu.period}
                       </div>
                     </div>
                     {edu.gpa && (
-                      <div className="bg-green-100 dark:bg-green-900/30 px-3 py-1 rounded-full">
-                        <span className="text-green-700 dark:text-green-300 font-semibold">
+                      <div className="bg-terminal-700/50 border border-bio-500/30 px-3 py-1 rounded-lg hover:border-bio-500/50 transition-colors">
+                        <span className="text-bio-400 font-semibold font-mono">
                           GPA: {edu.gpa}
                         </span>
                       </div>
@@ -200,14 +364,14 @@ const About: React.FC = () => {
                   
                   {edu.relevant && (
                     <div>
-                      <h5 className="font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        Relevant Coursework:
+                      <h5 className="font-semibold text-terminal-100 mb-2 font-mono">
+                        <span className="text-accent-400">$</span> ls coursework/
                       </h5>
                       <div className="flex flex-wrap gap-2">
                         {edu.relevant.map((course) => (
                           <span
                             key={course}
-                            className="px-2 py-1 bg-accent-100 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300 rounded text-sm"
+                            className="px-3 py-1 border border-accent-500/40 text-accent-300 rounded text-sm font-mono hover:border-accent-500/70 hover:text-accent-400 transition-colors bg-transparent"
                           >
                             {course}
                           </span>
@@ -218,25 +382,58 @@ const About: React.FC = () => {
                   
                   {edu.achievements && (
                     <div className="mt-4">
-                      <h5 className="font-semibold text-gray-700 dark:text-gray-300 mb-2 flex items-center">
-                        <Award className="w-4 h-4 mr-2" />
-                        Achievements:
+                      <h5 className="font-semibold text-terminal-100 mb-2 flex items-center font-mono">
+                        <Award className="w-4 h-4 mr-2 text-primary-400" />
+                        <span className="text-primary-400">$</span> cat achievements.txt
                       </h5>
                       <div className="flex flex-wrap gap-2">
                         {edu.achievements.slice(0, 6).map((achievement) => (
                           <span
                             key={achievement}
-                            className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded text-sm"
+                            className="px-3 py-1 border border-bio-500/40 text-bio-300 rounded text-sm font-mono hover:border-bio-500/70 hover:text-bio-400 transition-colors bg-transparent"
                           >
                             {achievement}
                           </span>
                         ))}
                         {edu.achievements.length > 6 && (
-                          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded text-sm">
+                          <span className="px-3 py-1 border border-terminal-400/40 text-terminal-400 rounded text-sm font-mono hover:border-terminal-400/70 transition-colors bg-transparent">
                             +{edu.achievements.length - 6} more
                           </span>
                         )}
                       </div>
+                      
+                      {/* Expanded achievements */}
+                      <AnimatePresence>
+                        {expandedEducation === index && edu.achievements.length > 6 && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="overflow-hidden mt-3"
+                          >
+                            <div className="pt-3 border-t border-primary-500/30">
+                              <h6 className="text-sm font-semibold text-terminal-300 mb-2 font-mono">
+                                <span className="text-primary-400">{'>'}</span> Additional Achievements:
+                              </h6>
+                              <div className="flex flex-wrap gap-2">
+                                {edu.achievements.slice(6).map((achievement, achievementIndex) => (
+                                  <motion.span
+                                    key={achievement}
+                                    variants={achievementVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    transition={{ delay: achievementIndex * 0.05 }}
+                                    className="px-3 py-1 border border-bio-500/40 text-bio-300 rounded text-sm font-mono hover:border-bio-500/70 hover:text-bio-400 transition-colors bg-transparent"
+                                  >
+                                    {achievement}
+                                  </motion.span>
+                                ))}
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   )}
                 </motion.div>

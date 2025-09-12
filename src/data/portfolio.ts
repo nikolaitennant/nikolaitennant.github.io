@@ -54,7 +54,7 @@ export const education = [
     location: "Providence, RI",
     period: "September 2018 - May 2022",
     gpa: "3.6/4.0",
-    achievements: ["Dean's List"],
+    achievements: ["Data Science Club Team Lead", "Data Science Fellow", "Research Assistant for Machine Learning for the Earth & Environment"],
     relevant: ["Introduction to Statistical Computing", "Data Science", "Linear Algebra", "Multivariable Calculus", "Applied Statistics"]
   }
 ];
@@ -193,11 +193,11 @@ export const personalInterests = {
   title: "Beyond Research",
   subtitle: "Personal Interests",
   interests: [
-    "Sports: University lacrosse captain, football enthusiast",
-    "Technology: Following cutting-edge AI research and applications", 
-    "Research: Ageing biology, genomics, and computational methods",
-    "Travel: Exploring different cultures and international research communities",
-    "Innovation: Translating academic research into commercial applications"
+    "Sports: Football enthusiast, formerly lacrosse player",
+    "Technology: Following AI/ML research and development", 
+    "Research: Computational biology, genomics, and aging science",
+    "Travel: Exploring different cultures",
+    "Innovation: Bridging academic research and industry applications"
   ],
   academicInvolvement: {
     title: "Academic Involvement",

@@ -5,6 +5,7 @@ import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Publications from './components/Publications';
+import Resume from './components/Resume';
 import Contact from './components/Contact';
 import Navigation from './components/Navigation';
 import ScrollToTop from './components/ScrollToTop';
@@ -24,6 +25,7 @@ function App() {
           <About />
           <Publications />
           <Projects />
+          <Resume />
           <Skills />
           <Contact />
         </motion.main>

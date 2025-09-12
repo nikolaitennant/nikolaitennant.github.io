@@ -34,7 +34,7 @@ export const experience = [
     company: "IISAGE Lab, Brown University",
     location: "Remote",
     period: "May 2022 - Present", 
-    description: "Developing 'TimeFlies' ageing clock for Drosophila using convolutional neural networks, identifying potential ageing marker genes, and conducting X chromosome dosage compensation research as part of NSF-funded initiative.",
+    description: "Conducting X chromosome dosage compensation research as part of NSF-funded initiative. Developing computational models for cross-species ageing biomarker analysis. Contributing to multi-institutional collaboration across 11 research laboratories.",
     technologies: ["Python", "Deep Learning", "CNN", "Genomics", "Research"]
   }
 ];
@@ -53,25 +53,18 @@ export const education = [
     school: "Brown University", 
     location: "Providence, RI",
     period: "September 2018 - May 2022",
+    gpa: "3.6/4.0",
     achievements: ["Dean's List"],
     relevant: ["Introduction to Statistical Computing", "Data Science", "Linear Algebra", "Multivariable Calculus", "Applied Statistics"]
-  },
-  {
-    degree: "High School Diploma",
-    school: "Brentwood High School", 
-    location: "Los Angeles, CA",
-    period: "September 2014 - May 2018",
-    achievements: ["High Honour Diploma", "President of Ecology Club", "Young Women's Conference", "Senior Leadership Board Ambassador", "Varsity Lacrosse Captain", "Honour Roll Student", "Junior Service Award", "Brentwood Service Award"]
   }
 ];
 
 export const skills = {
-  "Programming": ["Python", "SQL", "R", "Bash", "Git"],
-  "Deep Learning": ["PyTorch", "TensorFlow", "Convolutional Neural Networks", "Computer Vision", "Neural Architecture Design"],
-  "Machine Learning": ["Scikit-learn", "XGBoost", "LightGBM", "Statistical Modelling", "Feature Engineering", "Model Evaluation"],
-  "Data Engineering": ["PySpark", "Pandas", "NumPy", "Data Pipelines", "ETL Processes"],
-  "Cloud & Infrastructure": ["AWS", "Databricks", "Docker", "Linux", "Jupyter"],
-  "Specialised Applications": ["Genomics", "Computational Biology", "Retail Analytics", "Bioinformatics"]
+  "Programming": ["Python", "SQL", "R", "JavaScript", "TypeScript", "Bash", "Git"],
+  "ML/AI": ["PyTorch", "TensorFlow", "LangChain", "OpenAI API", "FAISS", "NLP", "Computer Vision"],
+  "Mathematics & Statistics": ["Linear Algebra", "Statistical Modelling", "Bayesian Analysis", "Multivariate Calculus"],
+  "Data & Cloud": ["PySpark", "Pandas", "NumPy", "AWS", "Databricks", "Docker", "Google Cloud Platform"],
+  "Specialised Applications": ["Computational Biology", "Genomics", "RAG Systems", "LLMs", "Retail Analytics", "Full-Stack Development"]
 };
 
 export const projects = [
@@ -115,7 +108,7 @@ export const projects = [
 export const publications = [
   {
     title: "TimeFlies: an RNA-seq ageing clock for the comprehensive study of tissue-specific ageing clocks Collection",
-    authors: "Tennant, N.*, Okonkwo, A.*, O'Connor-Giles, K., Larshen, E.T., & Singh, P.T.",
+    authors: "Tennant, N.*, Okonkwo, A.*, O'Connor-Giles, K., Larshen, E.✝, & Singh, P.✝",
     status: "Manuscript accepted, undergoing final review (Preprint)",
     journal: "Nature Scientific Reports - Aging Clocks Collection",
     preprint: "https://pubmed.ncbi.nlm.nih.gov/39896546/",
@@ -123,9 +116,9 @@ export const publications = [
     longDescription: "As part of the NSF-funded IISAGE initiative, I developed novel computational approaches to understand ageing processes across different tissues using Drosophila melanogaster as a model organism. This work combines convolutional neural networks with genomic data analysis to identify ageing biomarkers that could translate to understanding human ageing mechanisms.",
     technologies: ["Python", "Deep Learning", "CNNs", "RNA-seq Analysis", "Genomics", "Bioinformatics", "Statistical Modeling"],
     keyFindings: [
-      "Identified tissue-specific ageing signatures across multiple Drosophila tissues",
-      "Developed novel CNN architectures for genomic sequence analysis",
-      "Discovered potential ageing marker genes with cross-species relevance",
+      "Developed 1D CNN achieving 95% accuracy and 0.99 AUC on Drosophila ageing prediction",
+      "Model generalises across all cell types while capturing cell-type-specific signals",
+      "Identified ageing marker genes and sex-biased ageing mechanisms with in vivo validation",
       "Validated sexual dimorphism patterns in ageing processes"
     ],
     collaboration: "NSF-funded IISAGE initiative across 11 research institutions",
@@ -140,12 +133,12 @@ export const researchProjects = [
     longDescription: "Developed during an intensive hackathon, this project applies computer vision techniques to identify cellular senescence - a key hallmark of ageing. The system analyzes cell morphology to detect senescent phenotypes, which is crucial for understanding age-related diseases and potential therapeutic interventions.",
     technologies: ["Python", "Computer Vision", "Deep Learning", "Cell Biology", "Image Processing", "Machine Learning"],
     keyFindings: [
-      "Achieved high accuracy in senescent cell identification using morphological features",
-      "Developed scalable image processing pipeline for cellular analysis",
-      "Demonstrated real-time analysis capabilities for research applications",
+      "Designed CNN-based methodology using nuclear morphology to identify cellular senescence",
+      "Analysed 40,000 human and mouse cells, expanding beyond previous human-only studies",
+      "Achieved 0.96 AUC using 1/100th the training samples of previous studies",
       "Created interpretable models showing which morphological features indicate senescence"
     ],
-    achievement: "🥈 2nd Place Winner - Hackathon Competition",
+    achievement: "🥈 2nd Place Winner - Hackathon Competition (225+ participants)",
     impact: "Provides researchers with automated tools for senescence studies, accelerating ageing and cancer research",
     collaboration: "Individual hackathon project"
   }

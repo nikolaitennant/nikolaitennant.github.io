@@ -90,8 +90,8 @@ const About: React.FC = () => {
                 </div>
                 
                 <div className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-xl p-6 text-center">
-                  <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">£620k+</div>
-                  <div className="text-sm font-medium text-gray-600 dark:text-gray-300">Value Driven</div>
+                  <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">5+</div>
+                  <div className="text-sm font-medium text-gray-600 dark:text-gray-300">ML Projects</div>
                 </div>
               </div>
             </motion.div>

@@ -44,52 +44,15 @@ const Hero: React.FC = () => {
     }
   };
 
-  const backgroundVariants = {
-    animate: {
-      background: [
-        "radial-gradient(circle at 20% 80%, rgba(29, 78, 216, 0.1) 0%, transparent 50%)",
-        "radial-gradient(circle at 80% 20%, rgba(30, 58, 138, 0.1) 0%, transparent 50%)",
-        "radial-gradient(circle at 40% 40%, rgba(37, 99, 235, 0.1) 0%, transparent 50%)"
-      ],
-      transition: {
-        duration: 10,
-        ease: "linear",
-        repeat: Infinity
-      }
-    }
-  };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900/10 dark:to-indigo-900/10">
-      {/* Animated Background */}
-      <motion.div 
-        className="absolute inset-0 opacity-50"
-        variants={backgroundVariants}
-        animate="animate"
-      />
-      
-      {/* Floating Particles */}
-      <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-primary-400 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              x: [0, Math.random() * 30 - 15, 0],
-              opacity: [0.2, 1, 0.2]
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2
-            }}
-          />
-        ))}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100 dark:from-gray-900 dark:via-slate-900 dark:to-gray-800">
+      {/* Subtle Background Pattern */}
+      <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.05]">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, #3b82f6 1px, transparent 1px), radial-gradient(circle at 75% 75%, #1e40af 1px, transparent 1px)`,
+          backgroundSize: '50px 50px'
+        }}></div>
       </div>
 
       <div className="container-custom relative z-10">
@@ -118,7 +81,7 @@ const Hero: React.FC = () => {
           <motion.div variants={itemVariants}>
             <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 mb-8 h-8">
               {displayedText}
-              <span className="animate-pulse">|</span>
+              <span className="animate-ping inline-block w-0.5 h-6 bg-primary-600 ml-1"></span>
             </p>
           </motion.div>
 

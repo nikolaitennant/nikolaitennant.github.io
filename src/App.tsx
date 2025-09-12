@@ -17,11 +17,12 @@ function App() {
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      setDarkMode(true);
+    const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+    setDarkMode(isDark);
+    
+    if (isDark) {
       document.documentElement.classList.add('dark');
     } else {
-      setDarkMode(false);
       document.documentElement.classList.remove('dark');
     }
   }, []);

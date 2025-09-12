@@ -8,46 +8,46 @@ const Skills: React.FC = () => {
 
   const skillCategories = [
     {
-      name: "Programming Languages",
+      name: "Programming",
       icon: Code,
       color: "from-blue-500 to-blue-600",
       bgColor: "bg-blue-50 dark:bg-blue-900/20",
-      skills: skills["Programming Languages"]
+      skills: skills["Programming"]
     },
     {
-      name: "Data Science & ML",
+      name: "Deep Learning",
       icon: Brain,
       color: "from-purple-500 to-purple-600", 
       bgColor: "bg-purple-50 dark:bg-purple-900/20",
-      skills: skills["Data Science & ML"]
+      skills: skills["Deep Learning"]
     },
     {
-      name: "Tools & Frameworks",
+      name: "Machine Learning",
       icon: Settings,
       color: "from-green-500 to-green-600",
       bgColor: "bg-green-50 dark:bg-green-900/20",
-      skills: skills["Tools & Frameworks"]
+      skills: skills["Machine Learning"]
     },
     {
-      name: "Databases",
+      name: "Data Engineering",
       icon: Database,
       color: "from-orange-500 to-orange-600",
       bgColor: "bg-orange-50 dark:bg-orange-900/20",
-      skills: skills["Databases"]
+      skills: skills["Data Engineering"]
     },
     {
-      name: "Cloud & Platforms",
+      name: "Cloud & Infrastructure",
       icon: Cloud,
       color: "from-cyan-500 to-cyan-600",
       bgColor: "bg-cyan-50 dark:bg-cyan-900/20", 
-      skills: skills["Cloud & Platforms"]
+      skills: skills["Cloud & Infrastructure"]
     },
     {
-      name: "Specializations",
+      name: "Specialised Applications",
       icon: BarChart,
       color: "from-pink-500 to-pink-600",
       bgColor: "bg-pink-50 dark:bg-pink-900/20",
-      skills: skills["Specializations"]
+      skills: skills["Specialised Applications"]
     }
   ];
 
@@ -128,7 +128,7 @@ const Skills: React.FC = () => {
                   {/* Skills Preview (First 4) */}
                   <div className="mb-4">
                     <div className="grid grid-cols-2 gap-2">
-                      {category.skills.slice(0, 4).map((skill, skillIndex) => (
+                      {category.skills.slice(0, 4).map((skill: string, skillIndex: number) => (
                         <motion.div
                           key={skill}
                           className="bg-white dark:bg-gray-700 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 text-center shadow-sm"
@@ -165,7 +165,7 @@ const Skills: React.FC = () => {
                             All Skills:
                           </h4>
                           <div className="grid grid-cols-2 gap-2">
-                            {category.skills.slice(4).map((skill, skillIndex) => (
+                            {category.skills.slice(4).map((skill: string, skillIndex: number) => (
                               <motion.div
                                 key={skill}
                                 variants={skillVariants}

@@ -106,7 +106,7 @@ const Contact: React.FC = () => {
               <span className="gradient-text">Get In Touch</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Open to discussing research collaborations, professional opportunities, and technical projects.
+              Available to discuss professional opportunities and technical projects.
             </p>
           </motion.div>
 
@@ -118,8 +118,7 @@ const Contact: React.FC = () => {
                   Let's Connect
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
-                  Available to discuss collaborative research opportunities, technical questions about projects, 
-                  and potential professional opportunities in data science and computational biology.
+                  Available to discuss technical questions about projects and potential professional opportunities in data science and computational biology.
                 </p>
               </div>
 

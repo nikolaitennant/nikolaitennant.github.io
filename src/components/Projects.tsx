@@ -7,7 +7,7 @@ const Projects: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [filter, setFilter] = useState<string>('all');
 
-  const categories = ['all', 'Machine Learning', 'Research', 'Bioinformatics'];
+  const categories = ['all', 'Research', 'Deep Learning', 'Machine Learning'];
   
   const filteredProjects = filter === 'all' 
     ? projects 
@@ -289,13 +289,12 @@ const Projects: React.FC = () => {
 
           {/* Call to Action */}
           <motion.div variants={itemVariants} className="text-center mt-16">
-            <div className="bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl p-8">
+            <div className="bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 rounded-2xl p-8">
               <h3 className="text-2xl font-semibold mb-4 gradient-text">
-                Interested in Collaboration?
+                Technical Discussions
               </h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
-                I'm always excited to work on challenging problems at the intersection of AI, biology, and data science. 
-                Let's discuss how we can create something amazing together.
+                Open to discussing technical approaches, methodologies, and potential applications of machine learning in research and industry.
               </p>
               <motion.a
                 href="#contact"

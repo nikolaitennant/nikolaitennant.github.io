@@ -60,7 +60,7 @@ const Navigation: React.FC<NavigationProps> = ({ darkMode, setDarkMode }) => {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8 ml-8">
             {navItems.map((item) => (
               <motion.button
                 key={item.href}

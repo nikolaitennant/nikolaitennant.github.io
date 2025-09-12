@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { Github, Award, Calendar, Users, Zap, ChevronRight } from 'lucide-react';
+import { Github, Award, Calendar, Users, Zap, ChevronRight, ExternalLink } from 'lucide-react';
 import { projects } from '../data/portfolio';
-import { playKeystroke, playClick } from '../utils/sounds';
 
 const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDelay: number = 0) => {
   const [displayedText, setDisplayedText] = useState('');
@@ -24,11 +23,6 @@ const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDel
       const timer = setInterval(() => {
         if (i < text.length) {
           setDisplayedText(text.slice(0, i + 1));
-          // Play typing sound for each character (except spaces)
-          const char = text[i];
-          if (char !== ' ') {
-            playKeystroke();
-          }
           i++;
         } else {
           setIsTyping(false);
@@ -182,10 +176,7 @@ const Projects: React.FC = () => {
               {categories.map((category) => (
                 <button
                   key={category}
-                  onClick={() => {
-                    playClick();
-                    setFilter(category);
-                  }}
+                  onClick={() => setFilter(category)}
                   className={`px-6 py-2 rounded-full font-medium transition-all duration-300 font-mono ${
                     filter === category
                       ? 'bg-primary-600 text-white shadow-lg border border-primary-500/50'
@@ -276,7 +267,6 @@ const Projects: React.FC = () => {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              playClick();
                               toggleTagsExpansion(project.originalIndex);
                             }}
                             className="px-3 py-1.5 bg-terminal-700 border border-primary-500/50 text-primary-400 rounded text-sm font-medium font-mono hover:border-primary-500 transition-colors"
@@ -302,6 +292,18 @@ const Projects: React.FC = () => {
                             >
                               <Github className="w-4 h-4 mr-1" />
                               <span className="text-sm font-medium">Code</span>
+                            </a>
+                          )}
+                          {(project as any).demo && (
+                            <a
+                              href={(project as any).demo}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center text-terminal-300 hover:text-bio-400 transition-colors font-mono"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <ExternalLink className="w-4 h-4 mr-1" />
+                              <span className="text-sm font-medium">Demo</span>
                             </a>
                           )}
                           {project.preprint && (

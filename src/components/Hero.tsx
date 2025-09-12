@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Github, Linkedin, Mail, MapPin } from 'lucide-react';
 import { personalInfo } from '../data/portfolio';
-import { playKeystroke, playTerminalBeep } from '../utils/sounds';
 
 const useTypewriter = (text: string, baseDelay: number = 50, startDelay: number = 0) => {
   const [displayedText, setDisplayedText] = useState('');
@@ -18,11 +17,6 @@ const useTypewriter = (text: string, baseDelay: number = 50, startDelay: number 
       const typeNextChar = () => {
         if (i < text.length) {
           setDisplayedText(text.slice(0, i + 1));
-          // Play typing sound for each character (except spaces)
-          const char = text[i];
-          if (char !== ' ') {
-            playKeystroke();
-          }
           i++;
           
           // Variable delay to simulate realistic typing
@@ -67,13 +61,6 @@ const Hero: React.FC = () => {
   const analysisCommand = useTypewriter(analysisCommandText, 70, 500 + (terminalCommandText.length * 80) + 500);
   const foundCommand = useTypewriter(foundCommandText, 70, 500 + (terminalCommandText.length * 80) + 500 + (analysisCommandText.length * 70) + 800);
 
-  // Play terminal beep when component loads
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      playTerminalBeep();
-    }, 300);
-    return () => clearTimeout(timer);
-  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },

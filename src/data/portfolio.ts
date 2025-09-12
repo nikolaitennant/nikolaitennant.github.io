@@ -81,7 +81,7 @@ export const projects = [
     longDescription: "Application combining large language models with retrieval systems for academic research assistance. Features include document processing, contextual Q&A with source citations, and multi-document synthesis using vector databases and custom embedding models.",
     technologies: ["Python", "LangChain", "Vector Databases", "OpenAI API", "Streamlit", "FAISS", "Natural Language Processing"],
     github: "https://github.com/nikolaitennant/rag-scholar-ai",
-    demo: "https://rag-scholar-ai.streamlit.app",
+    demo: "https://ragscholarai.web.app",
     features: [
       "Intelligent document retrieval and ranking",
       "Contextual Q&A with source citations",
@@ -146,7 +146,8 @@ export const researchProjects = [
       "Created interpretable models showing which morphological features indicate senescence"
     ],
     achievement: "🥈 2nd Place Winner - Hackathon Competition",
-    impact: "Provides researchers with automated tools for senescence studies, accelerating ageing and cancer research"
+    impact: "Provides researchers with automated tools for senescence studies, accelerating ageing and cancer research",
+    collaboration: "Individual hackathon project"
   }
 ];
 

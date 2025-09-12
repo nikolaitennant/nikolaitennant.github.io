@@ -88,19 +88,11 @@ const Hero: React.FC = () => {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-terminal-900 via-terminal-900 to-slate-900/40">
-      {/* Midjourney-style Dynamic Background */}
-      <motion.div 
-        className="absolute inset-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 2 }}
-      >
-        {/* Main geometric pattern */}
-        <motion.div 
+      {/* Static Background */}
+      <div className="absolute inset-0">
+        {/* Main geometric pattern - static, no animation */}
+        <div 
           className="absolute inset-0 opacity-15" 
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.15 }}
-          transition={{ duration: 3, delay: 0.5 }}
           style={{
             background: `
               radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.6) 0%, transparent 40%),
@@ -109,7 +101,7 @@ const Hero: React.FC = () => {
               radial-gradient(circle at 90% 90%, rgba(239, 68, 68, 0.5) 0%, transparent 40%),
               radial-gradient(circle at 10% 70%, rgba(34, 197, 94, 0.3) 0%, transparent 30%)
             `
-          }}></motion.div>
+          }}></div>
         
         {/* Flowing lines */}
         <motion.div 
@@ -303,7 +295,7 @@ const Hero: React.FC = () => {
             </g>
           </svg>
         </motion.div>
-      </motion.div>
+      </div>
       
       {/* Bio-Terminal Header */}
       <div className="absolute top-8 left-8 text-primary-400 font-mono text-sm opacity-40 space-y-1">

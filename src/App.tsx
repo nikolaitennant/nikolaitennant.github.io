@@ -8,6 +8,7 @@ import Publications from './components/Publications';
 import Contact from './components/Contact';
 import Navigation from './components/Navigation';
 import ScrollToTop from './components/ScrollToTop';
+import SoundToggle from './components/SoundToggle';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         </motion.main>
         
         <ScrollToTop />
+        <SoundToggle />
       </div>
     </ThemeProvider>
   );

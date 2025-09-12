@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { FileText, Users, Calendar, BookOpen, Award } from 'lucide-react';
-import { publications, researchProjects, researchInterests } from '../data/portfolio';
+import { publications, researchInterests } from '../data/portfolio';
 
 const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDelay: number = 0) => {
   const [displayedText, setDisplayedText] = useState('');
@@ -269,88 +269,6 @@ const Publications: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Additional Research Projects */}
-          <motion.div variants={itemVariants} className="mb-16">
-            <h3 className="text-3xl font-semibold mb-8 text-center gradient-text font-mono">
-              <span className="text-primary-400">{'>'}</span> Additional Research Projects
-            </h3>
-            
-            <div className="space-y-8">
-              {researchProjects.map((project, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-2xl shadow-xl p-8 hover:border-primary-500/50 transition-all duration-300"
-                >
-                  <div className="mb-4">
-                    <div className="flex items-start justify-between mb-3">
-                      <h4 className="text-2xl font-bold text-terminal-100 font-mono">
-                        {project.title}
-                      </h4>
-                      {project.achievement && (
-                        <span className="inline-block px-3 py-1 bg-accent-500/20 border border-accent-500/30 text-accent-400 rounded-full text-sm font-medium font-mono">
-                          {project.achievement}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-terminal-300 text-lg leading-relaxed font-mono mb-4">
-                      {project.description}
-                    </p>
-                    <p className="text-terminal-300 text-sm leading-relaxed font-mono mb-6">
-                      {project.longDescription}
-                    </p>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <h5 className="text-sm font-semibold text-terminal-100 mb-3 font-mono">
-                        <span className="text-primary-400">{'>'}</span> Key Findings:
-                      </h5>
-                      <ul className="space-y-2">
-                        {project.keyFindings.map((finding, i) => (
-                          <li key={i} className="flex items-start text-sm text-terminal-300 font-mono">
-                            <span className="text-bio-400 mr-2 flex-shrink-0">•</span>
-                            {finding}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h5 className="text-sm font-semibold text-terminal-100 mb-3 font-mono">
-                        <span className="text-primary-400">{'>'}</span> Technologies:
-                      </h5>
-                      <div className="flex flex-wrap gap-2">
-                        {project.technologies.map((tech) => (
-                          <span
-                            key={tech}
-                            className="px-2 py-1 bg-terminal-700 border border-primary-500/30 text-primary-400 rounded text-xs font-medium font-mono"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-terminal-700/50 border border-bio-500/30 rounded-lg p-4">
-                    <div className="flex items-center text-bio-400 mb-2">
-                      <Award className="w-4 h-4 mr-2" />
-                      <span className="font-medium text-sm font-mono">Impact & Collaboration:</span>
-                    </div>
-                    <p className="text-sm text-bio-400 font-mono mb-2">
-                      {project.impact}
-                    </p>
-                    {project.collaboration && (
-                      <p className="text-xs text-terminal-300 font-mono">
-                        {project.collaboration}
-                      </p>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
 
           {/* Research Focus */}
           <motion.div variants={itemVariants}>

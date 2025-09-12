@@ -61,10 +61,10 @@ export const education = [
 
 export const skills = {
   "Programming": ["Python", "SQL", "R", "JavaScript", "TypeScript", "Bash", "Git"],
-  "ML/AI": ["PyTorch", "TensorFlow", "LangChain", "OpenAI API", "FAISS", "NLP", "Computer Vision"],
+  "ML/AI": ["PyTorch", "TensorFlow", "LangChain", "FAISS", "NLP", "Computer Vision", "Deep Learning"],
   "Mathematics & Statistics": ["Linear Algebra", "Statistical Modelling", "Bayesian Analysis", "Multivariate Calculus"],
   "Data & Cloud": ["PySpark", "Pandas", "NumPy", "AWS", "Databricks", "Docker", "Google Cloud Platform"],
-  "Specialised Applications": ["Computational Biology", "Genomics", "RAG Systems", "LLMs", "Retail Analytics", "Full-Stack Development"]
+  "Specialised Applications": ["Computational Biology", "Genomics", "RAG Systems", "LLMs", "Retail Analytics", "MLOps"]
 };
 
 export const projects = [
@@ -72,7 +72,7 @@ export const projects = [
     title: "RAG Scholar AI",
     description: "Research assistant application using Retrieval-Augmented Generation for academic literature analysis and synthesis.",
     longDescription: "Application combining large language models with retrieval systems for academic research assistance. Features include document processing, contextual Q&A with source citations, and multi-document synthesis using vector databases and custom embedding models.",
-    technologies: ["Python", "LangChain", "Vector Databases", "OpenAI API", "Streamlit", "FAISS", "Natural Language Processing"],
+    technologies: ["Python", "LangChain", "Vector Databases", "FAISS", "Natural Language Processing"],
     github: "https://github.com/nikolaitennant/rag_scholar",
     demo: "https://ragscholarai.web.app",
     features: [
@@ -126,23 +126,6 @@ export const publications = [
   }
 ];
 
-export const researchProjects = [
-  {
-    title: "SenID - Cellular Senescence Detection",
-    description: "Computer vision system for identifying senescent cells using morphological analysis (2nd place, hackathon competition)",
-    longDescription: "Developed during an intensive hackathon, this project applies computer vision techniques to identify cellular senescence - a key hallmark of ageing. The system analyzes cell morphology to detect senescent phenotypes, which is crucial for understanding age-related diseases and potential therapeutic interventions.",
-    technologies: ["Python", "Computer Vision", "Deep Learning", "Cell Biology", "Image Processing", "Machine Learning"],
-    keyFindings: [
-      "Designed CNN-based methodology using nuclear morphology to identify cellular senescence",
-      "Analysed 40,000 human and mouse cells, expanding beyond previous human-only studies",
-      "Achieved 0.96 AUC using 1/100th the training samples of previous studies",
-      "Created interpretable models showing which morphological features indicate senescence"
-    ],
-    achievement: "🥈 2nd Place Winner - Hackathon Competition (225+ participants)",
-    impact: "Provides researchers with automated tools for senescence studies, accelerating ageing and cancer research",
-    collaboration: "Individual hackathon project"
-  }
-];
 
 export const researchInterests = {
   title: "Research Focus & Interests",
@@ -194,10 +177,9 @@ export const personalInterests = {
   subtitle: "Personal Interests",
   interests: [
     "Sports: Football enthusiast, formerly lacrosse player",
-    "Technology: Following AI/ML research and development", 
-    "Research: Computational biology, genomics, and aging science",
+    "Arts: Theatre and visual arts", 
     "Travel: Exploring different cultures",
-    "Innovation: Bridging academic research and industry applications"
+    "Cooking"
   ],
   academicInvolvement: {
     title: "Academic Involvement",

@@ -66,32 +66,25 @@ const Skills: React.FC = () => {
       skills: skills["Programming"]
     },
     {
-      name: "Deep Learning",
+      name: "ML/AI",
       icon: Brain,
       color: "from-purple-500 to-purple-600", 
       bgColor: "bg-purple-50 dark:bg-purple-900/20",
-      skills: skills["Deep Learning"]
+      skills: skills["ML/AI"]
     },
     {
-      name: "Machine Learning",
+      name: "Mathematics & Statistics",
       icon: Settings,
       color: "from-green-500 to-green-600",
       bgColor: "bg-green-50 dark:bg-green-900/20",
-      skills: skills["Machine Learning"]
+      skills: skills["Mathematics & Statistics"]
     },
     {
-      name: "Data Engineering",
+      name: "Data & Cloud",
       icon: Database,
       color: "from-orange-500 to-orange-600",
       bgColor: "bg-orange-50 dark:bg-orange-900/20",
-      skills: skills["Data Engineering"]
-    },
-    {
-      name: "Cloud & Infrastructure",
-      icon: Cloud,
-      color: "from-cyan-500 to-cyan-600",
-      bgColor: "bg-cyan-50 dark:bg-cyan-900/20", 
-      skills: skills["Cloud & Infrastructure"]
+      skills: skills["Data & Cloud"]
     },
     {
       name: "Specialised Applications",

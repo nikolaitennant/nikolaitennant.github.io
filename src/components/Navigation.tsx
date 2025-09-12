@@ -28,7 +28,14 @@ const Navigation: React.FC = () => {
     setIsMobileMenuOpen(false);
     const element = document.querySelector(href);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // Use a more robust scroll method that doesn't get interrupted
+      const elementPosition = element.offsetTop;
+      const offsetPosition = elementPosition - 80; // Account for fixed nav height
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 

@@ -7,6 +7,11 @@
     scroll-behavior: smooth;
   }
   
+  /* Prevent scroll interruption */
+  * {
+    scroll-behavior: smooth;
+  }
+  
   body {
     @apply bg-terminal-900 text-terminal-100 font-mono;
   }

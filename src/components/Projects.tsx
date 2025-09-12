@@ -71,7 +71,7 @@ const Projects: React.FC = () => {
     }
   }, [isInView]);
 
-  const categories = ['all', 'Research', 'Deep Learning', 'Machine Learning'];
+  const categories = ['all', 'Deep Learning', 'Machine Learning'];
   
   const filteredProjects = filter === 'all' 
     ? projects 
@@ -219,8 +219,6 @@ const Projects: React.FC = () => {
                         <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium font-mono mb-3 ${
                           project.category === 'Machine Learning' 
                             ? 'bg-terminal-700 border border-primary-500/30 text-primary-400'
-                            : project.category === 'Research'
-                            ? 'bg-terminal-700 border border-accent-500/30 text-accent-400'
                             : 'bg-terminal-700 border border-bio-500/30 text-bio-400'
                         }`}>
                           {project.category}

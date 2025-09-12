@@ -17,7 +17,7 @@ export const experience = [
     company: "dunnhumby",
     location: "London, England",
     period: "2025 - Present",
-    description: "Promoted to Research Engineer. Leading advanced machine learning projects for retail analytics and customer decision sciences. Spearheading optimization of existing ML pipelines and developing next-generation recommendation systems.",
+    description: "Designed and implemented a LLM-powered text generation system. Developed science modules for cost modelling, impact prediction, and dynamic product ranking.",
     technologies: ["Python", "SQL", "PySpark", "Machine Learning", "Data Engineering", "MLOps"],
     promotion: true
   },
@@ -26,7 +26,7 @@ export const experience = [
     company: "dunnhumby",
     location: "London, England",
     period: "September 2023 - 2025",
-    description: "Developing machine learning models for retail analytics and customer decision sciences. Redesigned and optimised existing codebases, enhanced Tesco Mobile's in-store basket assortment system through advanced analytics.",
+    description: "Optimised Tesco Mobile's handset assortment using ML and autoencoders on 5M customer dataset. Led customer profiling projects delivering £829,000 in business value. Refactored codebases, implemented testing, and removed external API dependencies.",
     technologies: ["Python", "SQL", "PySpark", "Machine Learning", "Data Engineering"]
   },
   {
@@ -46,7 +46,7 @@ export const education = [
     location: "Providence, RI",
     period: "September 2022 - October 2023",
     gpa: "4.0/4.0",
-    relevant: ["Statistical Machine Learning", "Deep Learning Systems", "Computational Statistics", "Advanced Statistical Computing", "Bayesian Data Analysis", "Data Engineering at Scale", "Applied Statistical Methods", "Mathematical Foundations of Data Science", "Optimisation for Data Science", "Advanced Python Programming"]
+    relevant: ["Machine Learning", "Deep Learning", "Statistical Learning", "Computational Probability and Statistics", "Data Engineering"]
   },
   {
     degree: "BA in History (minor in Data Science)",
@@ -55,7 +55,7 @@ export const education = [
     period: "September 2018 - May 2022",
     gpa: "3.6/4.0",
     achievements: ["Data Science Club Team Lead", "Data Science Fellow", "Research Assistant for Machine Learning for the Earth & Environment"],
-    relevant: ["Introduction to Statistical Computing", "Data Science", "Linear Algebra", "Multivariable Calculus", "Applied Statistics"]
+    relevant: ["Applied Statistics in Python", "Data Science Fluency", "Hands-on Data Science", "Data, Ethics and Society", "Introduction to Statistical Computing", "Data Science", "Linear Algebra", "Multivariable Calculus", "Applied Statistics"]
   }
 ];
 
@@ -126,6 +126,22 @@ export const publications = [
   }
 ];
 
+export const researchProjects = [
+  {
+    title: "SenID - Cellular Senescence Detection",
+    description: "Computer vision system for identifying senescent cells using morphological analysis (2nd place, hackathon competition)",
+    longDescription: "This project applies computer vision techniques to identify cellular senescence - a key hallmark of ageing. The system analyzes cell morphology to detect senescent phenotypes, which is crucial for understanding age-related diseases and potential therapeutic interventions.",
+    technologies: ["Python", "Computer Vision", "Deep Learning", "Cell Biology", "Image Processing", "Machine Learning"],
+    keyFindings: [
+      "Designed CNN-based methodology using nuclear morphology to identify cellular senescence",
+      "Achieved 0.96 AUC using 1/100th the training samples of previous studies",
+      "Created interpretable models showing which morphological features indicate senescence"
+    ],
+    achievement: "🥈 2nd Place Winner - Hackathon Competition (225+ participants)",
+    impact: "Provides researchers with automated tools for senescence studies, accelerating ageing and cancer research",
+    collaboration: "Individual hackathon project"
+  }
+];
 
 export const researchInterests = {
   title: "Research Focus & Interests",

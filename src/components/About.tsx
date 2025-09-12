@@ -447,43 +447,17 @@ const About: React.FC = () => {
               <span className="text-primary-400">$</span> grep -i "interests" profile.json
             </h3>
             
-            <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-8">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div>
-                  <h4 className="text-xl font-semibold text-terminal-100 mb-4 font-mono">
-                    <span className="text-bio-400">{'>'}</span> Personal Interests
-                  </h4>
-                  <ul className="space-y-3">
-                    {personalInterests.interests.map((interest, index) => (
-                      <li key={index} className="flex items-start text-terminal-300 font-mono">
-                        <span className="text-primary-400 mr-3 flex-shrink-0">▸</span>
-                        <span className="text-sm">{interest}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <div>
-                  <h4 className="text-xl font-semibold text-terminal-100 mb-4 font-mono">
-                    <span className="text-bio-400">{'>'}</span> Leadership Experience
-                  </h4>
-                  <p className="text-terminal-300 text-sm leading-relaxed font-mono mb-4">
-                    {personalInterests.leadership.description}
-                  </p>
-                  
-                  <div className="space-y-3">
-                    {personalInterests.academicInvolvement.items.map((item, index) => (
-                      <div key={index} className="bg-terminal-700/30 border border-terminal-600 rounded-lg p-3">
-                        <h5 className="text-sm font-semibold text-bio-400 mb-1 font-mono">
-                          {item.title}
-                        </h5>
-                        <p className="text-xs text-terminal-300 font-mono">
-                          {item.description}
-                        </p>
-                      </div>
-                    ))}
+            <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 max-w-md mx-auto">
+              <h4 className="text-lg font-semibold text-terminal-100 mb-4 font-mono text-center">
+                <span className="text-bio-400">{'>'}</span> Personal Interests
+              </h4>
+              <div className="grid grid-cols-2 gap-4">
+                {personalInterests.interests.map((interest, index) => (
+                  <div key={index} className="flex items-center text-terminal-300 font-mono">
+                    <span className="text-primary-400 mr-2 flex-shrink-0">▸</span>
+                    <span className="text-sm">{interest}</span>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </motion.div>

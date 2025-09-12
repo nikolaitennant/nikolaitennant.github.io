@@ -289,7 +289,9 @@ const Skills: React.FC = () => {
                     
                     {category.skills.length > 4 && (
                       <div className="mt-2 text-center">
-                        <span className="text-sm text-terminal-300 font-mono">
+                        <span className={`text-sm text-terminal-300 font-mono transition-opacity duration-300 ${
+                          isActive ? 'opacity-0' : 'opacity-100'
+                        }`}>
                           +{category.skills.length - 4} more
                         </span>
                       </div>

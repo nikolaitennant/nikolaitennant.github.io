@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { GraduationCap, Briefcase, Award, MapPin, Users, Calendar } from 'lucide-react';
-import { personalInfo, experience, education } from '../data/portfolio';
+import { personalInfo, experience, education, personalInterests } from '../data/portfolio';
 
 const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDelay: number = 0) => {
   const [displayedText, setDisplayedText] = useState('');
@@ -247,8 +247,8 @@ const About: React.FC = () => {
                 </div>
                 
                 <div className="bg-terminal-800/50 backdrop-blur-sm border border-accent-500/30 rounded-xl p-6 text-center hover:border-accent-500/50 transition-colors">
-                  <div className="text-3xl font-bold text-accent-400 mb-2 font-mono">2+</div>
-                  <div className="text-sm font-medium text-terminal-300 font-mono">Publications</div>
+                  <div className="text-3xl font-bold text-accent-400 mb-2 font-mono">1</div>
+                  <div className="text-sm font-medium text-terminal-300 font-mono">Publication</div>
                 </div>
                 
                 <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 text-center hover:border-primary-500/50 transition-colors">
@@ -438,6 +438,53 @@ const About: React.FC = () => {
                   )}
                 </motion.div>
               ))}
+            </div>
+          </motion.div>
+
+          {/* Personal Interests */}
+          <motion.div variants={fadeInVariants} className="mt-16">
+            <h3 className="text-3xl font-semibold text-center mb-12 gradient-text font-mono">
+              <span className="text-primary-400">$</span> grep -i "interests" profile.json
+            </h3>
+            
+            <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-8">
+              <div className="grid md:grid-cols-2 gap-8">
+                <div>
+                  <h4 className="text-xl font-semibold text-terminal-100 mb-4 font-mono">
+                    <span className="text-bio-400">{'>'}</span> Personal Interests
+                  </h4>
+                  <ul className="space-y-3">
+                    {personalInterests.interests.map((interest, index) => (
+                      <li key={index} className="flex items-start text-terminal-300 font-mono">
+                        <span className="text-primary-400 mr-3 flex-shrink-0">▸</span>
+                        <span className="text-sm">{interest}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div>
+                  <h4 className="text-xl font-semibold text-terminal-100 mb-4 font-mono">
+                    <span className="text-bio-400">{'>'}</span> Leadership Experience
+                  </h4>
+                  <p className="text-terminal-300 text-sm leading-relaxed font-mono mb-4">
+                    {personalInterests.leadership.description}
+                  </p>
+                  
+                  <div className="space-y-3">
+                    {personalInterests.academicInvolvement.items.map((item, index) => (
+                      <div key={index} className="bg-terminal-700/30 border border-terminal-600 rounded-lg p-3">
+                        <h5 className="text-sm font-semibold text-bio-400 mb-1 font-mono">
+                          {item.title}
+                        </h5>
+                        <p className="text-xs text-terminal-300 font-mono">
+                          {item.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </motion.div>
         </motion.div>

@@ -42,13 +42,26 @@ const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDel
 const Projects: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [filter, setFilter] = useState<string>('all');
+  const [expandedTags, setExpandedTags] = useState<Set<number>>(new Set());
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  
+  const toggleTagsExpansion = (projectIndex: number) => {
+    setExpandedTags(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(projectIndex)) {
+        newSet.delete(projectIndex);
+      } else {
+        newSet.add(projectIndex);
+      }
+      return newSet;
+    });
+  };
   
   // Terminal commands with scroll trigger
   const gitCommand = useScrollTriggeredTypewriter("$ git log --oneline projects/", 80, 500);
   const scanningCommand = useScrollTriggeredTypewriter("# Scanning repository...", 70, 500 + (gitCommand.displayedText.length > 0 ? 29 * 80 + 800 : 0));
-  const activeCommand = useScrollTriggeredTypewriter("# Active: 4 major projects", 70, 500 + (gitCommand.displayedText.length > 0 ? 29 * 80 + 1600 : 0));
+  const activeCommand = useScrollTriggeredTypewriter("# Active: 2 personal projects", 70, 500 + (gitCommand.displayedText.length > 0 ? 29 * 80 + 1600 : 0));
 
   useEffect(() => {
     if (isInView) {
@@ -150,10 +163,10 @@ const Projects: React.FC = () => {
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 font-mono">
-              <span className="text-primary-400">{'>'}</span> <span className="gradient-text">Featured Projects</span>
+              <span className="text-primary-400">{'>'}</span> <span className="gradient-text">Personal Projects</span>
             </h2>
             <p className="text-xl text-terminal-300 max-w-3xl mx-auto font-mono">
-              Research and development projects applying machine learning to biological and business problems
+              Things I've built for fun - personal projects showcasing technical skills and interests
             </p>
           </motion.div>
 
@@ -194,9 +207,9 @@ const Projects: React.FC = () => {
                       className="group cursor-pointer"
                       onClick={() => setSelectedProject(selectedProject === project.originalIndex ? null : project.originalIndex)}
                     >
-                  <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl shadow-lg overflow-hidden transition-all duration-300 group-hover:shadow-2xl hover:border-primary-500/50">
+                  <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl shadow-lg overflow-hidden transition-all duration-300 group-hover:shadow-2xl hover:border-primary-500/50 h-full flex flex-col">
                     {/* Project Header */}
-                    <div className="p-8 pb-6">
+                    <div className="p-8 pb-6 flex-1 flex flex-col">
                       <div className="mb-4">
                         <h3 className="text-2xl font-bold text-terminal-100 mb-3 group-hover:text-primary-400 transition-colors font-mono leading-tight">
                           {project.title}
@@ -242,7 +255,7 @@ const Projects: React.FC = () => {
 
                       {/* Tech Stack Preview */}
                       <div className="flex flex-wrap gap-3 mb-6">
-                        {project.technologies.slice(0, 4).map((tech: string) => (
+                        {(expandedTags.has(project.originalIndex) ? project.technologies : project.technologies.slice(0, 4)).map((tech: string) => (
                           <span
                             key={tech}
                             className="px-3 py-1.5 bg-terminal-700 border border-terminal-600 text-terminal-300 rounded text-sm font-medium font-mono"
@@ -251,9 +264,18 @@ const Projects: React.FC = () => {
                           </span>
                         ))}
                         {project.technologies.length > 4 && (
-                          <span className="px-3 py-1.5 bg-terminal-700 border border-terminal-600 text-terminal-300 rounded text-sm font-mono">
-                            +{project.technologies.length - 4}
-                          </span>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleTagsExpansion(project.originalIndex);
+                            }}
+                            className="px-3 py-1.5 bg-terminal-700 border border-primary-500/50 text-primary-400 rounded text-sm font-medium font-mono hover:border-primary-500 transition-colors"
+                          >
+                            {expandedTags.has(project.originalIndex) 
+                              ? 'Show Less' 
+                              : `+${project.technologies.length - 4}`
+                            }
+                          </button>
                         )}
                       </div>
 

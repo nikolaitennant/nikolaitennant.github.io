@@ -16,7 +16,16 @@ export const experience = [
     title: "Research Engineer, Customer Decision Sciences", 
     company: "dunnhumby",
     location: "London, England",
-    period: "September 2023 - Present",
+    period: "2025 - Present",
+    description: "Promoted to Research Engineer. Leading advanced machine learning projects for retail analytics and customer decision sciences. Spearheading optimization of existing ML pipelines and developing next-generation recommendation systems.",
+    technologies: ["Python", "SQL", "PySpark", "Machine Learning", "Data Engineering", "MLOps"],
+    promotion: true
+  },
+  {
+    title: "Associate Research Engineer, Customer Decision Sciences", 
+    company: "dunnhumby",
+    location: "London, England",
+    period: "September 2023 - 2025",
     description: "Developing machine learning models for retail analytics and customer decision sciences. Redesigned and optimised existing codebases, enhanced Tesco Mobile's in-store basket assortment system through advanced analytics.",
     technologies: ["Python", "SQL", "PySpark", "Machine Learning", "Data Engineering"]
   },
@@ -82,7 +91,7 @@ export const projects = [
     ],
     impact: "Demonstrates practical application of RAG architecture for scientific literature processing and analysis",
     category: "Deep Learning",
-    timeline: "2023 - Present"
+    timeline: "2025 - Present"
   },
   {
     title: "Premier League Result Projections",
@@ -109,15 +118,8 @@ export const publications = [
     status: "Manuscript accepted, undergoing final review (Preprint)",
     journal: "Nature Scientific Reports - Aging Clocks Collection",
     preprint: "https://pubmed.ncbi.nlm.nih.gov/39896546/",
-    description: "Comprehensive study developing novel ageing biomarkers using RNA-seq data and deep learning methodologies to understand tissue-specific ageing patterns in Drosophila melanogaster."
-  }
-];
-
-export const researchProjects = [
-  {
-    title: "TimeFlies - Ageing Clock Development",
-    description: "Developing deep learning methodologies to create tissue-specific ageing clocks using RNA-seq data from Drosophila melanogaster",
-    longDescription: "As part of the NSF-funded IISAGE initiative, I'm developing novel computational approaches to understand ageing processes across different tissues. This work combines convolutional neural networks with genomic data analysis to identify ageing biomarkers that could translate to understanding human ageing mechanisms.",
+    description: "Comprehensive study developing novel ageing biomarkers using RNA-seq data and deep learning methodologies to understand tissue-specific ageing patterns in Drosophila melanogaster.",
+    longDescription: "As part of the NSF-funded IISAGE initiative, I developed novel computational approaches to understand ageing processes across different tissues using Drosophila melanogaster as a model organism. This work combines convolutional neural networks with genomic data analysis to identify ageing biomarkers that could translate to understanding human ageing mechanisms.",
     technologies: ["Python", "Deep Learning", "CNNs", "RNA-seq Analysis", "Genomics", "Bioinformatics", "Statistical Modeling"],
     keyFindings: [
       "Identified tissue-specific ageing signatures across multiple Drosophila tissues",
@@ -127,7 +129,10 @@ export const researchProjects = [
     ],
     collaboration: "NSF-funded IISAGE initiative across 11 research institutions",
     impact: "Contributing to fundamental understanding of ageing biology with potential applications in longevity research"
-  },
+  }
+];
+
+export const researchProjects = [
   {
     title: "SenID - Cellular Senescence Detection",
     description: "Computer vision system for identifying senescent cells using morphological analysis (2nd place, hackathon competition)",

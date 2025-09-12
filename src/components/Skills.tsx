@@ -95,7 +95,7 @@ const Skills: React.FC = () => {
               <span className="gradient-text">Technical Skills</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              A comprehensive toolkit spanning data science, machine learning, and software engineering
+              Technical skills developed through academic coursework, research projects, and industry experience
             </p>
           </motion.div>
 

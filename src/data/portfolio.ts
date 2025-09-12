@@ -1,13 +1,13 @@
 export const personalInfo = {
   name: "Nikolai Tennant",
   title: "Data Scientist & Computational Biologist",
-  subtitle: "Bridging AI, genomics, and real-world applications",
+  subtitle: "Applying machine learning to biological and business problems",
   location: "London, UK",
   email: "nikolaitennant@gmail.com",
   phone: "+44 7931 794345",
   linkedin: "https://www.linkedin.com/in/nikolai-tennant/",
   github: "https://github.com/nikolaitennant",
-  bio: "Data scientist and computational biologist with a MSc in Data Science and BA in History from Brown University. Currently at dunnhumby, working on cutting-edge retail analytics while pursuing groundbreaking research in genomics and aging. Passionate about applying machine learning to solve complex biological and business problems.",
+  bio: "Data scientist and computational biologist with a MSc in Data Science and BA in History from Brown University. Currently at dunnhumby, developing machine learning models for retail analytics and customer decision sciences. Research experience includes aging biomarker identification and cellular senescence detection using deep learning approaches.",
   citizenship: "Dual US/UK citizen, eligible to work in both countries"
 };
 
@@ -52,7 +52,14 @@ export const education = [
     school: "Brown University", 
     location: "Providence, RI",
     period: "September 2018 - May 2022",
-    achievements: ["High Honor Diploma", "President of Ecology Club", "Young Women's Conference", "Senior Leadership Board Ambassador", "Varsity Lacrosse Captain", "Dean's List", "Honor Roll Student", "Junior Service Award", "Brentwood Service Award"]
+    achievements: ["Dean's List"]
+  },
+  {
+    degree: "High School Diploma",
+    school: "Brentwood High School", 
+    location: "Los Angeles, CA",
+    period: "September 2014 - May 2018",
+    achievements: ["High Honor Diploma", "President of Ecology Club", "Young Women's Conference", "Senior Leadership Board Ambassador", "Varsity Lacrosse Captain", "Honor Roll Student", "Junior Service Award", "Brentwood Service Award"]
   }
 ];
 
@@ -68,8 +75,8 @@ export const skills = {
 export const projects = [
   {
     title: "Premier League Result Projections",
-    description: "Comprehensive machine learning system for predicting Premier League match outcomes using advanced ensemble methods and feature engineering.",
-    longDescription: "Developed a sophisticated ML pipeline analyzing 457+ data points across Premier League seasons, incorporating betting odds, team performance metrics, and FIFA ratings. Achieved high prediction accuracy using ensemble methods including LightGBM, Random Forest, and SVC models.",
+    description: "Machine learning system for predicting Premier League match outcomes using ensemble methods and feature engineering.",
+    longDescription: "ML pipeline analyzing 457 data points across Premier League seasons 2021-2023, incorporating betting odds, team performance metrics, and FIFA ratings. Implementation includes LightGBM, Random Forest, and SVC models with SHAP interpretability analysis.",
     technologies: ["Python", "LightGBM", "Random Forest", "SVC", "Pandas", "NumPy", "SHAP", "Machine Learning"],
     github: "https://github.com/nikolaitennant/Premier-League-Result-Projections",
     features: [
@@ -79,13 +86,13 @@ export const projects = [
       "Model interpretability with SHAP values",
       "Comprehensive data visualization and analysis"
     ],
-    impact: "Addresses multi-billion dollar sports betting market with data-driven predictions",
+    impact: "Demonstrates application of ML ensemble methods to sports analytics with quantifiable performance metrics",
     category: "Machine Learning"
   },
   {
     title: "TimeFlies - Aging Clock for Drosophila",
-    description: "Revolutionary deep learning methodology utilizing CNNs and RNA-seq data to create an aging clock for fruit flies, identifying novel aging biomarkers.",
-    longDescription: "Developed an innovative deep learning approach for aging research, combining convolutional neural networks with genomic data to understand aging patterns in Drosophila. This research contributes to understanding fundamental aging mechanisms with potential human applications.",
+    description: "Deep learning methodology utilizing CNNs and RNA-seq data to develop aging biomarkers in Drosophila melanogaster.",
+    longDescription: "Deep learning approach for aging research combining convolutional neural networks with genomic data to identify aging patterns in Drosophila. Research conducted as part of NSF-funded IISAGE initiative examining sexual dimorphism in aging processes.",
     technologies: ["Python", "Deep Learning", "CNN", "RNA-seq", "Genomics", "Bioinformatics"],
     features: [
       "Cross-species data integration and nuclear morphology analysis",
@@ -100,8 +107,8 @@ export const projects = [
   },
   {
     title: "RAG Scholar AI",
-    description: "Intelligent research assistant application leveraging Retrieval-Augmented Generation (RAG) to help researchers navigate and synthesize academic literature.",
-    longDescription: "Advanced AI-powered application that combines large language models with retrieval systems to provide contextual, accurate assistance for academic research. The system can process vast amounts of scientific literature and provide intelligent summaries, citations, and research insights.",
+    description: "Research assistant application using Retrieval-Augmented Generation for academic literature analysis and synthesis.",
+    longDescription: "Application combining large language models with retrieval systems for academic research assistance. Features include document processing, contextual Q&A with source citations, and multi-document synthesis using vector databases and custom embedding models.",
     technologies: ["Python", "LangChain", "Vector Databases", "OpenAI API", "Streamlit", "FAISS", "Natural Language Processing"],
     github: "https://github.com/nikolaitennant/rag-scholar-ai",
     features: [
@@ -112,14 +119,14 @@ export const projects = [
       "User-friendly web interface with real-time responses",
       "Custom embedding models for academic content"
     ],
-    impact: "Streamlines research workflows and accelerates scientific discovery for researchers and students",
+    impact: "Demonstrates practical application of RAG architecture for scientific literature processing and analysis",
     category: "Machine Learning",
     timeline: "2023 - Present"
   },
   {
     title: "SenID - Cell Senescence Identification", 
-    description: "Hackathon-winning deep learning solution for identifying senescent cells with applications in aging and disease research.",
-    longDescription: "2nd place hackathon project developing a novel approach to identify senescent cells using machine learning techniques. This work has implications for aging research, cancer therapy, and regenerative medicine.",
+    description: "Deep learning approach for identifying senescent cells using computer vision techniques (2nd place, hackathon).",
+    longDescription: "Machine learning system for senescent cell identification using morphological analysis. Developed during hackathon competition, achieving 2nd place. Implementation includes computer vision techniques for cell classification with applications in aging research.",
     technologies: ["Python", "Deep Learning", "Computer Vision", "Cell Biology", "Machine Learning"],
     achievement: "🥈 2nd Place Winner - Hackathon",
     features: [
@@ -129,7 +136,7 @@ export const projects = [
       "Real-time analysis capabilities",
       "Applications in aging and cancer research"
     ],
-    impact: "Contributes to understanding cellular aging and potential therapeutic targets",
+    impact: "Demonstrates computer vision application to cellular biology with competitive performance validation",
     category: "Bioinformatics",
     timeline: "January 2023 - May 2023"
   }

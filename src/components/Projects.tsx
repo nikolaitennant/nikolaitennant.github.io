@@ -58,7 +58,7 @@ const Projects: React.FC = () => {
               <span className="gradient-text">Featured Projects</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Cutting-edge research and applications at the intersection of AI, biology, and data science
+              Research and development projects applying machine learning to biological and business problems
             </p>
           </motion.div>
 

@@ -80,7 +80,7 @@ export const projects = [
     description: "Research assistant application using Retrieval-Augmented Generation for academic literature analysis and synthesis.",
     longDescription: "Application combining large language models with retrieval systems for academic research assistance. Features include document processing, contextual Q&A with source citations, and multi-document synthesis using vector databases and custom embedding models.",
     technologies: ["Python", "LangChain", "Vector Databases", "OpenAI API", "Streamlit", "FAISS", "Natural Language Processing"],
-    github: "https://github.com/nikolaitennant/RAG-Scholar-AI",
+    github: "https://github.com/nikolaitennant/rag_scholar",
     demo: "https://ragscholarai.web.app",
     features: [
       "Intelligent document retrieval and ranking",

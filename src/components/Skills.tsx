@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { Code, Database, Cloud, Brain, BarChart, Settings } from 'lucide-react';
+import { Code, Database, Brain, BarChart, Settings } from 'lucide-react';
 import { skills } from '../data/portfolio';
 
 const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDelay: number = 0) => {

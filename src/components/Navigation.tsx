@@ -27,7 +27,7 @@ const Navigation: React.FC = () => {
 
   const handleNavClick = (href: string) => {
     setIsMobileMenuOpen(false);
-    const element = document.querySelector(href);
+    const element = document.querySelector(href) as HTMLElement;
     if (element) {
       // Use a more robust scroll method that doesn't get interrupted
       const elementPosition = element.offsetTop;

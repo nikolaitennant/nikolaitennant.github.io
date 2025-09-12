@@ -70,7 +70,7 @@ const About: React.FC = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.3
+        delayChildren: 0.1
       }
     }
   };
@@ -192,7 +192,7 @@ const About: React.FC = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.1 }}
           variants={staggerContainer}
         >
           {/* Section Header */}

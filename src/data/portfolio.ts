@@ -60,7 +60,7 @@ export const education = [
 ];
 
 export const skills = {
-  "Programming": ["Python", "SQL", "R", "JavaScript", "TypeScript", "Bash", "Git"],
+  "Programming": ["Python", "SQL", "R", "TypeScript", "Bash", "Git"],
   "ML/AI": ["PyTorch", "TensorFlow", "LangChain", "FAISS", "NLP", "Computer Vision", "Deep Learning"],
   "Mathematics & Statistics": ["Linear Algebra", "Statistical Modelling", "Bayesian Analysis", "Multivariate Calculus"],
   "Data & Cloud": ["PySpark", "Pandas", "NumPy", "AWS", "Databricks", "Docker", "Google Cloud Platform"],

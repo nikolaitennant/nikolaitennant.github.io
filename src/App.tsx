@@ -25,9 +25,9 @@ function App() {
           <About />
           <Publications />
           <Projects />
-          <Resume />
           <Skills />
           <Contact />
+          <Resume />
         </motion.main>
         
         <ScrollToTop />

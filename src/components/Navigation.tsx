@@ -11,9 +11,9 @@ const Navigation: React.FC = () => {
     { href: '#about', label: 'About' },
     { href: '#publications', label: 'Research & Publications' },
     { href: '#projects', label: 'Personal Projects' },
-    { href: '#resume', label: 'Resume' },
     { href: '#skills', label: 'Skills' },
-    { href: '#contact', label: 'Contact' }
+    { href: '#contact', label: 'Contact' },
+    { href: '#resume', label: 'Resume', isResume: true }
   ];
 
   useEffect(() => {
@@ -59,11 +59,17 @@ const Navigation: React.FC = () => {
               <motion.button
                 key={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className="text-terminal-300 hover:text-primary-400 font-mono transition-colors duration-200 relative group"
+                className={`font-mono transition-colors duration-200 relative group ${
+                  item.isResume 
+                    ? 'text-red-400 hover:text-red-300' 
+                    : 'text-terminal-300 hover:text-primary-400'
+                }`}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <span className="text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity">{'>'}</span>
+                <span className={`opacity-0 group-hover:opacity-100 transition-opacity ${
+                  item.isResume ? 'text-red-300' : 'text-primary-400'
+                }`}>{'>'}</span>
                 <span className="ml-1">{item.label}</span>
               </motion.button>
             ))}
@@ -100,13 +106,17 @@ const Navigation: React.FC = () => {
                   <motion.button
                     key={item.href}
                     onClick={() => handleNavClick(item.href)}
-                    className="block w-full text-left px-4 py-2 text-terminal-300 hover:text-primary-400 hover:bg-terminal-700 font-mono transition-colors duration-200"
+                    className={`block w-full text-left px-4 py-2 font-mono transition-colors duration-200 ${
+                      item.isResume 
+                        ? 'text-red-400 hover:text-red-300 hover:bg-red-900/20' 
+                        : 'text-terminal-300 hover:text-primary-400 hover:bg-terminal-700'
+                    }`}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <span className="text-primary-400 mr-2">{'>'}</span>
+                    <span className={`mr-2 ${item.isResume ? 'text-red-300' : 'text-primary-400'}`}>{'>'}</span>
                     {item.label}
                   </motion.button>
                 ))}

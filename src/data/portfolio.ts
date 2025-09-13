@@ -71,23 +71,24 @@ export const skills = {
 export const projects = [
   {
     title: "RAG Scholar AI",
-    description: "Research assistant application using Retrieval-Augmented Generation for academic literature analysis and synthesis.",
-    longDescription: "Application combining large language models with retrieval systems for academic research assistance. Features include document processing, contextual Q&A with source citations, and multi-document synthesis using vector databases and custom embedding models.",
+    description: "RAG-based study tool for document Q&A, smart citations, and learning assistance across all subjects.",
+    longDescription: "Students upload research papers, textbooks, and lecture notes, then ask questions to get targeted answers with exact citations. Organizes materials by subject for domain-specific responses and maintains chat history across study sessions with an achievement system to encourage consistent use.",
     technologies: ["Python", "LangChain", "Vector Databases", "FAISS", "Natural Language Processing"],
     github: "https://github.com/nikolaitennant/rag_scholar",
     demo: "https://ragscholarai.web.app",
+    logo: "/ragscholar.ico",
     image: "/rag-scholar-preview.png",
     features: [
-      "Intelligent document retrieval and ranking",
-      "Contextual Q&A with source citations",
-      "Research paper summarisation and analysis",
-      "Multi-document synthesis capabilities",
-      "User-friendly web interface with real-time responses",
-      "Custom embedding models for academic content"
+      "Upload and chat with PDFs, textbooks, and lecture notes",
+      "Smart citations showing exact source and page numbers",
+      "Subject-based organization for domain-specific responses",
+      "Chat history and session memory across study sessions",
+      "Achievement system to encourage consistent study habits",
+      "Multi-document Q&A for comprehensive understanding"
     ],
-    impact: "Demonstrates practical application of RAG architecture for scientific literature processing and analysis",
+    impact: "Helps students study more efficiently by providing instant answers from their course materials with proper citations",
     category: "Deep Learning",
-    timeline: "2025 - Present"
+    timeline: "2025"
   },
   {
     title: "Premier League Result Projections",

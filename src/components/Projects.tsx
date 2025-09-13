@@ -43,6 +43,7 @@ const Projects: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
   const [filter, setFilter] = useState<string>('all');
   const [expandedTags, setExpandedTags] = useState<Set<number>>(new Set());
+  const [previewModal, setPreviewModal] = useState<string | null>(null);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.03 });
   
@@ -211,9 +212,20 @@ const Projects: React.FC = () => {
                     {/* Project Header */}
                     <div className="p-8 pb-6 flex-1 flex flex-col">
                       <div className="mb-4">
-                        <h3 className="text-2xl font-bold text-terminal-100 mb-3 group-hover:text-primary-400 transition-colours font-mono leading-tight">
-                          {project.title}
-                        </h3>
+                        <div className="flex items-center gap-3 mb-3">
+                          <h3 className="text-2xl font-bold text-terminal-100 group-hover:text-primary-400 transition-colours font-mono leading-tight flex-1">
+                            {project.title}
+                          </h3>
+                          {(project as any).logo && (
+                            <div className="w-12 h-12 rounded overflow-hidden bg-terminal-700/30 flex-shrink-0">
+                              <img
+                                src={(project as any).logo}
+                                alt={`${project.title} logo`}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          )}
+                        </div>
                         
                         {/* Category Badge */}
                         <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium font-mono mb-3 ${
@@ -304,6 +316,21 @@ const Projects: React.FC = () => {
                               <span className="text-sm font-medium">Demo</span>
                             </a>
                           )}
+                          {project.image && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setPreviewModal(project.image);
+                              }}
+                              className="flex items-center text-terminal-300 hover:text-accent-400 transition-colours font-mono"
+                            >
+                              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                              </svg>
+                              <span className="text-sm font-medium">Preview</span>
+                            </button>
+                          )}
                           {project.preprint && (
                             <a
                               href={project.preprint}
@@ -326,7 +353,7 @@ const Projects: React.FC = () => {
                           )}
                         </div>
 
-                        <button className="flex items-center text-primary-400 hover:text-primary-300 transition-colours">
+                        <button className="flex items-center text-primary-400 hover:text-primary-300 transition-colours ml-4">
                           <span className="text-sm font-medium mr-1 font-mono">
                             {selectedProject === project.originalIndex ? 'Less' : 'More'}
                           </span>
@@ -432,6 +459,46 @@ const Projects: React.FC = () => {
 
         </motion.div>
       </div>
+
+      {/* Preview Modal */}
+      <AnimatePresence>
+        {previewModal && (
+          <motion.div
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setPreviewModal(null)}
+          >
+            <motion.div
+              className="max-w-4xl max-h-[90vh] overflow-auto bg-terminal-800 border border-primary-500/30 rounded-xl shadow-2xl"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-bold text-terminal-100 font-mono">App Preview</h3>
+                  <button
+                    onClick={() => setPreviewModal(null)}
+                    className="text-terminal-400 hover:text-terminal-100 transition-colors"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <img
+                  src={previewModal}
+                  alt="App preview"
+                  className="w-full h-auto rounded"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

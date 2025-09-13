@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Mail, Phone, MapPin, Github, Linkedin, Send, CheckCircle, AlertCircle } from 'lucide-react';
-import { useForm } from '@formspree/react';
+import { Mail, Phone, MapPin, Github, Linkedin, Send, CheckCircle } from 'lucide-react';
+import { useForm, ValidationError } from '@formspree/react';
 import { personalInfo } from '../data/portfolio';
 
 const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDelay: number = 0) => {
@@ -44,6 +44,26 @@ const Contact: React.FC = () => {
   const [state, handleSubmit] = useForm("xeoldnvk");
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.03 });
+
+  if (state.succeeded) {
+    return (
+      <section id="contact" className="section-padding bg-terminal-900 relative overflow-hidden" ref={ref}>
+        <div className="container-custom">
+          <div className="text-center py-24">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-6" />
+              <h2 className="text-4xl font-bold text-green-400 mb-4 font-mono">Message Sent!</h2>
+              <p className="text-xl text-terminal-300 font-mono">Thanks for reaching out. I'll get back to you soon.</p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+    );
+  }
   
   // Terminal commands with scroll trigger
   const pingCommand = useScrollTriggeredTypewriter("$ ping nikolai@contact.net", 80, 500);
@@ -312,6 +332,12 @@ const Contact: React.FC = () => {
                         className="w-full px-3 md:px-4 py-2 md:py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours text-sm md:text-base"
                         placeholder="Your Name"
                       />
+                      <ValidationError 
+                        prefix="Name" 
+                        field="name"
+                        errors={state.errors}
+                        className="text-red-400 text-xs mt-1 font-mono"
+                      />
                     </div>
                     <div>
                       <label htmlFor="email" className="block text-xs md:text-sm font-medium text-terminal-100 mb-1 md:mb-2 font-mono">
@@ -325,6 +351,12 @@ const Contact: React.FC = () => {
                         autoComplete="email"
                         className="w-full px-3 md:px-4 py-2 md:py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours text-sm md:text-base"
                         placeholder="your@email.com"
+                      />
+                      <ValidationError 
+                        prefix="Email" 
+                        field="email"
+                        errors={state.errors}
+                        className="text-red-400 text-xs mt-1 font-mono"
                       />
                     </div>
                   </div>
@@ -342,6 +374,12 @@ const Contact: React.FC = () => {
                       className="w-full px-3 md:px-4 py-2 md:py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours text-sm md:text-base"
                       placeholder="What's this about?"
                     />
+                    <ValidationError 
+                      prefix="Subject" 
+                      field="subject"
+                      errors={state.errors}
+                      className="text-red-400 text-xs mt-1 font-mono"
+                    />
                   </div>
 
                   <div className="flex-1 flex flex-col">
@@ -356,43 +394,37 @@ const Contact: React.FC = () => {
                       className="w-full flex-1 px-3 md:px-4 py-2 md:py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours resize-none text-sm md:text-base"
                       placeholder="Tell me about your project, collaboration idea, or just say hello..."
                     />
+                    <ValidationError 
+                      prefix="Message" 
+                      field="message"
+                      errors={state.errors}
+                      className="text-red-400 text-xs mt-1 font-mono"
+                    />
                   </div>
 
                   {/* Submit Button */}
                   <motion.button
                     type="submit"
                     disabled={state.submitting}
-                    className={`w-full flex items-center justify-center px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 font-mono text-sm md:text-base ${
-                      state.succeeded
-                        ? 'bg-green-600 text-white'
-                        : (state.errors && Object.keys(state.errors).length > 0)
-                        ? 'bg-red-600 text-white'
-                        : 'bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 shadow-lg hover:shadow-xl'
-                    } disabled:opacity-75 disabled:cursor-not-allowed`}
-                    whileHover={!state.submitting && !state.succeeded ? { scale: 1.02, y: -2 } : undefined}
-                    whileTap={!state.submitting && !state.succeeded ? { scale: 0.98 } : undefined}
+                    className="w-full flex items-center justify-center px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 font-mono text-sm md:text-base bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 shadow-lg hover:shadow-xl disabled:opacity-75 disabled:cursor-not-allowed"
+                    whileHover={!state.submitting ? { scale: 1.02, y: -2 } : undefined}
+                    whileTap={!state.submitting ? { scale: 0.98 } : undefined}
                   >
-                    {state.submitting && (
-                      <motion.div
-                        className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-3"
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      />
+                    {state.submitting ? (
+                      <>
+                        <motion.div
+                          className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-3"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        />
+                        Sending Message...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5 mr-3" />
+                        Send Message
+                      </>
                     )}
-                    {state.succeeded && (
-                      <CheckCircle className="w-5 h-5 mr-3" />
-                    )}
-                    {(state.errors && Object.keys(state.errors).length > 0) && (
-                      <AlertCircle className="w-5 h-5 mr-3" />
-                    )}
-                    {!state.submitting && !state.succeeded && (!state.errors || Object.keys(state.errors).length === 0) && (
-                      <Send className="w-5 h-5 mr-3" />
-                    )}
-                    
-                    {state.submitting && 'Sending Message...'}
-                    {state.succeeded && 'Message Sent!'}
-                    {(state.errors && Object.keys(state.errors).length > 0) && 'Failed to Send'}
-                    {!state.submitting && !state.succeeded && (!state.errors || Object.keys(state.errors).length === 0) && 'Send Message'}
                   </motion.button>
                 </form>
               </div>

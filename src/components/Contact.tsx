@@ -44,26 +44,6 @@ const Contact: React.FC = () => {
   const [state, handleSubmit] = useForm("xeoldnvk");
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.03 });
-
-  if (state.succeeded) {
-    return (
-      <section id="contact" className="section-padding bg-terminal-900 relative overflow-hidden" ref={ref}>
-        <div className="container-custom">
-          <div className="text-center py-24">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-6" />
-              <h2 className="text-4xl font-bold text-green-400 mb-4 font-mono">Message Sent!</h2>
-              <p className="text-xl text-terminal-300 font-mono">Thanks for reaching out. I'll get back to you soon.</p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-    );
-  }
   
   // Terminal commands with scroll trigger
   const pingCommand = useScrollTriggeredTypewriter("$ ping nikolai@contact.net", 80, 500);
@@ -317,6 +297,19 @@ const Contact: React.FC = () => {
                   <span className="text-primary-400">{'>'}</span> Send a Message
                 </h3>
 
+                {state.succeeded ? (
+                  <div className="text-center py-8">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.6 }}
+                    >
+                      <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
+                      <h3 className="text-2xl font-bold text-green-400 mb-2 font-mono">Message Sent!</h3>
+                      <p className="text-terminal-300 font-mono">Thanks for reaching out. I'll get back to you soon.</p>
+                    </motion.div>
+                  </div>
+                ) : (
                 <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4 flex-1 flex flex-col">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                     <div>
@@ -427,6 +420,7 @@ const Contact: React.FC = () => {
                     )}
                   </motion.button>
                 </form>
+                )}
               </div>
             </motion.div>
           </div>

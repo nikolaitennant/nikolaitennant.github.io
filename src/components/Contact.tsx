@@ -59,7 +59,7 @@ const Contact: React.FC = () => {
   // Terminal commands with scroll trigger
   const pingCommand = useScrollTriggeredTypewriter("$ ping nikolai@contact.net", 80, 500);
   const establishingCommand = useScrollTriggeredTypewriter("# Establishing connection...", 70, 500 + (pingCommand.displayedText.length > 0 ? 27 * 80 + 800 : 0));
-  const responseCommand = useScrollTriggeredTypewriter("# Response time: <24hrs", 70, 500 + (pingCommand.displayedText.length > 0 ? 27 * 80 + 1600 : 0));
+  const responseCommand = useScrollTriggeredTypewriter("# Response time: 24-48hrs", 70, 500 + (pingCommand.displayedText.length > 0 ? 27 * 80 + 1600 : 0));
 
   useEffect(() => {
     if (isInView) {

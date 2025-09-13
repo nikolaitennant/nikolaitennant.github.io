@@ -50,7 +50,7 @@ const useTypewriter = (text: string, baseDelay: number = 50, startDelay: number 
 };
 
 const Hero: React.FC = () => {
-  const subtitleTypewriter = useTypewriter(personalInfo.subtitle, 40, 1000);
+  const titleTypewriter = useTypewriter(personalInfo.title, 40, 1000);
   
   // Calculate sequential delays
   const terminalCommandText = "~/biocomputing/genome_analysis $";
@@ -349,15 +349,7 @@ const Hero: React.FC = () => {
             </h1>
           </motion.div>
 
-          <motion.div variants={itemVariants}>
-            <h2 className="text-2xl md:text-3xl font-semibold text-terminal-300 mb-4 font-display">
-              <span className="text-bio-400">[</span>
-              {personalInfo.title}
-              <span className="text-bio-400">]</span>
-            </h2>
-          </motion.div>
-
-          {/* Animated Subtitle */}
+          {/* Animated Title */}
           <motion.div variants={itemVariants}>
             <div 
               className="text-xl md:text-2xl text-terminal-300 mb-8 min-h-8 font-mono select-none relative" 
@@ -372,11 +364,11 @@ const Hero: React.FC = () => {
               }}
               tabIndex={-1}
             >
-              <span className="text-primary-400">{'>'}</span> {subtitleTypewriter.displayedText}
+              <span className="text-primary-400">{'>'}</span> {titleTypewriter.displayedText}
               <span 
                 className="inline-block ml-1 text-terminal-100" 
                 style={{
-                  animation: subtitleTypewriter.isTyping 
+                  animation: titleTypewriter.isTyping 
                     ? 'none' 
                     : 'blink 1s infinite'
                 }}

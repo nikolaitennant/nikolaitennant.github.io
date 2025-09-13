@@ -94,14 +94,29 @@ const Contact: React.FC = () => {
     e.preventDefault();
     setFormStatus('sending');
     
-    // Simulate form submission
-    setTimeout(() => {
-      setFormStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
+    try {
+      const response = await fetch('https://formspree.io/f/xeoldnvk', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
       
-      // Reset status after 3 seconds
+      if (response.ok) {
+        setFormStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        
+        // Reset status after 3 seconds
+        setTimeout(() => setFormStatus('idle'), 3000);
+      } else {
+        setFormStatus('error');
+        setTimeout(() => setFormStatus('idle'), 3000);
+      }
+    } catch (error) {
+      setFormStatus('error');
       setTimeout(() => setFormStatus('idle'), 3000);
-    }, 1000);
+    }
   };
 
   const contactMethods = [

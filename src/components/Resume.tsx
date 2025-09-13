@@ -40,7 +40,7 @@ const Resume: React.FC = () => {
               <span className="text-red-500">{'>'}</span> CV
             </h2>
             <p className="text-xl text-terminal-300 max-w-3xl mx-auto font-mono mb-8">
-              Complete professional overview - research engineer and computational biologist
+              Complete professional overview - research engineer and machine learning specialist
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Mail, Phone, MapPin, Github, Linkedin, Send, CheckCircle } from 'lucide-react';
 import { useForm, ValidationError } from '@formspree/react';
 import { personalInfo } from '../data/portfolio';
@@ -42,8 +42,19 @@ const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDel
 
 const Contact: React.FC = () => {
   const [state, handleSubmit] = useForm("xeoldnvk");
+  const [showForm, setShowForm] = useState(true);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.03 });
+
+  useEffect(() => {
+    if (state.succeeded) {
+      setShowForm(false);
+      const timer = setTimeout(() => {
+        setShowForm(true);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [state.succeeded]);
   
   // Terminal commands with scroll trigger
   const pingCommand = useScrollTriggeredTypewriter("$ ping nikolai@contact.net", 80, 500);
@@ -297,21 +308,33 @@ const Contact: React.FC = () => {
                   <span className="text-primary-400">{'>'}</span> Send a Message
                 </h3>
 
-                {state.succeeded ? (
-                  <div className="text-center py-8">
-                    <motion.div
+                <AnimatePresence mode="wait">
+                  {state.succeeded && !showForm ? (
+                    <motion.div 
+                      key="success"
+                      className="flex items-center justify-center py-16"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
                       transition={{ duration: 0.6 }}
                     >
-                      <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
-                      <h3 className="text-2xl font-bold text-green-400 mb-2 font-mono">Message Sent!</h3>
-                      <p className="text-terminal-300 font-mono">Thanks for reaching out. I'll get back to you soon.</p>
+                      <div className="text-center">
+                        <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-6" />
+                        <h3 className="text-3xl font-bold text-green-400 mb-3 font-mono">Message Sent!</h3>
+                        <p className="text-lg text-terminal-300 font-mono">Thanks for reaching out. I'll get back to you soon.</p>
+                      </div>
                     </motion.div>
-                  </div>
-                ) : (
-                <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4 flex-1 flex flex-col">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                  ) : (
+                    <motion.form 
+                      key="form"
+                      onSubmit={handleSubmit} 
+                      className="space-y-3 md:space-y-4 flex-1 flex flex-col"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.6 }}
+                    >
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                     <div>
                       <label htmlFor="name" className="block text-xs md:text-sm font-medium text-terminal-100 mb-1 md:mb-2 font-mono">
                         Name *
@@ -418,9 +441,10 @@ const Contact: React.FC = () => {
                         Send Message
                       </>
                     )}
-                  </motion.button>
-                </form>
-                )}
+                      </motion.button>
+                    </motion.form>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
           </div>

@@ -342,7 +342,7 @@ const Hero: React.FC = () => {
         >
           {/* Name and Title */}
           <motion.div variants={itemVariants}>
-            <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight font-futuristic tracking-wider">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6 leading-tight font-futuristic tracking-wider">
               <span className="gradient-text">NIKOLAI</span>
               <br />
               <span className="text-terminal-100">TENNANT</span>
@@ -352,7 +352,7 @@ const Hero: React.FC = () => {
           {/* Animated Title */}
           <motion.div variants={itemVariants}>
             <div 
-              className="text-xl md:text-2xl text-terminal-300 mb-8 min-h-8 font-mono select-none relative" 
+              className="text-lg sm:text-xl md:text-2xl text-terminal-300 mb-6 md:mb-8 min-h-6 md:min-h-8 font-mono select-none relative" 
               style={{
                 caretColor: 'transparent', 
                 userSelect: 'none', 

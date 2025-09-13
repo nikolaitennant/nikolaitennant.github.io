@@ -7,13 +7,13 @@ const Navigation: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { href: '#home', label: 'Home' },
-    { href: '#about', label: 'About' },
-    { href: '#publications', label: 'Research & Publications' },
-    { href: '#projects', label: 'Personal Projects' },
-    { href: '#skills', label: 'Skills' },
-    { href: '#contact', label: 'Contact' },
-    { href: '#resume', label: 'CV', isResume: true }
+    { href: '#home', label: 'Home', shortLabel: 'Home' },
+    { href: '#about', label: 'About', shortLabel: 'About' },
+    { href: '#publications', label: 'Research & Publications', shortLabel: 'Research' },
+    { href: '#projects', label: 'Personal Projects', shortLabel: 'Projects' },
+    { href: '#skills', label: 'Skills', shortLabel: 'Skills' },
+    { href: '#contact', label: 'Contact', shortLabel: 'Contact' },
+    { href: '#resume', label: 'CV', shortLabel: 'CV', isResume: true }
   ];
 
   useEffect(() => {
@@ -52,9 +52,9 @@ const Navigation: React.FC = () => {
       transition={{ duration: 0.6, delay: 0.2 }}
     >
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
-        <div className="flex items-center justify-center py-4">
+        <div className="flex items-center justify-center py-2 md:py-4">
           {/* Desktop Navigation - Centered */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-8">
             {navItems.map((item) => (
               <motion.button
                 key={item.href}
@@ -75,17 +75,39 @@ const Navigation: React.FC = () => {
             ))}
           </div>
 
+          {/* Tablet Navigation - Shorter Labels */}
+          <div className="hidden md:flex lg:hidden items-center space-x-4">
+            {navItems.map((item) => (
+              <motion.button
+                key={item.href}
+                onClick={() => handleNavClick(item.href)}
+                className={`font-mono transition-colours duration-200 relative group text-sm ${
+                  item.isResume 
+                    ? 'text-red-400 hover:text-red-300' 
+                    : 'text-terminal-300 hover:text-primary-400'
+                }`}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span className={`opacity-0 group-hover:opacity-100 transition-opacity ${
+                  item.isResume ? 'text-red-300' : 'text-primary-400'
+                }`}>{'>'}</span>
+                <span className="ml-1">{item.shortLabel}</span>
+              </motion.button>
+            ))}
+          </div>
+
           {/* Mobile Menu Button */}
-          <div className="md:hidden absolute right-4 top-4">
+          <div className="md:hidden absolute right-4 top-2">
             <motion.button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-lg hover:bg-terminal-800 transition-colours duration-200"
+              className="p-1.5 rounded-lg hover:bg-terminal-800 transition-colours duration-200"
               whileTap={{ scale: 0.95 }}
             >
               {isMobileMenuOpen ? (
-                <X className="w-6 h-6 text-terminal-300" />
+                <X className="w-5 h-5 text-terminal-300" />
               ) : (
-                <Menu className="w-6 h-6 text-terminal-300" />
+                <Menu className="w-5 h-5 text-terminal-300" />
               )}
             </motion.button>
           </div>
@@ -101,12 +123,12 @@ const Navigation: React.FC = () => {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="py-4 space-y-2">
+              <div className="py-3 space-y-1">
                 {navItems.map((item, index) => (
                   <motion.button
                     key={item.href}
                     onClick={() => handleNavClick(item.href)}
-                    className={`block w-full text-left px-4 py-2 font-mono transition-colours duration-200 ${
+                    className={`block w-full text-left px-4 py-2.5 font-mono transition-colours duration-200 text-sm ${
                       item.isResume 
                         ? 'text-red-400 hover:text-red-300 hover:bg-red-900/20' 
                         : 'text-terminal-300 hover:text-primary-400 hover:bg-terminal-700'

@@ -253,21 +253,21 @@ const Contact: React.FC = () => {
           variants={containerVariants}
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 font-mono">
+          <motion.div variants={itemVariants} className="text-center mb-8 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4 font-mono">
               <span className="text-primary-400">{'>'}</span> <span className="gradient-text">Get In Touch</span>
             </h2>
-            <p className="text-xl text-terminal-300 max-w-3xl mx-auto font-mono">
+            <p className="text-lg sm:text-xl text-terminal-300 max-w-3xl mx-auto font-mono px-4">
               Available to discuss professional opportunities and technical projects.
             </p>
           </motion.div>
 
           {/* Two Column Layout: Contact Info + Form */}
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
             {/* Left Column - Contact Methods */}
-            <motion.div variants={itemVariants} className="space-y-6">
+            <motion.div variants={itemVariants} className="space-y-4 md:space-y-6">
               {/* Contact Methods */}
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 {contactMethods.map((method) => {
                   const Icon = method.icon;
                   return (
@@ -281,10 +281,10 @@ const Contact: React.FC = () => {
                           href={method.href}
                           target={method.href.startsWith('http') ? '_blank' : undefined}
                           rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          className="flex items-center p-4 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl hover:bg-terminal-700 hover:border-primary-500/50 transition-all duration-300 group-hover:shadow-lg"
+                          className="flex items-center p-3 md:p-4 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl hover:bg-terminal-700 hover:border-primary-500/50 transition-all duration-300 group-hover:shadow-lg"
                         >
-                          <div className={`p-3 rounded-lg bg-gradient-to-r ${method.colour} text-white mr-4`}>
-                            <Icon className="w-5 h-5" />
+                          <div className={`p-2 md:p-3 rounded-lg bg-gradient-to-r ${method.colour} text-white mr-3 md:mr-4`}>
+                            <Icon className="w-4 h-4 md:w-5 md:h-5" />
                           </div>
                           <div>
                             <h4 className="font-semibold text-terminal-100 group-hover:text-primary-400 transition-colours font-mono">
@@ -296,9 +296,9 @@ const Contact: React.FC = () => {
                           </div>
                         </a>
                       ) : (
-                        <div className="flex items-center p-4 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl">
-                          <div className={`p-3 rounded-lg bg-gradient-to-r ${method.colour} text-white mr-4`}>
-                            <Icon className="w-5 h-5" />
+                        <div className="flex items-center p-3 md:p-4 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl">
+                          <div className={`p-2 md:p-3 rounded-lg bg-gradient-to-r ${method.colour} text-white mr-3 md:mr-4`}>
+                            <Icon className="w-4 h-4 md:w-5 md:h-5" />
                           </div>
                           <div>
                             <h4 className="font-semibold text-terminal-100 font-mono">
@@ -318,12 +318,12 @@ const Contact: React.FC = () => {
               {/* Response Time */}
               <motion.div 
                 variants={itemVariants}
-                className="bg-terminal-800/50 backdrop-blur-sm border border-accent-500/30 rounded-xl p-6"
+                className="bg-terminal-800/50 backdrop-blur-sm border border-accent-500/30 rounded-xl p-4 md:p-6"
               >
-                <h4 className="font-semibold text-terminal-100 mb-2 font-mono">
+                <h4 className="font-semibold text-terminal-100 mb-2 font-mono text-sm md:text-base">
                   <span className="text-accent-400">{'>'}</span> Response Time
                 </h4>
-                <p className="text-terminal-300 text-sm font-mono">
+                <p className="text-terminal-300 text-xs md:text-sm font-mono">
                   I typically respond to messages within 24-48 hours. For urgent matters, 
                   feel free to reach out via phone or LinkedIn.
                 </p>
@@ -332,15 +332,15 @@ const Contact: React.FC = () => {
 
             {/* Right Column - Contact Form */}
             <motion.div variants={itemVariants}>
-              <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-2xl p-8 h-full flex flex-col">
-                <h3 className="text-2xl font-semibold text-terminal-100 mb-6 font-mono">
+              <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-2xl p-4 md:p-6 lg:p-8 h-full flex flex-col">
+                <h3 className="text-xl md:text-2xl font-semibold text-terminal-100 mb-4 md:mb-6 font-mono">
                   <span className="text-primary-400">{'>'}</span> Send a Message
                 </h3>
 
-                <form onSubmit={handleSubmit} className="space-y-4 flex-1 flex flex-col">
-                  <div className="grid grid-cols-2 gap-4">
+                <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4 flex-1 flex flex-col">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-terminal-100 mb-2 font-mono">
+                      <label htmlFor="name" className="block text-xs md:text-sm font-medium text-terminal-100 mb-1 md:mb-2 font-mono">
                         Name *
                       </label>
                       <input
@@ -351,12 +351,12 @@ const Contact: React.FC = () => {
                         autoComplete="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours"
+                        className="w-full px-3 md:px-4 py-2 md:py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours text-sm md:text-base"
                         placeholder="Your Name"
                       />
                     </div>
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-terminal-100 mb-2 font-mono">
+                      <label htmlFor="email" className="block text-xs md:text-sm font-medium text-terminal-100 mb-1 md:mb-2 font-mono">
                         Email *
                       </label>
                       <input
@@ -367,14 +367,14 @@ const Contact: React.FC = () => {
                         autoComplete="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours"
+                        className="w-full px-3 md:px-4 py-2 md:py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours text-sm md:text-base"
                         placeholder="your@email.com"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-terminal-100 mb-2 font-mono">
+                    <label htmlFor="subject" className="block text-xs md:text-sm font-medium text-terminal-100 mb-1 md:mb-2 font-mono">
                       Subject *
                     </label>
                     <input
@@ -391,7 +391,7 @@ const Contact: React.FC = () => {
                   </div>
 
                   <div className="flex-1 flex flex-col">
-                    <label htmlFor="message" className="block text-sm font-medium text-terminal-100 mb-2 font-mono">
+                    <label htmlFor="message" className="block text-xs md:text-sm font-medium text-terminal-100 mb-1 md:mb-2 font-mono">
                       Message *
                     </label>
                     <textarea
@@ -401,7 +401,7 @@ const Contact: React.FC = () => {
                       autoComplete="off"
                       value={formData.message}
                       onChange={handleInputChange}
-                      className="w-full flex-1 px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours resize-none"
+                      className="w-full flex-1 px-3 md:px-4 py-2 md:py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours resize-none text-sm md:text-base"
                       placeholder="Tell me about your project, collaboration idea, or just say hello..."
                     />
                   </div>
@@ -410,7 +410,7 @@ const Contact: React.FC = () => {
                   <motion.button
                     type="submit"
                     disabled={formStatus === 'sending'}
-                    className={`w-full flex items-center justify-center px-8 py-4 rounded-lg font-semibold transition-all duration-300 font-mono ${
+                    className={`w-full flex items-center justify-center px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 font-mono text-sm md:text-base ${
                       formStatus === 'success'
                         ? 'bg-green-600 text-white'
                         : formStatus === 'error'

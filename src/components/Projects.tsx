@@ -162,23 +162,23 @@ const Projects: React.FC = () => {
           variants={containerVariants}
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 font-mono">
+          <motion.div variants={itemVariants} className="text-center mb-8 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4 font-mono">
               <span className="text-primary-400">{'>'}</span> <span className="gradient-text">Personal Projects</span>
             </h2>
-            <p className="text-xl text-terminal-300 max-w-3xl mx-auto font-mono">
+            <p className="text-lg sm:text-xl text-terminal-300 max-w-3xl mx-auto font-mono px-4">
               Things I've built for fun - personal projects showcasing technical skills and interests
             </p>
           </motion.div>
 
           {/* Filter Buttons */}
-          <motion.div variants={itemVariants} className="flex justify-center mb-12">
-            <div className="flex flex-wrap gap-2 p-2 bg-terminal-800 border border-primary-500/30 rounded-full">
+          <motion.div variants={itemVariants} className="flex justify-center mb-8 md:mb-12">
+            <div className="flex flex-wrap gap-1 md:gap-2 p-1.5 md:p-2 bg-terminal-800 border border-primary-500/30 rounded-full">
               {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => setFilter(category)}
-                  className={`px-6 py-2 rounded-full font-medium transition-all duration-300 font-mono ${
+                  className={`px-4 md:px-6 py-1.5 md:py-2 rounded-full font-medium transition-all duration-300 font-mono text-sm md:text-base ${
                     filter === category
                       ? 'bg-primary-600 text-white shadow-lg border border-primary-500/50'
                       : 'text-terminal-300 hover:bg-terminal-700 hover:text-primary-400 border border-terminal-600'
@@ -194,13 +194,13 @@ const Projects: React.FC = () => {
           <AnimatePresence mode="wait">
             <motion.div 
               key={filter}
-              className="flex flex-col lg:flex-row gap-8"
+              className="flex flex-col lg:flex-row gap-6 lg:gap-8"
               initial="hidden"
               animate="visible"
               variants={containerVariants}
             >
               {projectColumns.map((column, columnIndex) => (
-                <div key={columnIndex} className="flex-1 space-y-8">
+                <div key={columnIndex} className="flex-1 space-y-6 lg:space-y-8">
                   {column.map((project) => (
                     <motion.div
                       key={project.title}
@@ -210,10 +210,10 @@ const Projects: React.FC = () => {
                     >
                   <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl shadow-lg overflow-hidden transition-all duration-300 group-hover:shadow-2xl hover:border-primary-500/50 h-full flex flex-col">
                     {/* Project Header */}
-                    <div className="p-8 pb-6 flex-1 flex flex-col">
+                    <div className="p-4 md:p-6 lg:p-8 pb-4 md:pb-6 flex-1 flex flex-col"
                       <div className="mb-4">
                         <div className="flex items-center gap-3 mb-3">
-                          <h3 className="text-2xl font-bold text-terminal-100 group-hover:text-primary-400 transition-colours font-mono leading-tight flex-1">
+                          <h3 className="text-xl md:text-2xl font-bold text-terminal-100 group-hover:text-primary-400 transition-colours font-mono leading-tight flex-1">
                             {project.title}
                           </h3>
                           {(project as any).logo && (
@@ -236,7 +236,7 @@ const Projects: React.FC = () => {
                           {project.category}
                         </span>
                         
-                        <p className="text-terminal-300 text-lg leading-relaxed font-mono">
+                        <p className="text-terminal-300 text-base md:text-lg leading-relaxed font-mono">
                           {project.description}
                         </p>
                       </div>
@@ -264,11 +264,11 @@ const Projects: React.FC = () => {
                       </div>
 
                       {/* Tech Stack Preview */}
-                      <div className="flex flex-wrap gap-3 mb-6">
+                      <div className="flex flex-wrap gap-2 md:gap-3 mb-4 md:mb-6">
                         {(expandedTags.has(project.originalIndex) ? project.technologies : project.technologies.slice(0, 4)).map((tech: string) => (
                           <span
                             key={tech}
-                            className="px-3 py-1.5 bg-terminal-700 border border-terminal-600 text-terminal-300 rounded text-sm font-medium font-mono"
+                            className="px-2 md:px-3 py-1 md:py-1.5 bg-terminal-700 border border-terminal-600 text-terminal-300 rounded text-xs md:text-sm font-medium font-mono"
                           >
                             {tech}
                           </span>
@@ -279,7 +279,7 @@ const Projects: React.FC = () => {
                               e.stopPropagation();
                               toggleTagsExpansion(project.originalIndex);
                             }}
-                            className="px-3 py-1.5 bg-terminal-700 border border-primary-500/50 text-primary-400 rounded text-sm font-medium font-mono hover:border-primary-500 transition-colours"
+                            className="px-2 md:px-3 py-1 md:py-1.5 bg-terminal-700 border border-primary-500/50 text-primary-400 rounded text-xs md:text-sm font-medium font-mono hover:border-primary-500 transition-colours"
                           >
                             {expandedTags.has(project.originalIndex) 
                               ? 'Show Less' 
@@ -376,7 +376,7 @@ const Projects: React.FC = () => {
                           transition={{ duration: 0.3, ease: "easeOut" }}
                           className="overflow-hidden"
                         >
-                          <div className="px-6 pb-6 pt-2 border-t border-primary-500/30">
+                          <div className="px-4 md:px-6 pb-4 md:pb-6 pt-2 border-t border-primary-500/30">
                             {/* Long Description */}
                             <div className="mb-4">
                               <h4 className="text-sm font-semibold text-terminal-100 mb-2 font-mono">

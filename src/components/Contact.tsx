@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Mail, Phone, MapPin, Github, Linkedin, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { useForm } from '@formspree/react';
 import { personalInfo } from '../data/portfolio';
 
 const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDelay: number = 0) => {
@@ -40,13 +41,7 @@ const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDel
 };
 
 const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-  const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [state, handleSubmit] = useForm("xeoldnvk");
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.03 });
   
@@ -83,41 +78,6 @@ const Contact: React.FC = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormStatus('sending');
-    
-    try {
-      const response = await fetch('https://formspree.io/f/xeoldnvk', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
-      
-      if (response.ok) {
-        setFormStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        
-        // Reset status after 3 seconds
-        setTimeout(() => setFormStatus('idle'), 3000);
-      } else {
-        setFormStatus('error');
-        setTimeout(() => setFormStatus('idle'), 3000);
-      }
-    } catch (error) {
-      setFormStatus('error');
-      setTimeout(() => setFormStatus('idle'), 3000);
-    }
-  };
 
   const contactMethods = [
     {
@@ -349,8 +309,6 @@ const Contact: React.FC = () => {
                         name="name"
                         required
                         autoComplete="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
                         className="w-full px-3 md:px-4 py-2 md:py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours text-sm md:text-base"
                         placeholder="Your Name"
                       />
@@ -365,8 +323,6 @@ const Contact: React.FC = () => {
                         name="email"
                         required
                         autoComplete="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
                         className="w-full px-3 md:px-4 py-2 md:py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours text-sm md:text-base"
                         placeholder="your@email.com"
                       />
@@ -383,9 +339,7 @@ const Contact: React.FC = () => {
                       name="subject"
                       required
                       autoComplete="off"
-                      value={formData.subject}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours"
+                      className="w-full px-3 md:px-4 py-2 md:py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours text-sm md:text-base"
                       placeholder="What's this about?"
                     />
                   </div>
@@ -399,8 +353,6 @@ const Contact: React.FC = () => {
                       name="message"
                       required
                       autoComplete="off"
-                      value={formData.message}
-                      onChange={handleInputChange}
                       className="w-full flex-1 px-3 md:px-4 py-2 md:py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours resize-none text-sm md:text-base"
                       placeholder="Tell me about your project, collaboration idea, or just say hello..."
                     />
@@ -409,38 +361,38 @@ const Contact: React.FC = () => {
                   {/* Submit Button */}
                   <motion.button
                     type="submit"
-                    disabled={formStatus === 'sending'}
+                    disabled={state.submitting}
                     className={`w-full flex items-center justify-center px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 font-mono text-sm md:text-base ${
-                      formStatus === 'success'
+                      state.succeeded
                         ? 'bg-green-600 text-white'
-                        : formStatus === 'error'
+                        : state.errors.length > 0
                         ? 'bg-red-600 text-white'
                         : 'bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 shadow-lg hover:shadow-xl'
                     } disabled:opacity-75 disabled:cursor-not-allowed`}
-                    whileHover={formStatus === 'idle' ? { scale: 1.02, y: -2 } : undefined}
-                    whileTap={formStatus === 'idle' ? { scale: 0.98 } : undefined}
+                    whileHover={!state.submitting && !state.succeeded ? { scale: 1.02, y: -2 } : undefined}
+                    whileTap={!state.submitting && !state.succeeded ? { scale: 0.98 } : undefined}
                   >
-                    {formStatus === 'sending' && (
+                    {state.submitting && (
                       <motion.div
                         className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-3"
                         animate={{ rotate: 360 }}
                         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                       />
                     )}
-                    {formStatus === 'success' && (
+                    {state.succeeded && (
                       <CheckCircle className="w-5 h-5 mr-3" />
                     )}
-                    {formStatus === 'error' && (
+                    {state.errors.length > 0 && (
                       <AlertCircle className="w-5 h-5 mr-3" />
                     )}
-                    {formStatus === 'idle' && (
+                    {!state.submitting && !state.succeeded && state.errors.length === 0 && (
                       <Send className="w-5 h-5 mr-3" />
                     )}
                     
-                    {formStatus === 'sending' && 'Sending Message...'}
-                    {formStatus === 'success' && 'Message Sent!'}
-                    {formStatus === 'error' && 'Failed to Send'}
-                    {formStatus === 'idle' && 'Send Message'}
+                    {state.submitting && 'Sending Message...'}
+                    {state.succeeded && 'Message Sent!'}
+                    {state.errors.length > 0 && 'Failed to Send'}
+                    {!state.submitting && !state.succeeded && state.errors.length === 0 && 'Send Message'}
                   </motion.button>
                 </form>
               </div>

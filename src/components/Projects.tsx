@@ -210,7 +210,7 @@ const Projects: React.FC = () => {
                     >
                   <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl shadow-lg overflow-hidden transition-all duration-300 group-hover:shadow-2xl hover:border-primary-500/50 h-full flex flex-col">
                     {/* Project Header */}
-                    <div className="p-4 md:p-6 lg:p-8 pb-4 md:pb-6 flex-1 flex flex-col"
+                    <div className="p-4 md:p-6 lg:p-8 pb-4 md:pb-6 flex-1 flex flex-col">
                       <div className="mb-4">
                         <div className="flex items-center gap-3 mb-3">
                           <h3 className="text-xl md:text-2xl font-bold text-terminal-100 group-hover:text-primary-400 transition-colours font-mono leading-tight flex-1">

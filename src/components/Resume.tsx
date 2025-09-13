@@ -31,13 +31,13 @@ const Resume: React.FC = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.03 }}
           variants={containerVariants}
         >
           {/* Section Header */}
           <motion.div variants={itemVariants} className="text-center mb-8">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 font-mono text-red-400">
-              <span className="text-red-500">{'>'}</span> Resume
+              <span className="text-red-500">{'>'}</span> CV
             </h2>
             <p className="text-xl text-terminal-300 max-w-3xl mx-auto font-mono mb-8">
               Complete professional overview - research engineer and computational biologist
@@ -52,7 +52,7 @@ const Resume: React.FC = () => {
                 className="inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-all duration-300 font-mono border border-red-500"
               >
                 {showPDF ? <ChevronUp className="w-5 h-5 mr-2" /> : <ChevronDown className="w-5 h-5 mr-2" />}
-                {showPDF ? 'Hide Resume' : 'Show Resume'}
+                {showPDF ? 'Hide CV' : 'Show CV'}
               </motion.button>
 
               {/* Download Button */}

@@ -13,7 +13,7 @@ const Navigation: React.FC = () => {
     { href: '#projects', label: 'Personal Projects' },
     { href: '#skills', label: 'Skills' },
     { href: '#contact', label: 'Contact' },
-    { href: '#resume', label: 'Resume', isResume: true }
+    { href: '#resume', label: 'CV', isResume: true }
   ];
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const Navigation: React.FC = () => {
               <motion.button
                 key={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className={`font-mono transition-colors duration-200 relative group ${
+                className={`font-mono transition-colours duration-200 relative group ${
                   item.isResume 
                     ? 'text-red-400 hover:text-red-300' 
                     : 'text-terminal-300 hover:text-primary-400'
@@ -79,7 +79,7 @@ const Navigation: React.FC = () => {
           <div className="md:hidden absolute right-4 top-4">
             <motion.button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-lg hover:bg-terminal-800 transition-colors duration-200"
+              className="p-2 rounded-lg hover:bg-terminal-800 transition-colours duration-200"
               whileTap={{ scale: 0.95 }}
             >
               {isMobileMenuOpen ? (
@@ -106,7 +106,7 @@ const Navigation: React.FC = () => {
                   <motion.button
                     key={item.href}
                     onClick={() => handleNavClick(item.href)}
-                    className={`block w-full text-left px-4 py-2 font-mono transition-colors duration-200 ${
+                    className={`block w-full text-left px-4 py-2 font-mono transition-colours duration-200 ${
                       item.isResume 
                         ? 'text-red-400 hover:text-red-300 hover:bg-red-900/20' 
                         : 'text-terminal-300 hover:text-primary-400 hover:bg-terminal-700'

@@ -464,7 +464,7 @@ const Hero: React.FC = () => {
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-0 right-0 flex justify-center">
         <motion.button 
-          className="p-2 rounded-full hover:bg-terminal-800/50 transition-colors cursor-pointer"
+          className="p-2 rounded-full hover:bg-terminal-800/50 transition-colours cursor-pointer"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
         onClick={() => {

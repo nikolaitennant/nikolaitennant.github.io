@@ -1,13 +1,13 @@
 export const personalInfo = {
   name: "Nikolai Tennant",
   title: "Research Engineer & Machine Learning Specialist",
-  subtitle: "I build ML models for retail at dunnhumby and research ageing with deep learning at Brown University",
+  subtitle: "Research Engineer at dunnhumby working on customer data science, and conducting sexual dimorphism research at Singh Lab",
   location: "London, UK",
   email: "nikolaitennant@gmail.com",
   phone: "+44 7931 794345",
   linkedin: "https://www.linkedin.com/in/nikolai-tennant/",
   github: "https://github.com/nikolaitennant",
-  bio: "Research engineer with a MSc in Data Science and BA in History from Brown University. Currently working at dunnhumby developing machine learning models for retail analytics whilst conducting research at IISAGE Lab on ageing biomarkers. Specialising in deep learning applications across biological and commercial domains.",
+  bio: "I'm a Research Engineer at dunnhumby, where I work on applying deep learning and machine learning to customer data science for retailers. I have an MSc in Data Science and a BA in History (with a certificate in Data Science) from Brown University. Alongside my industry work, I conduct research at Singh Lab using machine learning to analyse sex-specific gene expression patterns in ageing Drosophila, investigating how males and females age differently through genomic analysis. My first-author publication on this research is currently under review.",
   citizenship: "Dual US/UK citizen, eligible to work in both countries"
 };
 
@@ -17,8 +17,8 @@ export const experience = [
     company: "dunnhumby",
     location: "London, England",
     period: "2025 - Present",
-    description: "Designed and implemented a LLM-powered text generation system. Developed science modules for cost modelling, impact prediction, and dynamic product ranking.",
-    technologies: ["Python", "SQL", "PySpark", "Machine Learning", "Data Engineering", "MLOps"],
+    description: "I develop and maintain NLP and LLM systems for data insight synthesis, contributing to the design and implementation of core functionality. I collaborate closely with the research team on advanced methodologies involving vector embeddings, cost modelling, impact prediction, and dynamic product ranking.",
+    technologies: ["Python", "SQL", "PySpark", "AWS", "GCP", "Machine Learning", "Data Engineering", "MLOps"],
     promotion: true
   },
   {
@@ -26,16 +26,16 @@ export const experience = [
     company: "dunnhumby",
     location: "London, England",
     period: "September 2023 - 2025",
-    description: "Optimised Tesco Mobile's handset assortment using ML and autoencoders on 5M customer dataset. Led customer profiling projects delivering £829,000 in business value. Refactored codebases, implemented testing, and removed external API dependencies.",
-    technologies: ["Python", "SQL", "PySpark", "Machine Learning", "Data Engineering"]
+    description: "I developed a complete machine learning pipeline using autoencoders on a 5M customer dataset to optimise Tesco Mobile's handset assortment, creating a novel methodology to determine product selection and ordering for in-store displays. I also worked on customer profiling projects that delivered £829,000 in business value, whilst refactoring codebases, implementing testing, and removing external API dependencies.",
+    technologies: ["Python", "SQL", "PySpark", "AWS", "GCP", "Data Pipelines", "Machine Learning", "Data Engineering"]
   },
   {
     title: "Research Assistant",
-    company: "IISAGE Lab, Brown University",
+    company: "Singh Lab, Brown University (IISAGE Consortium)",
     location: "Remote",
     period: "May 2022 - Present", 
     description: "Conducting X chromosome dosage compensation research as part of NSF-funded initiative. Developing computational models for cross-species ageing biomarker analysis. Contributing to multi-institutional collaboration across 11 research laboratories.",
-    technologies: ["Python", "Deep Learning", "CNN", "Genomics", "Research"]
+    technologies: ["Python", "Deep Learning", "CNN", "Single-cell Analysis", "Transcriptomics", "Genomics"]
   }
 ];
 
@@ -46,7 +46,8 @@ export const education = [
     location: "Providence, RI",
     period: "September 2022 - October 2023",
     gpa: "4.0/4.0",
-    relevant: ["Machine Learning", "Deep Learning", "Statistical Learning", "Computational Probability and Statistics", "Data Engineering"]
+    achievements: ["Singh Lab Research Assistant", "Sustainable Food Initiative", "Brown Club Lacrosse: Won D2 regionals, placed 5th in nationals"],
+    relevant: ["Statistical Learning", "Machine Learning", "Hands-on Data Science", "Deep Learning", "Data Science Practicum", "Data Engineering", "Computational Probability and Statistics", "Data, Ethics and Society"]
   },
   {
     degree: "BA in History (minor in Data Science)",
@@ -55,7 +56,7 @@ export const education = [
     period: "September 2018 - May 2022",
     gpa: "3.6/4.0",
     achievements: ["Data Science Club Team Lead", "Data Science Fellow", "Research Assistant for Machine Learning for the Earth & Environment"],
-    relevant: ["Applied Statistics in Python", "Data Science Fluency", "Hands-on Data Science", "Data, Ethics and Society", "Introduction to Statistical Computing", "Data Science", "Linear Algebra", "Multivariable Calculus", "Applied Statistics"]
+    relevant: ["Applied Statistics in Python", "Comp Foundations: Organisation", "Computing Foundations: Data", "Cybersecurity Ethics", "Data Science Fluency", "Intermediate Microeconomics", "Introduction to Econometrics", "Introductory Calculus, Part II", "Prog Des: Data Structures & Algorithms", "The Digital World", "Linear Algebra"]
   }
 ];
 
@@ -75,6 +76,7 @@ export const projects = [
     technologies: ["Python", "LangChain", "Vector Databases", "FAISS", "Natural Language Processing"],
     github: "https://github.com/nikolaitennant/rag_scholar",
     demo: "https://ragscholarai.web.app",
+    image: "/rag-scholar-preview.png",
     features: [
       "Intelligent document retrieval and ranking",
       "Contextual Q&A with source citations",
@@ -101,7 +103,8 @@ export const projects = [
       "Comprehensive data visualisation and analysis"
     ],
     impact: "Demonstrates application of ML ensemble methods to sports analytics with quantifiable performance metrics",
-    category: "Machine Learning"
+    category: "Machine Learning",
+    timeline: "2023"
   }
 ];
 
@@ -112,8 +115,8 @@ export const publications = [
     status: "Manuscript accepted, undergoing final review (Preprint)",
     journal: "Nature Scientific Reports - Aging Clocks Collection",
     preprint: "https://pubmed.ncbi.nlm.nih.gov/39896546/",
-    description: "Comprehensive study developing novel ageing biomarkers using RNA-seq data and deep learning methodologies to understand tissue-specific ageing patterns in Drosophila melanogaster.",
-    longDescription: "As part of the NSF-funded IISAGE initiative, I developed novel computational approaches to understand ageing processes across different tissues using Drosophila melanogaster as a model organism. This work combines convolutional neural networks with genomic data analysis to identify ageing biomarkers that could translate to understanding human ageing mechanisms.",
+    description: "Research introducing TimeFlies, a pan-cell-type scRNA-seq ageing clock for Drosophila using deep learning to identify age-associated genes and investigate sex differences in ageing.",
+    longDescription: "As part of the NSF-funded IISAGE initiative, I developed TimeFlies as a single-cell transcriptomic ageing clock that classifies donor age based on genome-wide gene expression. Using explainability methods, we identified key biomarker genes including lncRNA:roX1, validated experimentally with in vivo survival studies. Sex-specific clocks revealed significant differences in ageing pathways between males and females.",
     technologies: ["Python", "Deep Learning", "CNNs", "RNA-seq Analysis", "Genomics", "Bioinformatics", "Statistical Modeling"],
     keyFindings: [
       "Developed 1D CNN achieving 95% accuracy and 0.99 AUC on Drosophila ageing prediction",
@@ -122,15 +125,15 @@ export const publications = [
       "Validated sexual dimorphism patterns in ageing processes"
     ],
     collaboration: "NSF-funded IISAGE initiative across 11 research institutions",
-    impact: "Contributing to fundamental understanding of ageing biology with potential applications in longevity research"
+    impact: "Contributing to fundamental understanding of ageing biology with potential applications in longevity research. The methodology has since been developed into a tool for future research use."
   }
 ];
 
 export const researchProjects = [
   {
     title: "SenID - Cellular Senescence Detection",
-    description: "Computer vision system for identifying senescent cells using morphological analysis (2nd place, hackathon competition)",
-    longDescription: "This project applies computer vision techniques to identify cellular senescence - a key hallmark of ageing. The system analyzes cell morphology to detect senescent phenotypes, which is crucial for understanding age-related diseases and potential therapeutic interventions.",
+    description: "Computer vision methodology for identifying senescent cells using morphological analysis (2nd place, hackathon competition)",
+    longDescription: "This project applies computer vision techniques to identify cellular senescence - a key hallmark of ageing. The system analyses cell morphology to detect senescent phenotypes, which is crucial for understanding age-related diseases and potential therapeutic interventions.",
     technologies: ["Python", "Computer Vision", "Deep Learning", "Cell Biology", "Image Processing", "Machine Learning"],
     keyFindings: [
       "Designed CNN-based methodology using nuclear morphology to identify cellular senescence",
@@ -138,54 +141,51 @@ export const researchProjects = [
       "Created interpretable models showing which morphological features indicate senescence"
     ],
     achievement: "🥈 2nd Place Winner - Hackathon Competition (225+ participants)",
-    impact: "Provides researchers with automated tools for senescence studies, accelerating ageing and cancer research",
-    collaboration: "Individual hackathon project"
+    impact: "Demonstrates potential for automated senescence detection methodology to support ageing and cancer research",
+    collaboration: "Hackathon competition project"
   }
 ];
 
 export const researchInterests = {
   title: "Research Focus & Interests",
-  subtitle: "Bridging computational biology and ageing research",
-  overview: "My research sits at the intersection of computational biology, machine learning, and ageing science. I'm passionate about using advanced computational methods to understand fundamental biological processes, particularly how organisms age and how we can potentially intervene in age-related decline.",
-  areas: [
+  subtitle: "Current work and future directions",
+  overview: "My current research focuses on computational biology and ageing science, using machine learning to understand fundamental biological processes. I'm particularly interested in expanding into high-impact applications in medical data science and cutting-edge AI research.",
+  currentFocus: {
+    title: "Current Research",
+    description: "Computational Biology & Ageing Research",
+    focus: [
+      "Sexual dimorphism in ageing using RNA-seq and deep learning",
+      "Cross-species comparative studies and biomarker discovery", 
+      "Tissue-specific ageing patterns and cellular senescence",
+      "Multi-omics data integration and genomic analysis"
+    ]
+  },
+  futureInterests: [
     {
-      title: "Computational Ageing Biology",
-      description: "Developing AI/ML approaches to understand ageing mechanisms across species",
+      title: "Medical Data Science & Healthcare AI",
+      description: "Applying AI/ML to healthcare and medical research for high-impact applications",
       focus: [
-        "Tissue-specific ageing patterns and biomarker discovery",
-        "Cross-species comparative ageing studies",
-        "Sexual dimorphism in ageing processes",
-        "Molecular mechanisms of cellular senescence"
+        "Clinical data analysis and predictive modelling",
+        "Healthcare AI systems and patient outcomes research",
+        "Medical imaging and diagnostic tool development",
+        "Precision medicine and personalised treatment approaches"
       ]
     },
     {
-      title: "Genomics & Deep Learning",
-      description: "Applying neural networks to genomic data for biological insight",
+      title: "Cutting-Edge AI Research", 
+      description: "Exploring frontier AI technologies and their applications across domains",
       focus: [
-        "RNA-seq data analysis and interpretation",
-        "Convolutional neural networks for sequence analysis",
-        "Multi-omics data integration",
-        "Genomic feature engineering and selection"
-      ]
-    },
-    {
-      title: "Translational Research",
-      description: "Bridging fundamental research with practical applications",
-      focus: [
-        "Biomarker development for clinical applications",
-        "Drug discovery and therapeutic target identification",
-        "Precision medicine approaches to ageing",
-        "Commercial applications of biological insights"
+        "Large language models and multimodal AI systems",
+        "Agentic AI and autonomous research assistants",
+        "Novel neural architectures and training methodologies",
+        "AI for scientific discovery and research acceleration"
       ]
     }
   ],
   currentProjects: [
-    "NSF IISAGE Initiative: Multi-institutional ageing research collaboration",
-    "X chromosome dosage compensation studies in Drosophila",
-    "Cross-species ageing biomarker validation",
-    "Development of interpretable AI models for biological discovery"
-  ],
-  futureDirections: "I'm interested in expanding this work to mammalian systems, developing clinical ageing biomarkers, and exploring how machine learning can accelerate drug discovery for age-related diseases."
+    "TimeFlies: continuing development to transform the ageing clock methodology into a comprehensive analysis tool",
+    "Alzheimer's disease research applications using TimeFlies methodology"
+  ]
 };
 
 export const personalInterests = {

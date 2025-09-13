@@ -48,7 +48,7 @@ const Contact: React.FC = () => {
   });
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.03 });
   
   // Terminal commands with scroll trigger
   const pingCommand = useScrollTriggeredTypewriter("$ ping nikolai@contact.net", 80, 500);
@@ -110,35 +110,35 @@ const Contact: React.FC = () => {
       label: 'Email',
       value: personalInfo.email,
       href: `mailto:${personalInfo.email}`,
-      color: 'from-green-500 to-green-600'
+      colour: 'from-green-500 to-green-600'
     },
     {
       icon: Phone,
       label: 'Phone',
       value: personalInfo.phone,
       href: `tel:${personalInfo.phone}`,
-      color: 'from-blue-500 to-blue-600'
+      colour: 'from-blue-500 to-blue-600'
     },
     {
       icon: MapPin,
       label: 'Location',
       value: personalInfo.location,
       href: null,
-      color: 'from-purple-500 to-purple-600'
+      colour: 'from-purple-500 to-purple-600'
     },
     {
       icon: Github,
       label: 'GitHub',
       value: '@nikolaitennant',
       href: personalInfo.github,
-      color: 'from-gray-600 to-gray-700'
+      colour: 'from-gray-600 to-gray-700'
     },
     {
       icon: Linkedin,
       label: 'LinkedIn',
       value: 'nikolai-tennant',
       href: personalInfo.linkedin,
-      color: 'from-blue-600 to-blue-700'
+      colour: 'from-blue-600 to-blue-700'
     }
   ];
 
@@ -234,7 +234,7 @@ const Contact: React.FC = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.03 }}
           variants={containerVariants}
         >
           {/* Section Header */}
@@ -268,11 +268,11 @@ const Contact: React.FC = () => {
                           rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                           className="flex items-center p-4 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl hover:bg-terminal-700 hover:border-primary-500/50 transition-all duration-300 group-hover:shadow-lg"
                         >
-                          <div className={`p-3 rounded-lg bg-gradient-to-r ${method.color} text-white mr-4`}>
+                          <div className={`p-3 rounded-lg bg-gradient-to-r ${method.colour} text-white mr-4`}>
                             <Icon className="w-5 h-5" />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-terminal-100 group-hover:text-primary-400 transition-colors font-mono">
+                            <h4 className="font-semibold text-terminal-100 group-hover:text-primary-400 transition-colours font-mono">
                               {method.label}
                             </h4>
                             <p className="text-terminal-300 text-sm font-mono">
@@ -282,7 +282,7 @@ const Contact: React.FC = () => {
                         </a>
                       ) : (
                         <div className="flex items-center p-4 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl">
-                          <div className={`p-3 rounded-lg bg-gradient-to-r ${method.color} text-white mr-4`}>
+                          <div className={`p-3 rounded-lg bg-gradient-to-r ${method.colour} text-white mr-4`}>
                             <Icon className="w-5 h-5" />
                           </div>
                           <div>
@@ -333,9 +333,10 @@ const Contact: React.FC = () => {
                         id="name"
                         name="name"
                         required
+                        autoComplete="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colors"
+                        className="w-full px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours"
                         placeholder="Your Name"
                       />
                     </div>
@@ -348,9 +349,10 @@ const Contact: React.FC = () => {
                         id="email"
                         name="email"
                         required
+                        autoComplete="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colors"
+                        className="w-full px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours"
                         placeholder="your@email.com"
                       />
                     </div>
@@ -365,9 +367,10 @@ const Contact: React.FC = () => {
                       id="subject"
                       name="subject"
                       required
+                      autoComplete="off"
                       value={formData.subject}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colors"
+                      className="w-full px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours"
                       placeholder="What's this about?"
                     />
                   </div>
@@ -380,9 +383,10 @@ const Contact: React.FC = () => {
                       id="message"
                       name="message"
                       required
+                      autoComplete="off"
                       value={formData.message}
                       onChange={handleInputChange}
-                      className="w-full flex-1 px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colors resize-none"
+                      className="w-full flex-1 px-4 py-3 border border-terminal-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-400 bg-terminal-700 text-terminal-100 font-mono transition-colours resize-none"
                       placeholder="Tell me about your project, collaboration idea, or just say hello..."
                     />
                   </div>

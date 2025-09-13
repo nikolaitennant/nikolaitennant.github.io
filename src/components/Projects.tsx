@@ -44,7 +44,7 @@ const Projects: React.FC = () => {
   const [filter, setFilter] = useState<string>('all');
   const [expandedTags, setExpandedTags] = useState<Set<number>>(new Set());
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.03 });
   
   const toggleTagsExpansion = (projectIndex: number) => {
     setExpandedTags(prev => {
@@ -78,7 +78,7 @@ const Projects: React.FC = () => {
     : projects.filter(project => project.category === filter);
 
   // Organize projects into columns manually for proper masonry
-  const organizeIntoColumns = (projects: any[], numCols: number) => {
+  const organiseIntoColumns = (projects: any[], numCols: number) => {
     const columns: any[][] = Array.from({ length: numCols }, () => []);
     projects.forEach((project, index) => {
       columns[index % numCols].push({ ...project, originalIndex: index });
@@ -101,7 +101,7 @@ const Projects: React.FC = () => {
     return () => window.removeEventListener('resize', updateColumns);
   }, []);
 
-  const projectColumns = organizeIntoColumns(filteredProjects, columnCount);
+  const projectColumns = organiseIntoColumns(filteredProjects, columnCount);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -157,7 +157,7 @@ const Projects: React.FC = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.03 }}
           variants={containerVariants}
         >
           {/* Section Header */}
@@ -211,7 +211,7 @@ const Projects: React.FC = () => {
                     {/* Project Header */}
                     <div className="p-8 pb-6 flex-1 flex flex-col">
                       <div className="mb-4">
-                        <h3 className="text-2xl font-bold text-terminal-100 mb-3 group-hover:text-primary-400 transition-colors font-mono leading-tight">
+                        <h3 className="text-2xl font-bold text-terminal-100 mb-3 group-hover:text-primary-400 transition-colours font-mono leading-tight">
                           {project.title}
                         </h3>
                         
@@ -267,7 +267,7 @@ const Projects: React.FC = () => {
                               e.stopPropagation();
                               toggleTagsExpansion(project.originalIndex);
                             }}
-                            className="px-3 py-1.5 bg-terminal-700 border border-primary-500/50 text-primary-400 rounded text-sm font-medium font-mono hover:border-primary-500 transition-colors"
+                            className="px-3 py-1.5 bg-terminal-700 border border-primary-500/50 text-primary-400 rounded text-sm font-medium font-mono hover:border-primary-500 transition-colours"
                           >
                             {expandedTags.has(project.originalIndex) 
                               ? 'Show Less' 
@@ -285,7 +285,7 @@ const Projects: React.FC = () => {
                               href={project.github}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center text-terminal-300 hover:text-primary-400 transition-colors font-mono"
+                              className="flex items-center text-terminal-300 hover:text-primary-400 transition-colours font-mono"
                               onClick={(e) => e.stopPropagation()}
                             >
                               <Github className="w-4 h-4 mr-1" />
@@ -297,7 +297,7 @@ const Projects: React.FC = () => {
                               href={(project as any).demo}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center text-terminal-300 hover:text-bio-400 transition-colors font-mono"
+                              className="flex items-center text-terminal-300 hover:text-bio-400 transition-colours font-mono"
                               onClick={(e) => e.stopPropagation()}
                             >
                               <ExternalLink className="w-4 h-4 mr-1" />
@@ -309,7 +309,7 @@ const Projects: React.FC = () => {
                               href={project.preprint}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center text-terminal-300 hover:text-bio-400 transition-colors font-mono"
+                              className="flex items-center text-terminal-300 hover:text-bio-400 transition-colours font-mono"
                               onClick={(e) => e.stopPropagation()}
                             >
                               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -326,7 +326,7 @@ const Projects: React.FC = () => {
                           )}
                         </div>
 
-                        <button className="flex items-center text-primary-400 hover:text-primary-300 transition-colors">
+                        <button className="flex items-center text-primary-400 hover:text-primary-300 transition-colours">
                           <span className="text-sm font-medium mr-1 font-mono">
                             {selectedProject === project.originalIndex ? 'Less' : 'More'}
                           </span>

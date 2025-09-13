@@ -42,7 +42,7 @@ const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDel
 const Skills: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.03 });
   
   // Terminal commands with scroll trigger
   const lsCommand = useScrollTriggeredTypewriter("$ ls -la /skills/technical/", 80, 500);
@@ -61,35 +61,35 @@ const Skills: React.FC = () => {
     {
       name: "Programming",
       icon: Code,
-      color: "from-blue-500 to-blue-600",
+      colour: "from-blue-500 to-blue-600",
       bgColor: "bg-blue-50 dark:bg-blue-900/20",
       skills: skills["Programming"]
     },
     {
       name: "ML/AI",
       icon: Brain,
-      color: "from-purple-500 to-purple-600", 
+      colour: "from-purple-500 to-purple-600", 
       bgColor: "bg-purple-50 dark:bg-purple-900/20",
       skills: skills["ML/AI"]
     },
     {
       name: "Mathematics & Statistics",
       icon: Settings,
-      color: "from-green-500 to-green-600",
+      colour: "from-green-500 to-green-600",
       bgColor: "bg-green-50 dark:bg-green-900/20",
       skills: skills["Mathematics & Statistics"]
     },
     {
       name: "Data & Cloud",
       icon: Database,
-      color: "from-orange-500 to-orange-600",
+      colour: "from-orange-500 to-orange-600",
       bgColor: "bg-orange-50 dark:bg-orange-900/20",
       skills: skills["Data & Cloud"]
     },
     {
       name: "Specialised Applications",
       icon: BarChart,
-      color: "from-pink-500 to-pink-600",
+      colour: "from-pink-500 to-pink-600",
       bgColor: "bg-pink-50 dark:bg-pink-900/20",
       skills: skills["Specialised Applications"]
     }
@@ -232,7 +232,7 @@ const Skills: React.FC = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.03 }}
           variants={containerVariants}
         >
           {/* Section Header */}
@@ -263,7 +263,7 @@ const Skills: React.FC = () => {
                 >
                   {/* Category Header */}
                   <div className="flex items-center mb-4">
-                    <div className={`p-3 rounded-xl bg-gradient-to-r ${category.color} text-white mr-4`}>
+                    <div className={`p-3 rounded-xl bg-gradient-to-r ${category.colour} text-white mr-4`}>
                       <Icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-xl font-semibold text-terminal-100 font-mono">
@@ -351,7 +351,7 @@ const Skills: React.FC = () => {
                     Machine Learning
                   </h4>
                   <p className="text-terminal-300 text-sm font-mono">
-                    Deep expertise in ML algorithms, neural networks, and statistical modeling for complex data problems
+                    Experience with ML algorithms, neural networks, and statistical modelling for data analysis
                   </p>
                 </div>
                 
@@ -363,7 +363,7 @@ const Skills: React.FC = () => {
                     Data Engineering
                   </h4>
                   <p className="text-terminal-300 text-sm font-mono">
-                    Building scalable data pipelines and infrastructure for high-performance analytics systems
+                    Building data pipelines and processing systems for analytics and research applications
                   </p>
                 </div>
                 
@@ -375,7 +375,7 @@ const Skills: React.FC = () => {
                     Research & Development
                   </h4>
                   <p className="text-terminal-300 text-sm font-mono">
-                    Translating cutting-edge research into practical solutions for real-world applications
+                    Applying research methodologies to develop practical tools for biological and data science applications
                   </p>
                 </div>
               </div>

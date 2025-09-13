@@ -41,7 +41,7 @@ const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDel
 
 const About: React.FC = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.03 });
   const [expandedEducation, setExpandedEducation] = useState<number | null>(null);
   
   // Terminal commands with scroll trigger
@@ -192,7 +192,7 @@ const About: React.FC = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.03 }}
           variants={staggerContainer}
         >
           {/* Section Header */}
@@ -215,7 +215,7 @@ const About: React.FC = () => {
                 {personalInfo.bio}
               </p>
               
-              <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 hover:border-primary-500/50 transition-colors">
+              <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 hover:border-primary-500/50 transition-colours">
                 <div className="flex items-center mb-3">
                   <Users className="w-5 h-5 text-primary-400 mr-2" />
                   <span className="font-semibold text-terminal-100 font-mono">Citizenship</span>
@@ -236,24 +236,24 @@ const About: React.FC = () => {
               </h3>
               
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 text-center hover:border-primary-500/50 transition-colors">
+                <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 text-center hover:border-primary-500/50 transition-colours">
                   <div className="text-3xl font-bold text-primary-400 mb-2 font-mono">4.0</div>
                   <div className="text-sm font-medium text-terminal-300 font-mono">MSc GPA</div>
                 </div>
                 
-                <div className="bg-terminal-800/50 backdrop-blur-sm border border-bio-500/30 rounded-xl p-6 text-center hover:border-bio-500/50 transition-colors">
+                <div className="bg-terminal-800/50 backdrop-blur-sm border border-bio-500/30 rounded-xl p-6 text-center hover:border-bio-500/50 transition-colours">
                   <div className="text-3xl font-bold text-bio-400 mb-2 font-mono">2nd</div>
                   <div className="text-sm font-medium text-terminal-300 font-mono">Hackathon Place</div>
                 </div>
                 
-                <div className="bg-terminal-800/50 backdrop-blur-sm border border-accent-500/30 rounded-xl p-6 text-center hover:border-accent-500/50 transition-colors">
+                <div className="bg-terminal-800/50 backdrop-blur-sm border border-accent-500/30 rounded-xl p-6 text-center hover:border-accent-500/50 transition-colours">
                   <div className="text-3xl font-bold text-accent-400 mb-2 font-mono">1</div>
                   <div className="text-sm font-medium text-terminal-300 font-mono">Publication</div>
                 </div>
                 
-                <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 text-center hover:border-primary-500/50 transition-colors">
-                  <div className="text-3xl font-bold text-primary-400 mb-2 font-mono">5+</div>
-                  <div className="text-sm font-medium text-terminal-300 font-mono">ML Projects</div>
+                <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 text-center hover:border-primary-500/50 transition-colours">
+                  <div className="text-3xl font-bold text-primary-400 mb-2 font-mono">2+</div>
+                  <div className="text-sm font-medium text-terminal-300 font-mono">Years Industry Experience</div>
                 </div>
               </div>
             </motion.div>
@@ -311,7 +311,7 @@ const About: React.FC = () => {
                         {exp.technologies.map((tech) => (
                           <span
                             key={tech}
-                            className="px-3 py-1 bg-terminal-700/50 border border-bio-500/30 text-bio-400 rounded text-sm font-medium font-mono hover:border-bio-500/50 transition-colors"
+                            className="px-3 py-1 bg-terminal-700/50 border border-bio-500/30 text-bio-400 rounded text-sm font-medium font-mono hover:border-bio-500/50 transition-colours"
                           >
                             {tech}
                           </span>
@@ -354,7 +354,7 @@ const About: React.FC = () => {
                       </div>
                     </div>
                     {edu.gpa && (
-                      <div className="bg-terminal-700/50 border border-bio-500/30 px-3 py-1 rounded-lg hover:border-bio-500/50 transition-colors">
+                      <div className="bg-terminal-700/50 border border-bio-500/30 px-3 py-1 rounded-lg hover:border-bio-500/50 transition-colours">
                         <span className="text-bio-400 font-semibold font-mono">
                           GPA: {edu.gpa}
                         </span>
@@ -371,7 +371,7 @@ const About: React.FC = () => {
                         {edu.relevant.map((course) => (
                           <span
                             key={course}
-                            className="px-3 py-1 border border-accent-500/40 text-accent-300 rounded text-sm font-mono hover:border-accent-500/70 hover:text-accent-400 transition-colors bg-transparent"
+                            className="px-3 py-1 border border-accent-500/40 text-accent-300 rounded text-sm font-mono hover:border-accent-500/70 hover:text-accent-400 transition-colours bg-transparent"
                           >
                             {course}
                           </span>
@@ -390,13 +390,13 @@ const About: React.FC = () => {
                         {edu.achievements.slice(0, 6).map((achievement) => (
                           <span
                             key={achievement}
-                            className="px-3 py-1 border border-bio-500/40 text-bio-300 rounded text-sm font-mono hover:border-bio-500/70 hover:text-bio-400 transition-colors bg-transparent"
+                            className="px-3 py-1 border border-bio-500/40 text-bio-300 rounded text-sm font-mono hover:border-bio-500/70 hover:text-bio-400 transition-colours bg-transparent"
                           >
                             {achievement}
                           </span>
                         ))}
                         {edu.achievements.length > 6 && (
-                          <span className="px-3 py-1 border border-terminal-400/40 text-terminal-400 rounded text-sm font-mono hover:border-terminal-400/70 transition-colors bg-transparent">
+                          <span className="px-3 py-1 border border-terminal-400/40 text-terminal-400 rounded text-sm font-mono hover:border-terminal-400/70 transition-colours bg-transparent">
                             +{edu.achievements.length - 6} more
                           </span>
                         )}
@@ -424,7 +424,7 @@ const About: React.FC = () => {
                                     initial="hidden"
                                     animate="visible"
                                     transition={{ delay: achievementIndex * 0.05 }}
-                                    className="px-3 py-1 border border-bio-500/40 text-bio-300 rounded text-sm font-mono hover:border-bio-500/70 hover:text-bio-400 transition-colors bg-transparent"
+                                    className="px-3 py-1 border border-bio-500/40 text-bio-300 rounded text-sm font-mono hover:border-bio-500/70 hover:text-bio-400 transition-colours bg-transparent"
                                   >
                                     {achievement}
                                   </motion.span>

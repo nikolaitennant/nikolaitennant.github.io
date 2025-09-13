@@ -41,7 +41,7 @@ const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDel
 
 const Publications: React.FC = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.03 });
   
   // Terminal commands with scroll trigger
   const grepCommand = useScrollTriggeredTypewriter("$ grep -r 'publications' research/", 80, 500);
@@ -101,7 +101,7 @@ const Publications: React.FC = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.03 }}
           variants={containerVariants}
         >
           {/* Section Header */}
@@ -181,7 +181,7 @@ const Publications: React.FC = () => {
                             href={publication.preprint}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center text-bio-400 hover:text-bio-300 transition-colors font-mono bg-terminal-700/30 border border-bio-500/30 rounded-lg px-4 py-2 text-sm"
+                            className="inline-flex items-center text-bio-400 hover:text-bio-300 transition-colours font-mono bg-terminal-700/30 border border-bio-500/30 rounded-lg px-4 py-2 text-sm"
                           >
                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -365,50 +365,66 @@ const Publications: React.FC = () => {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-6 mb-8">
-                {researchInterests.areas.map((area, index) => (
-                  <div key={index} className="bg-terminal-700/30 border border-terminal-600 rounded-xl p-4">
-                    <h4 className="text-lg font-bold text-terminal-100 mb-2 font-mono">
-                      {area.title}
-                    </h4>
-                    <p className="text-terminal-300 text-sm font-mono mb-3">
-                      {area.description}
-                    </p>
-                    <ul className="space-y-1">
-                      {area.focus.map((item, i) => (
-                        <li key={i} className="flex items-start text-xs text-terminal-300 font-mono">
-                          <span className="text-primary-400 mr-2 flex-shrink-0">▸</span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="text-lg font-semibold text-terminal-100 mb-3 font-mono">
-                    <span className="text-primary-400">{'>'}</span> Current Projects:
+              {/* Current Research */}
+              <div className="mb-8">
+                <div className="bg-terminal-700/30 border border-terminal-600 rounded-xl p-6">
+                  <h4 className="text-xl font-bold text-terminal-100 mb-2 font-mono">
+                    <span className="text-primary-400">{'>'}</span> {researchInterests.currentFocus.title}
                   </h4>
+                  <p className="text-terminal-300 font-mono mb-4">
+                    {researchInterests.currentFocus.description}
+                  </p>
                   <ul className="space-y-2">
-                    {researchInterests.currentProjects.map((project, i) => (
+                    {researchInterests.currentFocus.focus.map((item, i) => (
                       <li key={i} className="flex items-start text-sm text-terminal-300 font-mono">
-                        <span className="text-bio-400 mr-2 flex-shrink-0">▸</span>
-                        {project}
+                        <span className="text-primary-400 mr-2 flex-shrink-0">▸</span>
+                        {item}
                       </li>
                     ))}
                   </ul>
                 </div>
+              </div>
 
-                <div>
-                  <h4 className="text-lg font-semibold text-terminal-100 mb-3 font-mono">
-                    <span className="text-primary-400">{'>'}</span> Future Directions:
-                  </h4>
-                  <p className="text-terminal-300 text-sm leading-relaxed font-mono">
-                    {researchInterests.futureDirections}
-                  </p>
+              {/* Future Interests */}
+              <div className="mb-8">
+                <h4 className="text-xl font-semibold text-terminal-100 mb-4 font-mono text-center">
+                  <span className="text-accent-400">{'>'}</span> Future Research Interests
+                </h4>
+                <div className="grid md:grid-cols-2 gap-6">
+                  {researchInterests.futureInterests.map((area, index) => (
+                    <div key={index} className="bg-terminal-700/30 border border-terminal-600 rounded-xl p-4">
+                      <h5 className="text-lg font-bold text-terminal-100 mb-2 font-mono">
+                        {area.title}
+                      </h5>
+                      <p className="text-terminal-300 text-sm font-mono mb-3">
+                        {area.description}
+                      </p>
+                      <ul className="space-y-1">
+                        {area.focus.map((item, i) => (
+                          <li key={i} className="flex items-start text-xs text-terminal-300 font-mono">
+                            <span className="text-accent-400 mr-2 flex-shrink-0">▸</span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
                 </div>
+              </div>
+
+              {/* Current Projects */}
+              <div>
+                <h4 className="text-lg font-semibold text-terminal-100 mb-3 font-mono">
+                  <span className="text-primary-400">{'>'}</span> Current Projects:
+                </h4>
+                <ul className="space-y-2">
+                  {researchInterests.currentProjects.map((project, i) => (
+                    <li key={i} className="flex items-start text-sm text-terminal-300 font-mono">
+                      <span className="text-bio-400 mr-2 flex-shrink-0">▸</span>
+                      {project}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </motion.div>

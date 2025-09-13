@@ -365,7 +365,7 @@ const Contact: React.FC = () => {
                     className={`w-full flex items-center justify-center px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 font-mono text-sm md:text-base ${
                       state.succeeded
                         ? 'bg-green-600 text-white'
-                        : (state.errors && state.errors.length > 0)
+                        : (state.errors && Object.keys(state.errors).length > 0)
                         ? 'bg-red-600 text-white'
                         : 'bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 shadow-lg hover:shadow-xl'
                     } disabled:opacity-75 disabled:cursor-not-allowed`}
@@ -382,17 +382,17 @@ const Contact: React.FC = () => {
                     {state.succeeded && (
                       <CheckCircle className="w-5 h-5 mr-3" />
                     )}
-                    {(state.errors && state.errors.length > 0) && (
+                    {(state.errors && Object.keys(state.errors).length > 0) && (
                       <AlertCircle className="w-5 h-5 mr-3" />
                     )}
-                    {!state.submitting && !state.succeeded && (!state.errors || state.errors.length === 0) && (
+                    {!state.submitting && !state.succeeded && (!state.errors || Object.keys(state.errors).length === 0) && (
                       <Send className="w-5 h-5 mr-3" />
                     )}
                     
                     {state.submitting && 'Sending Message...'}
                     {state.succeeded && 'Message Sent!'}
-                    {(state.errors && state.errors.length > 0) && 'Failed to Send'}
-                    {!state.submitting && !state.succeeded && (!state.errors || state.errors.length === 0) && 'Send Message'}
+                    {(state.errors && Object.keys(state.errors).length > 0) && 'Failed to Send'}
+                    {!state.submitting && !state.succeeded && (!state.errors || Object.keys(state.errors).length === 0) && 'Send Message'}
                   </motion.button>
                 </form>
               </div>

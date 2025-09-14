@@ -41,8 +41,18 @@ const useScrollTriggeredTypewriter = (text: string, delay: number = 50, startDel
 
 const Skills: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [tappedCategory, setTappedCategory] = useState<string | null>(null);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.03 });
+
+  // Handle mobile tap interactions
+  const handleCategoryTap = (categoryName: string) => {
+    if (tappedCategory === categoryName) {
+      setTappedCategory(null);
+    } else {
+      setTappedCategory(categoryName);
+    }
+  };
   
   // Terminal commands with scroll trigger
   const lsCommand = useScrollTriggeredTypewriter("$ ls -la /skills/technical/", 80, 500);
@@ -212,7 +222,7 @@ const Skills: React.FC = () => {
       </div>
 
       {/* Terminal Command Header */}
-      <div className="absolute top-8 left-8 text-primary-400 font-mono text-sm opacity-40 space-y-1">
+      <div className="absolute top-16 left-3 md:top-8 md:left-8 text-primary-400 font-mono text-xs md:text-sm opacity-40 space-y-1">
         <div className="flex items-center space-x-2 mb-2">
           <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
           <div className="w-3 h-3 rounded-full bg-accent-500 animate-pulse" style={{animationDelay: '0.3s'}}></div>
@@ -249,7 +259,7 @@ const Skills: React.FC = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {skillCategories.map((category) => {
               const Icon = category.icon;
-              const isActive = activeCategory === category.name;
+              const isActive = activeCategory === category.name || tappedCategory === category.name;
 
               return (
                 <motion.div
@@ -258,6 +268,7 @@ const Skills: React.FC = () => {
                   className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-xl p-6 cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-primary-500/50"
                   onHoverStart={() => setActiveCategory(category.name)}
                   onHoverEnd={() => setActiveCategory(null)}
+                  onTap={() => handleCategoryTap(category.name)}
                   whileHover={{ y: -5 }}
                   whileTap={{ scale: 0.98 }}
                 >

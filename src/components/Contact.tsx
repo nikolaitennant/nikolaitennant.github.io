@@ -200,7 +200,7 @@ const Contact: React.FC = () => {
       </div>
       
       {/* Terminal Command Header */}
-      <div className="absolute top-8 left-8 text-primary-400 font-mono text-sm opacity-40 space-y-1">
+      <div className="absolute top-16 left-3 md:top-8 md:left-8 text-primary-400 font-mono text-xs md:text-sm opacity-40 space-y-1">
         <div className="flex items-center space-x-2 mb-2">
           <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
           <div className="w-3 h-3 rounded-full bg-accent-500 animate-pulse" style={{animationDelay: '0.3s'}}></div>
@@ -224,21 +224,21 @@ const Contact: React.FC = () => {
           variants={containerVariants}
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-8 md:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4 font-mono">
+          <motion.div variants={itemVariants} className="text-center mb-6 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 md:mb-4 font-mono">
               <span className="text-primary-400">{'>'}</span> <span className="gradient-text">Get In Touch</span>
             </h2>
-            <p className="text-lg sm:text-xl text-terminal-300 max-w-3xl mx-auto font-mono px-4">
+            <p className="text-base sm:text-lg md:text-xl text-terminal-300 max-w-3xl mx-auto font-mono px-2">
               Available to discuss professional opportunities and technical projects.
             </p>
           </motion.div>
 
           {/* Two Column Layout: Contact Info + Form */}
-          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid lg:grid-cols-2 gap-4 lg:gap-8">
             {/* Left Column - Contact Methods */}
-            <motion.div variants={itemVariants} className="space-y-4 md:space-y-6">
+            <motion.div variants={itemVariants} className="space-y-3 md:space-y-6">
               {/* Contact Methods */}
-              <div className="space-y-3 md:space-y-4">
+              <div className="space-y-2 md:space-y-4">
                 {contactMethods.map((method) => {
                   const Icon = method.icon;
                   return (

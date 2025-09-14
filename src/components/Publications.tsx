@@ -80,7 +80,7 @@ const Publications: React.FC = () => {
     <section id="publications" className="section-padding bg-gradient-to-br from-terminal-900 via-purple-950/20 to-gray-900/20 relative overflow-hidden" ref={ref}>
       
       {/* Terminal Command Header */}
-      <div className="absolute top-8 left-8 text-primary-400 font-mono text-sm opacity-40 space-y-1">
+      <div className="absolute top-16 left-3 md:top-8 md:left-8 text-primary-400 font-mono text-xs md:text-sm opacity-40 space-y-1">
         <div className="flex items-center space-x-2 mb-2">
           <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
           <div className="w-3 h-3 rounded-full bg-accent-500 animate-pulse" style={{animationDelay: '0.2s'}}></div>
@@ -105,11 +105,11 @@ const Publications: React.FC = () => {
           variants={containerVariants}
         >
           {/* Section Header */}
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 font-mono">
+          <motion.div variants={itemVariants} className="text-center mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 font-mono">
               <span className="text-primary-400">{'>'}</span> <span className="gradient-text">Research & Publications</span>
             </h2>
-            <p className="text-xl text-terminal-300 max-w-3xl mx-auto font-mono">
+            <p className="text-base md:text-lg text-terminal-300 max-w-3xl mx-auto font-mono px-2">
               Research contributions in computational biology, ageing science, and machine learning applications
             </p>
           </motion.div>

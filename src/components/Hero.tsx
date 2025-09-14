@@ -298,7 +298,7 @@ const Hero: React.FC = () => {
       </div>
       
       {/* Bio-Terminal Header */}
-      <div className="absolute top-20 left-8 md:top-8 text-primary-400 font-mono text-sm opacity-40 space-y-1">
+      <div className="absolute top-16 left-3 md:top-8 md:left-8 text-primary-400 font-mono text-xs md:text-sm opacity-40 space-y-1">
         <div className="flex items-center space-x-2 mb-2">
           <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
           <div className="w-3 h-3 rounded-full bg-accent-500 animate-pulse" style={{animationDelay: '0.2s'}}></div>
@@ -342,7 +342,7 @@ const Hero: React.FC = () => {
         >
           {/* Name and Title */}
           <motion.div variants={itemVariants}>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 md:mb-6 leading-tight font-futuristic tracking-wider">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-3 md:mb-6 leading-tight font-futuristic tracking-wider">
               <span className="gradient-text">NIKOLAI</span>
               <br />
               <span className="text-terminal-100">TENNANT</span>
@@ -351,8 +351,8 @@ const Hero: React.FC = () => {
 
           {/* Animated Title */}
           <motion.div variants={itemVariants}>
-            <div 
-              className="text-lg sm:text-xl md:text-2xl text-terminal-300 mb-6 md:mb-8 min-h-6 md:min-h-8 font-mono select-none relative" 
+            <div
+              className="text-base sm:text-lg md:text-xl text-terminal-300 mb-4 md:mb-8 min-h-5 md:min-h-8 font-mono select-none relative" 
               style={{
                 caretColor: 'transparent', 
                 userSelect: 'none', 
@@ -379,26 +379,26 @@ const Hero: React.FC = () => {
           {/* Location */}
           <motion.div 
             variants={itemVariants}
-            className="flex items-center justify-center mb-8 text-gray-600 dark:text-gray-400"
+            className="flex items-center justify-center mb-6 md:mb-8 text-gray-600 dark:text-gray-400"
           >
             <MapPin className="w-5 h-5 mr-2" />
-            <span className="text-lg">{personalInfo.location}</span>
+            <span className="text-sm md:text-lg">{personalInfo.location}</span>
           </motion.div>
 
           {/* Social Links */}
           <motion.div 
             variants={itemVariants}
-            className="flex items-center justify-center space-x-6 mb-12"
+            className="flex items-center justify-center space-x-4 md:space-x-6 mb-8 md:mb-12"
           >
             <motion.a
               href={personalInfo.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="tooltip p-3 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-lg shadow-lg hover:shadow-xl hover:border-primary-500/50 transition-all duration-300 group"
+              className="tooltip p-2 md:p-3 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-lg shadow-lg hover:shadow-xl hover:border-primary-500/50 transition-all duration-300 group"
               whileHover={{ scale: 1.1, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Github className="w-6 h-6 text-terminal-300 group-hover:text-primary-400" />
+              <Github className="w-5 h-5 md:w-6 md:h-6 text-terminal-300 group-hover:text-primary-400" />
               <span className="tooltip-content">GitHub</span>
             </motion.a>
             
@@ -406,21 +406,21 @@ const Hero: React.FC = () => {
               href={personalInfo.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="tooltip p-3 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-lg shadow-lg hover:shadow-xl hover:border-primary-500/50 transition-all duration-300 group"
+              className="tooltip p-2 md:p-3 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-lg shadow-lg hover:shadow-xl hover:border-primary-500/50 transition-all duration-300 group"
               whileHover={{ scale: 1.1, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Linkedin className="w-6 h-6 text-terminal-300 group-hover:text-primary-400" />
+              <Linkedin className="w-5 h-5 md:w-6 md:h-6 text-terminal-300 group-hover:text-primary-400" />
               <span className="tooltip-content">LinkedIn</span>
             </motion.a>
             
             <motion.a
               href={`mailto:${personalInfo.email}`}
-              className="tooltip p-3 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-lg shadow-lg hover:shadow-xl hover:border-primary-500/50 transition-all duration-300 group"
+              className="tooltip p-2 md:p-3 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-lg shadow-lg hover:shadow-xl hover:border-primary-500/50 transition-all duration-300 group"
               whileHover={{ scale: 1.1, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Mail className="w-6 h-6 text-terminal-300 group-hover:text-primary-400" />
+              <Mail className="w-5 h-5 md:w-6 md:h-6 text-terminal-300 group-hover:text-primary-400" />
               <span className="tooltip-content">Email</span>
             </motion.a>
             
@@ -429,11 +429,11 @@ const Hero: React.FC = () => {
           {/* CTA Buttons */}
           <motion.div 
             variants={itemVariants}
-            className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 mb-16 justify-center"
+            className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 md:space-x-6 mb-12 md:mb-16 justify-center"
           >
             <motion.a
               href="#projects"
-              className="px-8 py-4 bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 text-white font-semibold font-mono rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-primary-500/50 flex items-center"
+              className="px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 text-white font-semibold font-mono rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-primary-500/50 flex items-center text-sm md:text-base"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -442,7 +442,7 @@ const Hero: React.FC = () => {
             
             <motion.a
               href="#contact"
-              className="px-8 py-4 bg-terminal-800/50 backdrop-blur-sm border-2 border-primary-500 text-primary-400 font-semibold font-mono rounded-lg hover:bg-terminal-700/70 hover:border-primary-400 transition-all duration-300 flex items-center"
+              className="px-6 py-3 md:px-8 md:py-4 bg-terminal-800/50 backdrop-blur-sm border-2 border-primary-500 text-primary-400 font-semibold font-mono rounded-lg hover:bg-terminal-700/70 hover:border-primary-400 transition-all duration-300 flex items-center text-sm md:text-base"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >

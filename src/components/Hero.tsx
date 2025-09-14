@@ -298,7 +298,7 @@ const Hero: React.FC = () => {
       </div>
       
       {/* Bio-Terminal Header */}
-      <div className="absolute top-8 left-8 text-primary-400 font-mono text-sm opacity-40 space-y-1">
+      <div className="absolute top-20 left-8 md:top-8 text-primary-400 font-mono text-sm opacity-40 space-y-1">
         <div className="flex items-center space-x-2 mb-2">
           <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
           <div className="w-3 h-3 rounded-full bg-accent-500 animate-pulse" style={{animationDelay: '0.2s'}}></div>

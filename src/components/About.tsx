@@ -196,11 +196,11 @@ const About: React.FC = () => {
           variants={staggerContainer}
         >
           {/* Section Header */}
-          <motion.div variants={fadeInVariants} className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 font-mono">
+          <motion.div variants={fadeInVariants} className="text-center mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 font-mono">
               <span className="text-primary-400">{'>'}</span> <span className="gradient-text">About Me</span>
             </h2>
-            <p className="text-xl text-terminal-300 max-w-3xl mx-auto font-mono">
+            <p className="text-base md:text-lg text-terminal-300 max-w-3xl mx-auto font-mono px-2">
               Background in data science and computational biology with experience in both research and industry applications
             </p>
           </motion.div>

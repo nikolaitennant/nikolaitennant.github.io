@@ -115,12 +115,12 @@ const Publications: React.FC = () => {
           </motion.div>
 
           {/* Publications */}
-          <motion.div variants={itemVariants} className="mb-16">
-            <h3 className="text-3xl font-semibold mb-8 text-center gradient-text font-mono">
+          <motion.div variants={itemVariants} className="mb-8 md:mb-16">
+            <h3 className="text-xl md:text-2xl font-semibold mb-6 md:mb-8 text-center gradient-text font-mono">
               <span className="text-primary-400">{'>'}</span> Publications
             </h3>
-            
-            <div className="space-y-8">
+
+            <div className="space-y-4 md:space-y-8">
               {publications.map((publication, index) => (
                 <motion.div
                   key={index}

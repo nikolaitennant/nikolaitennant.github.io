@@ -303,8 +303,8 @@ const Contact: React.FC = () => {
 
             {/* Right Column - Contact Form */}
             <motion.div variants={itemVariants}>
-              <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-2xl p-4 md:p-6 lg:p-8 h-full flex flex-col">
-                <h3 className="text-xl md:text-2xl font-semibold text-terminal-100 mb-4 md:mb-6 font-mono">
+              <div className="bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-2xl p-3 md:p-6 lg:p-8 h-full flex flex-col">
+                <h3 className="text-lg md:text-xl font-semibold text-terminal-100 mb-3 md:mb-6 font-mono">
                   <span className="text-primary-400">{'>'}</span> Send a Message
                 </h3>
 
@@ -327,14 +327,14 @@ const Contact: React.FC = () => {
                   ) : (
                     <motion.form 
                       key="form"
-                      onSubmit={handleSubmit} 
-                      className="space-y-3 md:space-y-4 flex-1 flex flex-col"
+                      onSubmit={handleSubmit}
+                      className="space-y-2 md:space-y-4 flex-1 flex flex-col"
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
                       transition={{ duration: 0.6 }}
                     >
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4">
                     <div>
                       <label htmlFor="name" className="block text-xs md:text-sm font-medium text-terminal-100 mb-1 md:mb-2 font-mono">
                         Name *

@@ -93,3 +93,107 @@ html {
 a[href*="spline.design"] {
   display: none !important;
 }
+
+/* ── Ghost Character ──────────────────────────── */
+.ghost-character {
+  position: relative;
+  pointer-events: all;
+}
+
+.ghost-glow {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(150, 200, 255, 0.12) 0%, rgba(130, 185, 255, 0.04) 40%, transparent 60%);
+  pointer-events: none;
+  animation: ghost-glow-pulse 4s ease-in-out infinite;
+}
+
+.ghost-svg {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.ghost-eyes {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  z-index: 2;
+}
+
+.ghost-eye {
+  width: 12px;
+  height: 14px;
+  background: rgba(210, 230, 255, 0.06);
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+
+.ghost-pupil {
+  width: 7px;
+  height: 8px;
+  background: radial-gradient(circle at 40% 35%, rgba(230, 245, 255, 0.95), rgba(180, 215, 255, 0.7));
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  left: 2.5px;
+  transition: transform 0.18s ease-out;
+  box-shadow: 0 0 12px rgba(180, 220, 255, 0.6), 0 0 4px rgba(200, 230, 255, 0.8);
+}
+
+.ghost-pupil::after {
+  content: '';
+  position: absolute;
+  width: 2.5px;
+  height: 2.5px;
+  background: #fff;
+  border-radius: 50%;
+  top: 1px;
+  right: 1.5px;
+}
+
+.ghost-lid {
+  position: absolute;
+  inset: -1px;
+  height: 0;
+  background: rgba(100, 150, 220, 0.25);
+  border-radius: 50%;
+  transition: height 0.08s;
+  z-index: 2;
+}
+
+.ghost-blink .ghost-lid { height: 110%; }
+.ghost-squint .ghost-lid { height: 25%; }
+
+.ghost-mouth-wrap {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.ghost-mouth-idle { width: 8px; height: 4px; border: 1.5px solid rgba(200,230,255,0.3); border-top: none; border-radius: 0 0 8px 8px; }
+.ghost-mouth-happy { width: 14px; height: 7px; border: 1.5px solid rgba(200,230,255,0.5); border-top: none; border-radius: 0 0 12px 12px; }
+.ghost-mouth-talk { width: 10px; height: 9px; border: 1.5px solid rgba(200,230,255,0.4); border-radius: 50%; animation: ghost-talk 0.3s infinite; }
+.ghost-mouth-ooh { width: 7px; height: 8px; border: 1.5px solid rgba(200,230,255,0.35); border-radius: 50%; }
+
+.ghost-sparkle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(170, 215, 255, 0.5);
+  box-shadow: 0 0 4px rgba(170, 215, 255, 0.3);
+  pointer-events: none;
+}
+
+.ghost-sparkle-1 { bottom: 0; left: 20%; animation: ghost-spark-drift 2s 0s infinite; }
+.ghost-sparkle-2 { bottom: 5px; left: 50%; animation: ghost-spark-drift 2.5s 0.6s infinite; }
+.ghost-sparkle-3 { bottom: 0; left: 75%; animation: ghost-spark-drift 2s 1.2s infinite; }
+
+@keyframes ghost-glow-pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+@keyframes ghost-talk { 0%, 100% { height: 9px; } 50% { height: 4px; } }
+@keyframes ghost-spark-drift { 0% { opacity: 0.5; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-25px) scale(0.2); } }

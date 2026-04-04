@@ -1,13 +1,10 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail } from "lucide-react";
 import { createNoise3D } from "simplex-noise";
 import { personalInfo } from "@/data/portfolio";
-
-const ParticleText = dynamic(() => import("@/components/ui/particle-text"), { ssr: false });
 
 // ── Layer 1: Wavy Canvas Background ──────────────────────────────
 const WavyCanvas: React.FC = () => {

@@ -2,7 +2,6 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { BentoTilt } from "@/components/ui/bento-tilt";
 import { personalInfo, stats, education } from "@/data/portfolio";
 
 export default function About() {
@@ -57,14 +56,14 @@ export default function About() {
             className="grid grid-cols-2 gap-4 lg:col-span-2"
           >
             {stats.map((stat, i) => (
-              <BentoTilt key={stat.label}>
+              <div key={stat.label}>
                 <div className="glass flex h-full flex-col items-center justify-center rounded-2xl p-6 text-center">
                   <span className="text-foreground text-3xl font-bold sm:text-4xl">
                     {stat.value}
                   </span>
                   <span className="mt-1 text-sm text-muted-foreground">{stat.label}</span>
                 </div>
-              </BentoTilt>
+              </div>
             ))}
           </motion.div>
         </div>

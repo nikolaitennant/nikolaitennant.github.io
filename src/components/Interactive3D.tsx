@@ -1,20 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-import dynamic from "next/dynamic";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { personalInfo, stats, education } from "@/data/portfolio";
-
-const HoloRobot = dynamic(() => import("@/components/HoloRobot"), { ssr: false });
 
 export default function Interactive3D() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const robotOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.3, 1, 1, 0.3]);
 
   return (
     <section
@@ -22,18 +13,6 @@ export default function Interactive3D() {
       ref={sectionRef}
       className="relative min-h-screen w-full overflow-hidden bg-background py-24 md:py-0 md:h-screen"
     >
-      {/* 3D Robot */}
-      <motion.div
-        style={{ opacity: robotOpacity }}
-        className="absolute bottom-0 right-0 left-0 h-[45%] md:h-full md:top-0 md:left-auto md:w-[50%] z-0"
-      >
-        <HoloRobot />
-      </motion.div>
-
-      {/* Gradient overlays for text readability */}
-      <div className="absolute inset-0 z-[1] pointer-events-none bg-gradient-to-b from-background via-background/80 via-[50%] to-transparent md:bg-none" />
-      <div className="absolute inset-0 z-[1] pointer-events-none hidden md:block bg-gradient-to-r from-background via-background/80 via-[45%] to-transparent" />
-
       {/* Content */}
       <div className="relative z-10 flex h-full items-start pt-20 md:items-center md:pt-0 pointer-events-none">
         <div className="w-full max-w-xl pl-6 pr-4 sm:pl-10 md:pl-16 lg:pl-24 space-y-6 md:space-y-8">

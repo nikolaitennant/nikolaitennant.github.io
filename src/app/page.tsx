@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Interactive3D from "@/components/Interactive3D";
@@ -9,6 +10,9 @@ import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+
+const GhostCompanion = dynamic(() => import("@/components/ghost/GhostCompanion"), { ssr: false });
+
 export default function Home() {
   return (
     <>
@@ -23,6 +27,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <GhostCompanion />
     </>
   );
 }

@@ -94,28 +94,43 @@ a[href*="spline.design"] {
   display: none !important;
 }
 
-/* ── Ghost Character ──────────────────────────── */
-.ghost-character {
+/* ── Ghost AI Companion ──────────────────────────── */
+.gw {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  will-change: left, top;
+}
+
+.gw.hidden { opacity: 0; pointer-events: none; }
+
+.ghost {
+  width: 90px;
+  height: 105px;
   position: relative;
+  cursor: pointer;
   pointer-events: all;
 }
 
-.ghost-glow {
+.g-shape { position: absolute; inset: 0; overflow: visible; }
+.g-shape svg { width: 100%; height: 100%; overflow: visible; }
+
+.g-glow {
   position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(150, 200, 255, 0.12) 0%, rgba(130, 185, 255, 0.04) 40%, transparent 60%);
   pointer-events: none;
-  animation: ghost-glow-pulse 4s ease-in-out infinite;
+  animation: glowPulse 4s ease-in-out infinite;
 }
 
-.ghost-svg {
+.g-eyes {
   position: absolute;
-  inset: 0;
-  overflow: visible;
-}
-
-.ghost-eyes {
-  position: absolute;
+  top: 28px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -123,7 +138,7 @@ a[href*="spline.design"] {
   z-index: 2;
 }
 
-.ghost-eye {
+.eye {
   width: 12px;
   height: 14px;
   background: rgba(210, 230, 255, 0.06);
@@ -132,7 +147,7 @@ a[href*="spline.design"] {
   overflow: hidden;
 }
 
-.ghost-pupil {
+.pupil {
   width: 7px;
   height: 8px;
   background: radial-gradient(circle at 40% 35%, rgba(230, 245, 255, 0.95), rgba(180, 215, 255, 0.7));
@@ -144,7 +159,7 @@ a[href*="spline.design"] {
   box-shadow: 0 0 12px rgba(180, 220, 255, 0.6), 0 0 4px rgba(200, 230, 255, 0.8);
 }
 
-.ghost-pupil::after {
+.pupil::after {
   content: '';
   position: absolute;
   width: 2.5px;
@@ -155,7 +170,7 @@ a[href*="spline.design"] {
   right: 1.5px;
 }
 
-.ghost-lid {
+.lid {
   position: absolute;
   inset: -1px;
   height: 0;
@@ -165,237 +180,226 @@ a[href*="spline.design"] {
   z-index: 2;
 }
 
-.ghost-blink .ghost-lid { height: 110%; }
-.ghost-squint .ghost-lid { height: 25%; }
+.ghost.blink .lid { height: 110%; }
+.ghost.squint .lid { height: 25%; }
 
-.ghost-mouth-wrap {
+.mw { position: absolute; top: 50px; left: 50%; transform: translateX(-50%); z-index: 2; }
+.m-idle { width: 8px; height: 4px; border: 1.5px solid rgba(200,230,255,0.3); border-top: none; border-radius: 0 0 8px 8px; }
+.m-happy { width: 14px; height: 7px; border: 1.5px solid rgba(200,230,255,0.5); border-top: none; border-radius: 0 0 12px 12px; }
+.m-talk { width: 10px; height: 9px; border: 1.5px solid rgba(200,230,255,0.4); border-radius: 50%; animation: ghost-talk 0.3s infinite; }
+.m-ooh { width: 7px; height: 8px; border: 1.5px solid rgba(200,230,255,0.35); border-radius: 50%; }
+
+.sparkles { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.spark { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: rgba(170, 215, 255, 0.5); box-shadow: 0 0 4px rgba(170, 215, 255, 0.3); }
+.s1 { bottom: 0; left: 20%; animation: ghost-spark-drift 2s 0s infinite; }
+.s2 { bottom: 5px; left: 50%; animation: ghost-spark-drift 2.5s 0.6s infinite; }
+.s3 { bottom: 0; left: 75%; animation: ghost-spark-drift 2s 1.2s infinite; }
+
+.ghost-svg-defs {
   position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.thought {
+  position: absolute;
+  bottom: calc(100% + 14px);
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2;
-}
-
-.ghost-mouth-idle { width: 8px; height: 4px; border: 1.5px solid rgba(200,230,255,0.3); border-top: none; border-radius: 0 0 8px 8px; }
-.ghost-mouth-happy { width: 14px; height: 7px; border: 1.5px solid rgba(200,230,255,0.5); border-top: none; border-radius: 0 0 12px 12px; }
-.ghost-mouth-talk { width: 10px; height: 9px; border: 1.5px solid rgba(200,230,255,0.4); border-radius: 50%; animation: ghost-talk 0.3s infinite; }
-.ghost-mouth-ooh { width: 7px; height: 8px; border: 1.5px solid rgba(200,230,255,0.35); border-radius: 50%; }
-
-.ghost-sparkle {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: rgba(170, 215, 255, 0.5);
-  box-shadow: 0 0 4px rgba(170, 215, 255, 0.3);
-  pointer-events: none;
-}
-
-.ghost-sparkle-1 { bottom: 0; left: 20%; animation: ghost-spark-drift 2s 0s infinite; }
-.ghost-sparkle-2 { bottom: 5px; left: 50%; animation: ghost-spark-drift 2.5s 0.6s infinite; }
-.ghost-sparkle-3 { bottom: 0; left: 75%; animation: ghost-spark-drift 2s 1.2s infinite; }
-
-@keyframes ghost-glow-pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
-@keyframes ghost-talk { 0%, 100% { height: 9px; } 50% { height: 4px; } }
-@keyframes ghost-spark-drift { 0% { opacity: 0.5; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-25px) scale(0.2); } }
-
-/* ── Ghost Thought Bubble ────────────────────── */
-.ghost-thought {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(8px) scale(0.85);
-  background: rgba(15, 25, 50, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(120, 180, 255, 0.12);
-  border-radius: 14px;
-  padding: 8px 14px;
-  color: rgba(200, 225, 255, 0.85);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
   font-size: 0.78rem;
-  white-space: nowrap;
+  color: rgba(220, 230, 255, 0.7);
+  max-width: 300px;
+  text-align: center;
+  line-height: 1.45;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 400ms ease, transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.ghost-thought.visible {
-  opacity: 1;
-  transform: translateX(-50%) translateY(-6px) scale(1);
-}
-
-/* ── Ghost Peek ──────────────────────────────── */
-.ghost-peek-wrap {
-  position: fixed;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  pointer-events: none;
-  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms ease;
-  opacity: 0;
-}
-
-.ghost-peek-wrap.from-right {
-  right: 0;
-  flex-direction: row-reverse;
-  transform: translateX(80px);
-}
-
-.ghost-peek-wrap.from-left {
-  left: 0;
-  flex-direction: row;
-  transform: translateX(-80px);
-}
-
-.ghost-peek-wrap.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.ghost-peek-wrap.visible.from-right {
-  transform: translateX(30px);
-}
-
-.ghost-peek-wrap.visible.from-left {
-  transform: translateX(-30px);
-}
-
-.ghost-peek-msg {
-  background: rgba(15, 25, 50, 0.6);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-radius: 12px;
-  padding: 8px 14px;
-  color: rgba(200, 225, 255, 0.85);
-  font-size: 0.75rem;
+  scale: 0.92;
+  transition: opacity 0.35s, scale 0.35s;
   white-space: nowrap;
-  pointer-events: none;
 }
 
-/* ── Ghost Chat ───────────────────────────────── */
-.ghost-chat {
+.thought.show { opacity: 1; scale: 1; }
+
+.thought::before {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+}
+
+.thought::after {
+  content: '';
+  position: absolute;
+  bottom: -13px;
+  left: calc(50% + 5px);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.chatbox {
   position: fixed;
-  width: 360px;
-  background: rgba(12, 14, 18, 0.72);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid rgba(180, 220, 255, 0.1);
+  z-index: 1001;
+  background: rgba(18, 18, 24, 0.95);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  width: 360px;
   opacity: 0;
-  transform: scale(0.92) translateY(8px);
+  scale: 0.92;
   pointer-events: none;
-  transition: opacity 220ms ease, transform 220ms ease;
-  z-index: 9999;
+  transition: opacity 0.3s, scale 0.3s;
+  overflow: hidden;
 }
 
-.ghost-chat.open {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-  pointer-events: all;
+.chatbox.open { opacity: 1; scale: 1; pointer-events: all; }
+
+.chat-x {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.04);
+  color: #444;
+  font-size: 0.65rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: all 0.15s;
 }
 
-.ghost-chat-msgs {
-  flex: 1;
+.chat-x:hover { background: rgba(255,255,255,0.08); color: #888; }
+
+.chat-msgs {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 20px 20px 12px;
+  gap: 0.75rem;
+  max-height: 280px;
   overflow-y: auto;
-  max-height: 340px;
+  padding: 1rem 1rem 0.5rem;
   scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 
-.ghost-chat-msgs::-webkit-scrollbar {
-  display: none;
-}
+.chat-msgs::-webkit-scrollbar { display: none; }
 
-.ghost-chat-msg {
-  font-size: 0.875rem;
-  line-height: 1.55;
-  max-width: 88%;
-}
+.cm { font-size: 0.82rem; line-height: 1.55; max-width: 92%; }
+.cm-ai { color: #999; align-self: flex-start; max-width: 95%; }
+.cm-u { color: #ccc; align-self: flex-end; text-align: right; max-width: 80%; }
 
-.ghost-chat-msg-ai {
-  color: rgba(180, 210, 255, 0.75);
-  align-self: flex-start;
-  text-align: left;
-}
-
-.ghost-chat-msg-user {
-  color: rgba(220, 235, 255, 0.45);
-  align-self: flex-end;
-  text-align: right;
-}
-
-.ghost-chat-thinking {
+.thinking {
   display: flex;
-  gap: 5px;
-  align-items: center;
+  gap: 4px;
   align-self: flex-start;
-  padding: 2px 0;
+  padding: 0.3rem 0;
 }
 
-.ghost-chat-thinking span {
-  display: inline-block;
+.thinking span {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: rgba(140, 190, 255, 0.55);
-  animation: ghost-chat-bounce 1.1s ease-in-out infinite;
+  background: rgba(160, 200, 255, 0.3);
+  animation: ghost-think-bounce 1.2s infinite;
 }
 
-.ghost-chat-thinking span:nth-child(2) { animation-delay: 0.18s; }
-.ghost-chat-thinking span:nth-child(3) { animation-delay: 0.36s; }
+.thinking span:nth-child(2) { animation-delay: 0.15s; }
+.thinking span:nth-child(3) { animation-delay: 0.3s; }
 
-@keyframes ghost-chat-bounce {
-  0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
-  40% { transform: translateY(-5px); opacity: 1; }
-}
-
-.ghost-chat-chips {
+.chat-chips {
   display: flex;
+  gap: 0.3rem;
   flex-wrap: wrap;
-  gap: 6px;
-  padding: 0 20px 12px;
+  padding: 0.4rem 1rem 0.6rem;
 }
 
-.ghost-chat-chip {
-  font-size: 0.75rem;
-  color: rgba(160, 200, 255, 0.6);
-  background: rgba(100, 160, 255, 0.07);
-  border: 1px solid rgba(140, 190, 255, 0.15);
-  border-radius: 20px;
-  padding: 4px 11px;
+.chip {
+  font-size: 0.68rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 99px;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #555;
   cursor: pointer;
-  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
-  white-space: nowrap;
+  background: none;
+  font-family: inherit;
+  transition: all 0.15s;
 }
 
-.ghost-chat-chip:hover {
-  background: rgba(100, 160, 255, 0.14);
-  color: rgba(190, 220, 255, 0.85);
-  border-color: rgba(160, 205, 255, 0.28);
-}
+.chip:hover { border-color: rgba(255,255,255,0.12); color: #888; }
 
-.ghost-chat-input {
-  border-top: 1px solid rgba(180, 220, 255, 0.08);
-  padding: 10px 20px 14px;
-}
+.chat-input { padding: 0.5rem 1rem 0.75rem; }
 
-.ghost-chat-input input {
+.chat-input input {
   width: 100%;
-  background: transparent;
+  background: none;
   border: none;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  padding: 0.6rem 0;
+  color: #ccc;
+  font-size: 0.8rem;
   outline: none;
-  font-size: 0.875rem;
-  color: rgba(210, 230, 255, 0.75);
-  caret-color: rgba(150, 200, 255, 0.7);
+  font-family: inherit;
 }
 
-.ghost-chat-input input::placeholder {
-  color: rgba(140, 180, 255, 0.3);
+.chat-input input::placeholder { color: #333; }
+
+.peek-wrap {
+  position: fixed;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
 }
+
+.peek-wrap.vis { opacity: 1; pointer-events: all; }
+
+.peek-wrap.from-r {
+  right: -25px;
+  transform: translateX(40px);
+}
+.peek-wrap.from-r.vis { transform: translateX(0); }
+
+.peek-wrap.from-l {
+  left: -25px;
+  transform: translateX(-40px);
+}
+.peek-wrap.from-l.vis { transform: translateX(0); }
+
+.peek-wrap .ghost { width: 65px; height: 76px; }
+
+.peek-msg {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  border: none;
+  border-radius: 20px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.75rem;
+  color: rgba(220, 230, 255, 0.7);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.peek-wrap.from-r .peek-msg { right: 75px; top: 20px; }
+.peek-wrap.from-l .peek-msg { left: 75px; top: 20px; }
+
+@keyframes glowPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+@keyframes ghost-talk { 0%, 100% { height: 9px; } 50% { height: 4px; } }
+@keyframes ghost-spark-drift { 0% { opacity: 0.5; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-25px) scale(0.2); } }
+@keyframes ghost-think-bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.3; } 30% { transform: translateY(-4px); opacity: 0.8; } }

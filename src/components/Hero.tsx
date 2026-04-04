@@ -26,7 +26,9 @@ const WavyCanvas: React.FC = () => {
     let nt = 0;
     let frameId: number;
 
-    const colors = ["#1a1a2e", "#16213e", "#0f3460", "#1a1a2e", "#1b1b3a"];
+    const isDark = () => document.documentElement.classList.contains("dark");
+    const darkColors = ["#1a1a2e", "#16213e", "#0f3460", "#1a1a2e", "#1b1b3a"];
+    const lightColors = ["#dbeafe", "#c7d2fe", "#e0e7ff", "#ddd6fe", "#ede9fe"];
 
     const handleResize = () => {
       w = canvas.width = window.innerWidth;
@@ -36,7 +38,7 @@ const WavyCanvas: React.FC = () => {
     window.addEventListener("resize", handleResize);
 
     const render = () => {
-      ctx.fillStyle = "hsl(0, 0%, 2%)";
+      ctx.fillStyle = isDark() ? "hsl(0, 0%, 2%)" : "hsl(0, 0%, 98%)";
       ctx.globalAlpha = 0.4;
       ctx.fillRect(0, 0, w, h);
       nt += 0.0008;
@@ -44,6 +46,7 @@ const WavyCanvas: React.FC = () => {
       for (let i = 0; i < 5; i++) {
         ctx.beginPath();
         ctx.lineWidth = 60;
+        const colors = isDark() ? darkColors : lightColors;
         ctx.strokeStyle = colors[i];
         for (let x = 0; x < w; x += 5) {
           const y = noise(x / 900, 0.3 * i, nt) * 120;
@@ -135,7 +138,8 @@ const ParticleField: React.FC = () => {
 
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+      const dark = document.documentElement.classList.contains("dark");
+      ctx.fillStyle = dark ? "rgba(255, 255, 255, 0.3)" : "rgba(0, 0, 0, 0.15)";
       ctx.fill();
     }
 
@@ -307,12 +311,15 @@ const TypingText: React.FC<{ text: string; className?: string; delay?: number }>
 // ── Main Hero ────────────────────────────────────────────────────
 export default function Hero() {
   return (
-    <section className="relative w-full h-screen bg-black" style={{ overflow: "clip", overflowClipMargin: "200px" }}>
+    <section className="relative w-full h-screen bg-background overflow-hidden">
       {/* Layer 1: Deep wavy canvas */}
       <WavyCanvas />
 
       {/* Layer 2: Interactive particles */}
       <ParticleField />
+
+      {/* Bottom fade — dots gradually dissolve instead of hard cutoff */}
+      <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-t from-background via-background/60 to-transparent z-[2] pointer-events-none" />
 
       {/* Layer 3: Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-4">
@@ -322,7 +329,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-mono"
+            className="text-[10px] uppercase tracking-[0.3em] text-foreground/30 font-mono"
           >
             {personalInfo.citizenship} &middot; {personalInfo.location}
           </motion.div>
@@ -331,17 +338,23 @@ export default function Hero() {
           <div className="relative inline-block">
             <GlitchText
               text={personalInfo.name.toUpperCase()}
-              className="text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] text-white leading-[0.9]"
+              className="text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] text-foreground leading-[0.9]"
               delay={800}
             />
-            {/* Scan lines over entire name */}
+            {/* Scan lines — clipped to text shape only */}
             <div
-              className="absolute inset-0 pointer-events-none"
+              className="absolute inset-0 pointer-events-none font-bold tracking-tighter text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] leading-[0.9] select-none"
+              aria-hidden="true"
               style={{
-                opacity: 0.15,
-                background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.4) 2px, rgba(0,0,0,0.4) 4px)",
+                background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(128,128,128,0.35) 2px, rgba(128,128,128,0.35) 4px)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                opacity: 0.3,
               }}
-            />
+            >
+              {personalInfo.name.toUpperCase()}
+            </div>
           </div>
 
           {/* Title with typing effect */}
@@ -352,7 +365,7 @@ export default function Hero() {
           >
             <TypingText
               text={personalInfo.title}
-              className="text-lg md:text-xl text-white/50 font-light tracking-widest uppercase font-mono"
+              className="text-lg md:text-xl text-foreground/50 font-light tracking-widest uppercase font-mono"
               delay={2500}
             />
           </motion.div>
@@ -362,7 +375,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 4, duration: 1 }}
-            className="text-sm text-white/25 tracking-wide"
+            className="text-sm text-foreground/25 tracking-wide"
           >
             {personalInfo.subtitle}
           </motion.p>
@@ -384,7 +397,7 @@ export default function Hero() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white/30 hover:text-white transition-colors duration-300"
+                className="text-foreground/30 hover:text-foreground transition-colors duration-300"
               >
                 <Icon size={18} />
               </a>

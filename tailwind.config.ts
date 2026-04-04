@@ -31,6 +31,8 @@ const config: Config = {
         "float-slow": "float 20s ease-in-out infinite",
         "float-slower": "float 25s ease-in-out infinite alternate",
         "pulse-glow": "pulseGlow 4s ease-in-out infinite",
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
+        "marquee": "marquee var(--duration) linear infinite",
       },
       keyframes: {
         gradient: {
@@ -45,6 +47,13 @@ const config: Config = {
         pulseGlow: {
           "0%, 100%": { opacity: "0.4" },
           "50%": { opacity: "0.8" },
+        },
+        "border-beam": {
+          "100%": { "offset-distance": "100%" },
+        },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-50% - var(--gap)/2))" },
         },
       },
     },

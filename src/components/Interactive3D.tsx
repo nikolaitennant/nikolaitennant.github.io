@@ -20,29 +20,29 @@ export default function Interactive3D() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden bg-black py-24 md:py-0 md:h-screen"
+      className="relative min-h-screen w-full overflow-hidden bg-background py-24 md:py-0 md:h-screen"
     >
-      {/* 3D Robot — right half on desktop */}
+      {/* 3D Robot */}
       <motion.div
         style={{ opacity: robotOpacity }}
-        className="absolute inset-0 md:left-[40%] z-0"
+        className="absolute bottom-0 right-0 left-0 h-[45%] md:h-full md:top-0 md:left-auto md:w-[50%] z-0"
       >
         <HoloRobot />
       </motion.div>
 
-      {/* Overlays for text readability — no top fade so hero blends in */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-r from-black via-black/70 to-transparent pointer-events-none md:via-black/50" />
-      <div className="absolute bottom-0 left-0 right-0 h-48 z-[1] bg-gradient-to-t from-[hsl(0,0%,2%)] to-transparent pointer-events-none" />
+      {/* Gradient overlays for text readability */}
+      <div className="absolute inset-0 z-[1] pointer-events-none bg-gradient-to-b from-background via-background/80 via-[50%] to-transparent md:bg-none" />
+      <div className="absolute inset-0 z-[1] pointer-events-none hidden md:block bg-gradient-to-r from-background via-background/80 via-[45%] to-transparent" />
 
-      {/* Content — left side */}
-      <div className="relative z-10 flex h-full items-center pointer-events-none">
-        <div className="max-w-lg px-8 md:px-16 space-y-8">
+      {/* Content */}
+      <div className="relative z-10 flex h-full items-start pt-20 md:items-center md:pt-0 pointer-events-none">
+        <div className="w-full max-w-xl pl-6 pr-4 sm:pl-10 md:pl-16 lg:pl-24 space-y-6 md:space-y-8">
           <motion.p
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-mono"
+            className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-mono"
           >
             About Me
           </motion.p>
@@ -52,7 +52,7 @@ export default function Interactive3D() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-tight"
           >
             I build things
             <br />
@@ -64,23 +64,23 @@ export default function Interactive3D() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-sm text-white/40 max-w-md leading-relaxed"
+            className="text-sm text-muted-foreground max-w-md leading-relaxed"
           >
             {personalInfo.bio}
           </motion.p>
 
-          {/* Stats row */}
+          {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="grid grid-cols-4 gap-3"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-4"
           >
             {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-xl font-bold text-white/90 font-heading">{stat.value}</div>
-                <div className="text-[10px] uppercase tracking-wider text-white/25 font-mono mt-1">{stat.label}</div>
+              <div key={stat.label}>
+                <div className="text-xl font-bold text-foreground font-heading">{stat.value}</div>
+                <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-mono mt-1">{stat.label}</div>
               </div>
             ))}
           </motion.div>
@@ -96,41 +96,27 @@ export default function Interactive3D() {
             {education.map((edu) => (
               <div
                 key={edu.degree}
-                className="border border-white/5 rounded-lg px-3 py-2 bg-white/[0.02]"
+                className="border border-border rounded-lg px-3 py-2 bg-card/50"
               >
-                <p className="text-xs font-medium text-white/60">{edu.degree}</p>
-                <p className="text-[10px] text-white/25 font-mono">
+                <p className="text-xs font-medium text-foreground/80">{edu.degree}</p>
+                <p className="text-[10px] text-muted-foreground font-mono">
                   {edu.school} &middot; {edu.gpa}
                 </p>
               </div>
             ))}
           </motion.div>
 
-          {/* Location */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="flex items-center gap-4 text-[11px] uppercase tracking-[0.2em] text-white/15 font-mono"
+            className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground font-mono"
           >
-            <span>{personalInfo.location}</span>
-            <span className="w-4 h-px bg-white/15" />
-            <span>{personalInfo.citizenship}</span>
+            {personalInfo.location}
           </motion.div>
         </div>
       </div>
-
-      {/* Hint */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 right-8 z-10 text-[9px] uppercase tracking-[0.3em] text-white/15 font-mono pointer-events-none hidden md:block"
-      >
-        move cursor to interact
-      </motion.div>
     </section>
   );
 }

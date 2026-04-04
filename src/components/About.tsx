@@ -18,7 +18,7 @@ export default function About() {
           transition={{ duration: 0.6 }}
           className="mb-16 text-center font-heading text-4xl font-bold tracking-tight sm:text-5xl"
         >
-          About <span className="text-white">Me</span>
+          About <span className="text-foreground">Me</span>
         </motion.h2>
 
         <div className="grid gap-8 lg:grid-cols-5">
@@ -59,7 +59,7 @@ export default function About() {
             {stats.map((stat, i) => (
               <BentoTilt key={stat.label}>
                 <div className="glass flex h-full flex-col items-center justify-center rounded-2xl p-6 text-center">
-                  <span className="text-white text-3xl font-bold sm:text-4xl">
+                  <span className="text-foreground text-3xl font-bold sm:text-4xl">
                     {stat.value}
                   </span>
                   <span className="mt-1 text-sm text-muted-foreground">{stat.label}</span>

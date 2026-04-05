@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Interactive3D from "@/components/Interactive3D";
+import Education from "@/components/Education";
 import Experience from "@/components/Experience";
 import Publications from "@/components/Publications";
 import Projects from "@/components/Projects";
@@ -20,6 +21,7 @@ export default function Home() {
       <main>
         <Hero />
         <Interactive3D />
+        <Education />
         <Publications />
         <Experience />
         <Projects />

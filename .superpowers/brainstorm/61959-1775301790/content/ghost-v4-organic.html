@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghost v4 — Organic Movement + LLM Personality</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #e5e5e5;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    min-height: 300vh;
+  }
+
+  h2 { font-family: 'Space Grotesk', sans-serif; }
+
+  /* ============================================
+     GHOST
+     ============================================ */
+  .gw {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    transition: opacity 0.5s;
+    will-change: left, top;
+  }
+
+  .gw.hidden { opacity: 0; pointer-events: none; }
+
+  .ghost {
+    width: 80px;
+    height: 95px;
+    position: relative;
+    cursor: pointer;
+    pointer-events: all;
+  }
+
+  /* Body stretches/squishes based on velocity */
+  .g-body {
+    width: 65px;
+    height: 58px;
+    background: radial-gradient(ellipse at 50% 25%,
+      rgba(185, 215, 255, 0.3) 0%,
+      rgba(145, 185, 255, 0.17) 35%,
+      rgba(110, 155, 245, 0.08) 65%,
+      rgba(85, 135, 225, 0.03) 100%
+    );
+    border-radius: 32px 32px 16px 16px;
+    position: relative;
+    left: 7px;
+    border: 1px solid rgba(165, 205, 255, 0.1);
+    filter: drop-shadow(0 0 30px rgba(140, 190, 255, 0.18));
+    transition: transform 0.3s ease-out;
+  }
+
+  /* Wispy tail */
+  .g-tail {
+    position: absolute;
+    bottom: -14px;
+    left: 6px;
+    width: 65px;
+    height: 20px;
+    overflow: hidden;
+  }
+
+  .g-tail-inner {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 50% 0%,
+      rgba(155, 195, 255, 0.12) 0%,
+      rgba(110, 160, 240, 0.04) 100%
+    );
+    clip-path: polygon(
+      0% 0%, 12% 100%, 22% 30%, 38% 100%, 50% 25%, 62% 100%, 78% 30%, 88% 100%, 100% 0%
+    );
+    animation: tailDrift 2.5s ease-in-out infinite;
+  }
+
+  /* Inner glow that shifts with "mood" */
+  .g-core {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(150, 200, 255, 0.1) 0%, transparent 70%);
+    animation: coreBreath 4s ease-in-out infinite;
+  }
+
+  /* Outer glow halo */
+  .g-halo {
+    position: absolute;
+    top: -15px;
+    left: -8px;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(130, 185, 255, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+    animation: haloShift 6s ease-in-out infinite;
+  }
+
+  /* Eyes */
+  .g-eyes {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+  }
+
+  .eye {
+    width: 12px;
+    height: 14px;
+    background: rgba(210, 230, 255, 0.06);
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pupil {
+    width: 7px;
+    height: 8px;
+    background: rgba(200, 225, 255, 0.8);
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 2.5px;
+    transition: transform 0.18s ease-out;
+    box-shadow: 0 0 10px rgba(180, 215, 255, 0.5);
+  }
+
+  .pupil::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    top: 1px;
+    right: 1px;
+  }
+
+  .lid {
+    position: absolute;
+    inset: -1px;
+    height: 0;
+    background: rgba(120, 165, 225, 0.2);
+    border-radius: 50%;
+    transition: height 0.08s;
+    z-index: 2;
+  }
+
+  .ghost.blink .lid { height: 110%; }
+
+  /* Squint when moving fast */
+  .ghost.squint .lid { height: 30%; }
+
+  /* Mouth */
+  .mw { position: absolute; top: 35px; left: 50%; transform: translateX(-50%); transition: all 0.2s; }
+  .m-idle { width: 8px; height: 4px; border: 1.5px solid rgba(200,225,255,0.3); border-top: none; border-radius: 0 0 8px 8px; }
+  .m-happy { width: 13px; height: 7px; border: 1.5px solid rgba(200,225,255,0.45); border-top: none; border-radius: 0 0 11px 11px; }
+  .m-talk { width: 10px; height: 9px; border: 1.5px solid rgba(200,225,255,0.4); border-radius: 50%; animation: talk 0.3s infinite; }
+  .m-ooh { width: 7px; height: 8px; border: 1.5px solid rgba(200,225,255,0.35); border-radius: 50%; }
+
+  /* Sparkle trail */
+  .trail {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(160, 210, 255, 0.35);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  /* ============================================
+     THOUGHT BUBBLE (LLM-powered)
+     ============================================ */
+  .thought {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(12, 12, 22, 0.92);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(140, 180, 255, 0.1);
+    border-radius: 12px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
+    color: #bbb;
+    max-width: 250px;
+    text-align: center;
+    line-height: 1.4;
+    pointer-events: none;
+    opacity: 0;
+    scale: 0.9;
+    transition: opacity 0.3s, scale 0.3s;
+    white-space: normal;
+  }
+
+  .thought.show { opacity: 1; scale: 1; }
+
+  /* Little circles leading to thought */
+  .thought::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(12, 12, 22, 0.92);
+    border: 1px solid rgba(140, 180, 255, 0.1);
+  }
+
+  .thought::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-3px);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(12, 12, 22, 0.85);
+    border: 1px solid rgba(140, 180, 255, 0.08);
+  }
+
+  /* ============================================
+     CHAT
+     ============================================ */
+  .chatbox {
+    position: fixed;
+    z-index: 1001;
+    background: rgba(12, 12, 22, 0.94);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(140, 180, 255, 0.1);
+    border-radius: 16px;
+    padding: 1rem;
+    width: 330px;
+    opacity: 0;
+    scale: 0.92;
+    pointer-events: none;
+    transition: opacity 0.25s, scale 0.25s;
+  }
+
+  .chatbox.open { opacity: 1; scale: 1; pointer-events: all; }
+
+  .chatbox .hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+  .chatbox .hd-t { font-size: 0.7rem; color: rgba(160,200,255,0.5); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+  .chatbox .hd-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(100,200,130,0.7); box-shadow: 0 0 6px rgba(100,200,130,0.3); }
+  .chatbox .hd-x { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); background: none; color: #555; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .chatbox .hd-x:hover { border-color: rgba(255,255,255,0.15); color: #999; }
+
+  .chatbox .msgs { display: flex; flex-direction: column; gap: 0.5rem; max-height: 240px; overflow-y: auto; margin-bottom: 0.6rem; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.06) transparent; }
+  .cm { padding: 0.5rem 0.75rem; border-radius: 10px; font-size: 0.78rem; line-height: 1.5; }
+  .cm-ai { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #aaa; align-self: flex-start; max-width: 90%; }
+  .cm-u { background: rgba(100,160,255,0.1); border: 1px solid rgba(100,160,255,0.12); color: #b8d4ff; align-self: flex-end; max-width: 80%; }
+
+  .chatbox .chips { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+  .chip { font-size: 0.65rem; padding: 0.22rem 0.55rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); color: #666; cursor: pointer; background: none; font-family: inherit; transition: all 0.15s; }
+  .chip:hover { border-color: rgba(140,180,255,0.15); color: #999; }
+
+  .chatbox .irow { display: flex; gap: 0.4rem; }
+  .chatbox .irow input { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 0.5rem 0.75rem; color: #ccc; font-size: 0.8rem; outline: none; font-family: inherit; }
+  .chatbox .irow input::placeholder { color: #444; }
+  .chatbox .irow input:focus { border-color: rgba(140,180,255,0.15); }
+  .chatbox .irow button { background: rgba(100,160,255,0.12); border: 1px solid rgba(100,160,255,0.15); border-radius: 8px; color: rgba(140,190,255,0.7); padding: 0.5rem 0.75rem; font-size: 0.75rem; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+  .chatbox .irow button:hover { background: rgba(100,160,255,0.2); }
+
+  /* ============================================
+     PEEK
+     ============================================ */
+  .peek {
+    position: fixed;
+    z-index: 999;
+    pointer-events: none;
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+  }
+  .peek.vis { opacity: 1; pointer-events: all; }
+
+  .peek.r  { right: 0; transform: translateX(70px); }
+  .peek.r.vis { transform: translateX(12px); }
+  .peek.l  { left: 0; transform: translateX(-70px); }
+  .peek.l.vis { transform: translateX(-12px); }
+  .peek.b  { bottom: 70px; left: 50%; transform: translateY(70px); }
+  .peek.b.vis { transform: translateY(0); }
+
+  .pk { width: 55px; height: 65px; position: relative; cursor: pointer; pointer-events: all; animation: pkBob 2s ease-in-out infinite; }
+  .pk-bd { width: 48px; height: 42px; background: radial-gradient(ellipse at 50% 25%, rgba(185,215,255,0.2) 0%, rgba(110,155,245,0.05) 100%); border-radius: 24px 24px 12px 12px; position: relative; border: 1px solid rgba(165,205,255,0.07); filter: drop-shadow(0 0 15px rgba(140,190,255,0.1)); }
+  .pk-bd::after { content: ''; position: absolute; bottom: -9px; left: -1px; right: -1px; height: 12px; background: rgba(145,185,255,0.06); clip-path: polygon(0% 0%,15% 100%,35% 30%,55% 100%,75% 30%,100% 100%,100% 0%); }
+  .pk-ey { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 7px; }
+  .pk-e { width: 6px; height: 7px; background: rgba(200,225,255,0.6); border-radius: 50%; box-shadow: 0 0 5px rgba(180,215,255,0.35); }
+
+  .pk-msg {
+    position: absolute;
+    background: rgba(12,12,22,0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(140,180,255,0.1);
+    border-radius: 10px;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.72rem;
+    color: #aaa;
+    white-space: nowrap;
+    pointer-events: none;
+    line-height: 1.4;
+  }
+
+  .peek.r .pk-msg { right: 65px; top: 10px; }
+  .peek.l .pk-msg { left: 65px; top: 10px; }
+  .peek.b .pk-msg { bottom: 70px; left: 50%; transform: translateX(-50%); }
+
+  /* ============================================
+     SECTIONS
+     ============================================ */
+  .sec {
+    min-height: 100vh;
+    padding: 6rem 4rem;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .stag { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: #444; font-family: 'JetBrains Mono', monospace; margin-bottom: 1rem; }
+  .sec h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+  .sec p { font-size: 0.9rem; color: #555; max-width: 500px; line-height: 1.6; }
+  .sec .note { position: absolute; right: 2rem; top: 50%; transform: translateY(-50%) rotate(90deg); font-size: 0.48rem; letter-spacing: 0.2em; text-transform: uppercase; color: #222; font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+
+  /* ============================================
+     ANIMATIONS
+     ============================================ */
+  @keyframes tailDrift {
+    0%, 100% { clip-path: polygon(0% 0%, 12% 100%, 22% 30%, 38% 100%, 50% 25%, 62% 100%, 78% 30%, 88% 100%, 100% 0%); }
+    33% { clip-path: polygon(0% 0%, 12% 70%, 22% 50%, 38% 100%, 50% 35%, 62% 90%, 78% 45%, 88% 100%, 100% 0%); }
+    66% { clip-path: polygon(0% 0%, 12% 100%, 22% 40%, 38% 80%, 50% 30%, 62% 100%, 78% 50%, 88% 80%, 100% 0%); }
+  }
+
+  @keyframes coreBreath {
+    0%, 100% { opacity: 0.4; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.85; transform: translateX(-50%) scale(1.12); }
+  }
+
+  @keyframes haloShift {
+    0%, 100% { opacity: 0.6; transform: scale(1) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.05) rotate(3deg); }
+  }
+
+  @keyframes talk {
+    0%, 100% { height: 9px; }
+    50% { height: 4px; }
+  }
+
+  @keyframes pkBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== GHOST ===== -->
+<div class="gw" id="gw">
+  <div class="ghost" id="gh" onclick="toggleChat()">
+    <div class="g-halo"></div>
+    <div class="g-core"></div>
+    <div class="g-body" id="gBody">
+      <div class="g-eyes">
+        <div class="eye"><div class="lid"></div><div class="pupil" id="pL"></div></div>
+        <div class="eye"><div class="lid"></div><div class="pupil" id="pR"></div></div>
+      </div>
+      <div class="mw" id="mw"><div class="m-idle"></div></div>
+    </div>
+    <div class="g-tail"><div class="g-tail-inner"></div></div>
+  </div>
+  <div class="thought" id="thought"></div>
+</div>
+
+<!-- ===== PEEK ===== -->
+<div class="peek" id="peek">
+  <div class="pk-msg" id="pkMsg"></div>
+  <div class="pk" onclick="openFromPeek()">
+    <div class="pk-bd">
+      <div class="pk-ey"><div class="pk-e"></div><div class="pk-e"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CHAT ===== -->
+<div class="chatbox" id="cb">
+  <div class="hd">
+    <div class="hd-t"><span class="hd-dot"></span> Nikolai's AI</div>
+    <button class="hd-x" onclick="closeChat()">&times;</button>
+  </div>
+  <div class="msgs" id="msgs">
+    <div class="cm cm-ai">Hey! I know all about Nikolai. Ask me anything, or just hang out while you browse.</div>
+  </div>
+  <div class="chips">
+    <button class="chip" onclick="ask(this.textContent)">What does he do?</button>
+    <button class="chip" onclick="ask(this.textContent)">His research</button>
+    <button class="chip" onclick="ask(this.textContent)">Tech stack</button>
+  </div>
+  <div class="irow">
+    <input type="text" placeholder="Ask me anything..." id="ci" onkeydown="if(event.key==='Enter')ask(this.value)" />
+    <button onclick="ask(document.getElementById('ci').value)">Ask</button>
+  </div>
+</div>
+
+<!-- ===== SECTIONS ===== -->
+<section class="sec" id="s-hero" style="background:linear-gradient(135deg,#0a0a0a 60%,#0d0d1a)">
+  <div class="stag">Hero</div>
+  <h2>Nikolai Tennant.</h2>
+  <p>Your existing hero. Ghost isn't here yet.</p>
+  <div class="note">Hero &mdash; unchanged</div>
+</section>
+
+<section class="sec" id="s-about" style="background:#0a0a0a"
+  data-thoughts='["Hmm, what should I tell them about Nikolai...","Oh! They are reading the about section","I helped build some of these systems, you know","Feel free to click me if you have questions!","NatureAlpha is doing really cool work with ESG data"]'>
+  <div class="stag">About &mdash; Ghost's home</div>
+  <h2>I build things<br>that think.</h2>
+  <p>Watch the ghost — it drifts organically, eyes wander, occasionally shares thoughts. Move your cursor and its eyes follow softly, body drifts slightly toward you then away.</p>
+  <div class="note">Ghost home &mdash; organic movement</div>
+</section>
+
+<section class="sec" id="s-edu" style="background:#0b0b0b"
+  data-peeks='[{"msg":"4.0 GPA at Brown — not bad, right?","s":"r","y":"40%"},{"msg":"Ask me about his thesis!","s":"l","y":"55%"},{"msg":"Brown was where it all started","s":"r","y":"30%"}]'>
+  <div class="stag">Education</div>
+  <h2>Brown University</h2>
+  <p>Ghost peeks in from different sides.</p>
+  <div class="note">New section &mdash; peek</div>
+</section>
+
+<section class="sec" id="s-exp" style="background:#0a0a0a"
+  data-peeks='[{"msg":"NatureAlpha is his favorite role so far","s":"l","y":"45%"},{"msg":"£829K in value at dunnhumby!","s":"r","y":"35%"},{"msg":"He misses the Singh Lab sometimes","s":"l","y":"55%"}]'>
+  <div class="stag">Experience</div>
+  <h2>Work</h2>
+  <p>Personality-driven peek messages, not generic prompts.</p>
+  <div class="note">Existing &mdash; personality peeks</div>
+</section>
+
+<section class="sec" id="s-proj" style="background:#0b0b0b"
+  data-peeks='[{"msg":"RAG Scholar AI is his proudest side project","s":"r","y":"50%"},{"msg":"0.96 AUC on SenID — he won't stop talking about it","s":"l","y":"40%"},{"msg":"The hackathon was intense, 225 people!","s":"r","y":"60%"}]'>
+  <div class="stag">Projects</div>
+  <h2>Projects</h2>
+  <p>Project-aware personality peeks.</p>
+  <div class="note">Existing &mdash; personality peeks</div>
+</section>
+
+<script>
+  // ===== Elements =====
+  const gw = document.getElementById('gw');
+  const gh = document.getElementById('gh');
+  const gBody = document.getElementById('gBody');
+  const mw = document.getElementById('mw');
+  const pL = document.getElementById('pL');
+  const pR = document.getElementById('pR');
+  const cb = document.getElementById('cb');
+  const thought = document.getElementById('thought');
+  const peek = document.getElementById('peek');
+  const pkMsg = document.getElementById('pkMsg');
+
+  let chatOpen = false, anchored = false;
+  let mx = 0, my = 0;
+  let gx = window.innerWidth * 0.6, gy = window.innerHeight * 0.4;
+  let vx = 0, vy = 0;
+  let time = 0;
+  let currentSec = 's-about';
+  let peekTimer = null, peekIdx = {};
+
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+  // ===== Simplex-like noise (simple approximation) =====
+  function noise(t, seed) {
+    return Math.sin(t * 0.7 + seed) * 0.5
+         + Math.sin(t * 1.3 + seed * 2.1) * 0.3
+         + Math.sin(t * 2.1 + seed * 0.7) * 0.2;
+  }
+
+  // ===== ORGANIC MOVEMENT =====
+  function moveLoop() {
+    time += 0.008;
+
+    if (!anchored) {
+      // Noise-driven wandering — two independent noise channels for x/y
+      const wanderX = noise(time, 1.0) * window.innerWidth * 0.35;
+      const wanderY = noise(time * 0.8, 5.0) * window.innerHeight * 0.3;
+
+      // Base position: center-right area of viewport
+      const baseX = window.innerWidth * 0.55 + wanderX;
+      const baseY = window.innerHeight * 0.4 + wanderY;
+
+      // Slight cursor attraction (gravity, not following)
+      const dx = mx - gx;
+      const dy = my - gy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const attraction = Math.min(0.0003, 15 / (dist + 200));
+
+      // Velocity with drift + gentle cursor pull
+      vx += (baseX - gx) * 0.003 + dx * attraction;
+      vy += (baseY - gy) * 0.003 + dy * attraction;
+
+      // Damping for smooth organic motion
+      vx *= 0.97;
+      vy *= 0.97;
+
+      // Occasional burst of speed (personality)
+      if (Math.random() < 0.002) {
+        vx += (Math.random() - 0.5) * 3;
+        vy += (Math.random() - 0.5) * 2;
+      }
+
+      gx += vx;
+      gy += vy;
+
+      // Keep in bounds with soft bounce
+      const margin = 40;
+      if (gx < margin) { gx = margin; vx = Math.abs(vx) * 0.5; }
+      if (gx > window.innerWidth - 120) { gx = window.innerWidth - 120; vx = -Math.abs(vx) * 0.5; }
+      if (gy < margin) { gy = margin; vy = Math.abs(vy) * 0.5; }
+      if (gy > window.innerHeight - 130) { gy = window.innerHeight - 130; vy = -Math.abs(vy) * 0.5; }
+
+      // Body tilt and stretch based on velocity
+      const speed = Math.sqrt(vx * vx + vy * vy);
+      const tilt = Math.max(-12, Math.min(12, vx * 2));
+      const stretch = 1 + Math.min(speed * 0.02, 0.08);
+      const squish = 1 - Math.min(speed * 0.015, 0.06);
+
+      gBody.style.transform = `rotate(${tilt}deg) scaleX(${squish.toFixed(3)}) scaleY(${stretch.toFixed(3)})`;
+
+      // Squint when moving fast
+      if (speed > 2) {
+        gh.classList.add('squint');
+      } else {
+        gh.classList.remove('squint');
+      }
+    }
+
+    gw.style.left = gx + 'px';
+    gw.style.top = gy + 'px';
+
+    requestAnimationFrame(moveLoop);
+  }
+  moveLoop();
+
+  // ===== EYE TRACKING (loose, toward cursor) =====
+  function eyeLoop() {
+    const rect = gw.getBoundingClientRect();
+    const cx = rect.left + 40;
+    const cy = rect.top + 28;
+    const dx = mx - cx;
+    const dy = my - cy;
+    const d = Math.sqrt(dx * dx + dy * dy);
+    const max = 2.8;
+
+    // Mix cursor tracking with random wander
+    let sx = (dx / Math.max(d, 60)) * max;
+    let sy = (dy / Math.max(d, 60)) * max;
+
+    // Random eye wander when cursor is far
+    if (d > 300) {
+      sx += noise(time * 2, 10) * 2;
+      sy += noise(time * 2, 20) * 1.5;
+    }
+
+    pL.style.transform = `translate(${sx}px, ${sy}px)`;
+    pR.style.transform = `translate(${sx}px, ${sy}px)`;
+
+    requestAnimationFrame(eyeLoop);
+  }
+  eyeLoop();
+
+  // ===== BLINKING (natural rhythm) =====
+  function blink() {
+    gh.classList.add('blink');
+    setTimeout(() => {
+      gh.classList.remove('blink');
+      if (Math.random() < 0.25) {
+        setTimeout(() => {
+          gh.classList.add('blink');
+          setTimeout(() => gh.classList.remove('blink'), 90);
+        }, 180);
+      }
+    }, 110);
+    setTimeout(blink, 1800 + Math.random() * 5000);
+  }
+  setTimeout(blink, 800);
+
+  // ===== THOUGHT BUBBLES (simulated LLM personality) =====
+  let thoughtTimer = null;
+  function startThoughts(sec) {
+    const data = sec.dataset.thoughts;
+    if (!data) return;
+    const thoughts = JSON.parse(data);
+    let idx = 0;
+
+    function showNext() {
+      if (chatOpen || currentSec !== sec.id) return;
+      thought.textContent = thoughts[idx % thoughts.length];
+      thought.classList.add('show');
+      setMouth('ooh');
+
+      setTimeout(() => {
+        thought.classList.remove('show');
+        setMouth('idle');
+        idx++;
+        thoughtTimer = setTimeout(showNext, 4000 + Math.random() * 6000);
+      }, 3000);
+    }
+
+    thoughtTimer = setTimeout(showNext, 3000 + Math.random() * 3000);
+  }
+
+  function stopThoughts() {
+    if (thoughtTimer) clearTimeout(thoughtTimer);
+    thought.classList.remove('show');
+  }
+
+  // ===== MOUTH =====
+  function setMouth(t) {
+    const c = { idle: 'm-idle', happy: 'm-happy', talk: 'm-talk', ooh: 'm-ooh' };
+    mw.innerHTML = `<div class="${c[t] || c.idle}"></div>`;
+  }
+
+  // ===== CHAT =====
+  function toggleChat() {
+    if (chatOpen) closeChat();
+    else openChat();
+  }
+
+  function openChat() {
+    chatOpen = true;
+    anchored = true;
+    gh.classList.add('anchored');
+    stopThoughts();
+    setMouth('talk');
+    setTimeout(() => setMouth('happy'), 1200);
+
+    // Position chat next to ghost
+    const r = gw.getBoundingClientRect();
+    const spR = window.innerWidth - r.right;
+
+    if (spR > 350) {
+      cb.style.left = (r.right + 15) + 'px';
+      cb.style.top = Math.max(10, r.top - 40) + 'px';
+    } else {
+      cb.style.left = Math.max(10, r.left - 345) + 'px';
+      cb.style.top = Math.max(10, r.top - 40) + 'px';
+    }
+
+    cb.style.right = 'auto';
+    cb.classList.add('open');
+  }
+
+  function closeChat() {
+    chatOpen = false;
+    anchored = false;
+    gh.classList.remove('anchored');
+    cb.classList.remove('open');
+    setMouth('idle');
+    if (currentSec === 's-about') {
+      const sec = document.getElementById('s-about');
+      startThoughts(sec);
+    }
+  }
+
+  function openFromPeek() {
+    peek.classList.remove('vis');
+    gw.classList.remove('hidden');
+    // Move ghost near peek position
+    const pr = peek.getBoundingClientRect();
+    gx = Math.min(window.innerWidth - 150, Math.max(100, pr.left));
+    gy = Math.min(window.innerHeight - 150, Math.max(100, pr.top));
+    setTimeout(openChat, 250);
+  }
+
+  function ask(q) {
+    if (!q) return;
+    const msgs = document.getElementById('msgs');
+    msgs.innerHTML += `<div class="cm cm-u">${q}</div>`;
+    setMouth('talk');
+
+    setTimeout(() => {
+      const ql = q.toLowerCase();
+      let a = "He's an LLM Engineer at NatureAlpha, building agentic AI systems for sustainable finance. It's really cool work!";
+      if (ql.includes('research') || ql.includes('nature pub')) a = "Oh, the Nature paper! Nikolai built a deep learning ageing clock for fruit flies — 95% accuracy, 0.99 AUC. He's pretty proud of that one.";
+      if (ql.includes('tech') || ql.includes('stack')) a = "Mostly Python — PyTorch, LangChain, FAISS for RAG. AWS and PySpark for the big data stuff. TypeScript for frontend like this site!";
+      if (ql.includes('edu') || ql.includes('brown')) a = "Brown University! MSc Data Science with a perfect 4.0, and BA History before that. The History background actually helps with critical thinking about AI.";
+      if (ql.includes('rag') || ql.includes('scholar')) a = "RAG Scholar AI is his side project — a document Q&A tool with smart citations. Built with LangChain and FAISS. Students actually use it!";
+
+      msgs.innerHTML += `<div class="cm cm-ai">${a}</div>`;
+      msgs.scrollTop = msgs.scrollHeight;
+      setMouth('happy');
+    }, 1000 + Math.random() * 800);
+
+    document.getElementById('ci').value = '';
+  }
+
+  // ===== SECTION OBSERVER =====
+  const secs = document.querySelectorAll('.sec');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio > 0.5) {
+        const id = e.target.id;
+        currentSec = id;
+
+        if (id === 's-about') {
+          gw.classList.remove('hidden');
+          peek.classList.remove('vis');
+          if (peekTimer) clearTimeout(peekTimer);
+          startThoughts(e.target);
+        } else {
+          stopThoughts();
+          if (!chatOpen) gw.classList.add('hidden');
+          schedulePeek(e.target);
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+
+  secs.forEach(s => obs.observe(s));
+
+  // ===== PEEK =====
+  function schedulePeek(sec) {
+    peek.classList.remove('vis', 'r', 'l', 'b');
+    if (peekTimer) clearTimeout(peekTimer);
+
+    const pd = sec.dataset.peeks;
+    if (!pd) return;
+    const peeks = JSON.parse(pd);
+    if (!peekIdx[sec.id]) peekIdx[sec.id] = 0;
+
+    function doOne() {
+      if (currentSec !== sec.id) return;
+
+      const i = peekIdx[sec.id] % peeks.length;
+      const p = peeks[i];
+      peekIdx[sec.id]++;
+
+      pkMsg.textContent = p.msg;
+      peek.className = 'peek ' + p.s;
+
+      if (p.s === 'r' || p.s === 'l') {
+        peek.style.top = p.y || '45%';
+        peek.style.bottom = 'auto';
+        peek.style.left = p.s === 'l' ? '0' : 'auto';
+        peek.style.right = p.s === 'r' ? '0' : 'auto';
+      } else {
+        peek.style.top = 'auto';
+        peek.style.bottom = '70px';
+        peek.style.left = '50%';
+        peek.style.right = 'auto';
+      }
+
+      setTimeout(() => peek.classList.add('vis'), 50);
+
+      // Cycle: show 3.5s, hide, next after 2-4s
+      setTimeout(() => {
+        peek.classList.remove('vis');
+        peekTimer = setTimeout(doOne, 2000 + Math.random() * 3000);
+      }, 3500);
+    }
+
+    peekTimer = setTimeout(doOne, 1000 + Math.random() * 1500);
+  }
+
+  // Kickstart
+  startThoughts(document.getElementById('s-about'));
+</script>
+
+</body>
+</html>

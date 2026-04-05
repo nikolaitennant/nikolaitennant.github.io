@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Section Mockup</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #e5e5e5;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .section-label {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #666;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .ai-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    min-height: 80vh;
+  }
+
+  /* ---- Neural Orb ---- */
+  .orb-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 450px;
+  }
+
+  .orb {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    position: relative;
+    cursor: none;
+  }
+
+  .orb-core {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%,
+      rgba(120, 180, 255, 0.3) 0%,
+      rgba(80, 120, 220, 0.15) 30%,
+      rgba(40, 60, 140, 0.08) 60%,
+      transparent 70%
+    );
+    animation: orbPulse 4s ease-in-out infinite;
+    box-shadow:
+      0 0 60px rgba(100, 160, 255, 0.15),
+      0 0 120px rgba(80, 130, 240, 0.08),
+      inset 0 0 60px rgba(100, 160, 255, 0.05);
+  }
+
+  .orb-core.thinking {
+    animation: orbThink 1.2s ease-in-out infinite;
+    box-shadow:
+      0 0 80px rgba(100, 180, 255, 0.3),
+      0 0 160px rgba(80, 150, 240, 0.15),
+      inset 0 0 80px rgba(100, 180, 255, 0.1);
+  }
+
+  .orb-ring {
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    border: 1px solid rgba(100, 160, 255, 0.08);
+    animation: ringRotate 20s linear infinite;
+  }
+
+  .orb-ring::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: 50%;
+    width: 4px; height: 4px;
+    background: rgba(120, 180, 255, 0.5);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(120, 180, 255, 0.5);
+  }
+
+  .orb-ring-2 {
+    position: absolute;
+    inset: -40px;
+    border-radius: 50%;
+    border: 1px solid rgba(100, 160, 255, 0.04);
+    animation: ringRotate 30s linear infinite reverse;
+  }
+
+  .orb-ring-2::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; right: 30%;
+    width: 3px; height: 3px;
+    background: rgba(120, 180, 255, 0.3);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(120, 180, 255, 0.3);
+  }
+
+  /* Synapse particles */
+  .synapse {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(140, 190, 255, 0.6);
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(140, 190, 255, 0.4);
+  }
+
+  .s1 { top: 25%; left: 30%; animation: synapsePulse 3s 0s infinite; }
+  .s2 { top: 40%; left: 65%; animation: synapsePulse 3s 0.5s infinite; }
+  .s3 { top: 60%; left: 35%; animation: synapsePulse 3s 1s infinite; }
+  .s4 { top: 35%; left: 50%; animation: synapsePulse 3s 1.5s infinite; }
+  .s5 { top: 55%; left: 55%; animation: synapsePulse 3s 2s infinite; }
+  .s6 { top: 45%; left: 40%; animation: synapsePulse 3s 0.8s infinite; }
+  .s7 { top: 50%; left: 60%; animation: synapsePulse 3s 1.8s infinite; }
+  .s8 { top: 30%; left: 45%; animation: synapsePulse 3s 2.3s infinite; }
+
+  /* Connection lines between synapses */
+  .connections {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .conn-line {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(120, 180, 255, 0.15), transparent);
+    transform-origin: left center;
+  }
+
+  .c1 { top: 32%; left: 30%; width: 80px; transform: rotate(25deg); animation: connFade 4s 0s infinite; }
+  .c2 { top: 48%; left: 35%; width: 60px; transform: rotate(-15deg); animation: connFade 4s 0.7s infinite; }
+  .c3 { top: 40%; left: 45%; width: 50px; transform: rotate(40deg); animation: connFade 4s 1.4s infinite; }
+  .c4 { top: 55%; left: 40%; width: 70px; transform: rotate(-30deg); animation: connFade 4s 2.1s infinite; }
+  .c5 { top: 35%; left: 50%; width: 45px; transform: rotate(10deg); animation: connFade 4s 0.3s infinite; }
+
+  .orb-label {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(140, 190, 255, 0.4);
+  }
+
+  /* ---- Chat Interface ---- */
+  .chat-container {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+  }
+
+  .chat-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .chat-header-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(100, 200, 130, 0.7);
+    box-shadow: 0 0 8px rgba(100, 200, 130, 0.4);
+    animation: dotPulse 2s infinite;
+  }
+
+  .chat-header-text {
+    font-size: 0.8rem;
+    color: #999;
+    font-weight: 500;
+  }
+
+  .chat-messages {
+    flex: 1;
+    padding: 1.25rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .msg {
+    max-width: 85%;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .msg-user {
+    align-self: flex-end;
+    background: rgba(100, 160, 255, 0.12);
+    border: 1px solid rgba(100, 160, 255, 0.15);
+    color: #c8deff;
+  }
+
+  .msg-ai {
+    align-self: flex-start;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: #ccc;
+  }
+
+  .msg-ai strong {
+    color: #e5e5e5;
+  }
+
+  .typing-indicator {
+    align-self: flex-start;
+    display: flex;
+    gap: 4px;
+    padding: 0.75rem 1rem;
+  }
+
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(100, 160, 255, 0.4);
+    animation: typingBounce 1.4s infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  .chat-input {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .chat-input input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    color: #e5e5e5;
+    font-size: 0.85rem;
+    outline: none;
+    font-family: inherit;
+  }
+
+  .chat-input input::placeholder { color: #555; }
+
+  .chat-input button {
+    background: rgba(100, 160, 255, 0.15);
+    border: 1px solid rgba(100, 160, 255, 0.2);
+    border-radius: 8px;
+    color: rgba(140, 190, 255, 0.8);
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+
+  .chat-input button:hover {
+    background: rgba(100, 160, 255, 0.25);
+  }
+
+  /* ---- Suggestion chips ---- */
+  .suggestions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0 1.25rem 1rem;
+  }
+
+  .chip {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.02);
+    color: #888;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .chip:hover {
+    border-color: rgba(100, 160, 255, 0.2);
+    color: #aaa;
+  }
+
+  /* ---- Demo toggle ---- */
+  .demo-controls {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .demo-controls p {
+    font-size: 0.75rem;
+    color: #555;
+    margin-bottom: 1rem;
+  }
+
+  .demo-btn {
+    background: rgba(100, 160, 255, 0.1);
+    border: 1px solid rgba(100, 160, 255, 0.15);
+    border-radius: 8px;
+    color: rgba(140, 190, 255, 0.7);
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: inherit;
+    transition: all 0.3s;
+    margin: 0 0.5rem;
+  }
+
+  .demo-btn:hover { background: rgba(100, 160, 255, 0.2); }
+  .demo-btn.active {
+    background: rgba(100, 160, 255, 0.2);
+    border-color: rgba(100, 160, 255, 0.3);
+    color: rgba(160, 200, 255, 0.9);
+  }
+
+  /* ---- Animations ---- */
+  @keyframes orbPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.03); opacity: 0.9; }
+  }
+
+  @keyframes orbThink {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    30% { transform: scale(1.06); opacity: 0.85; }
+    60% { transform: scale(0.97); opacity: 1; }
+  }
+
+  @keyframes ringRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes synapsePulse {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(2); }
+  }
+
+  @keyframes connFade {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes dotPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  @keyframes typingBounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-4px); }
+  }
+
+  /* ---- State: thinking ---- */
+  .ai-section.thinking .orb-core {
+    animation: orbThink 1.2s ease-in-out infinite;
+    box-shadow:
+      0 0 80px rgba(100, 180, 255, 0.35),
+      0 0 160px rgba(80, 150, 240, 0.18),
+      inset 0 0 80px rgba(100, 180, 255, 0.12);
+  }
+
+  .ai-section.thinking .synapse {
+    animation-duration: 0.8s !important;
+  }
+
+  .ai-section.thinking .conn-line {
+    background: linear-gradient(90deg, transparent, rgba(120, 180, 255, 0.35), transparent);
+    animation-duration: 1.5s !important;
+  }
+
+  /* State indicator */
+  .state-badge {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.02);
+    color: #555;
+    transition: all 0.3s;
+  }
+
+  .ai-section.thinking .state-badge {
+    color: rgba(140, 190, 255, 0.7);
+    border-color: rgba(100, 160, 255, 0.15);
+    background: rgba(100, 160, 255, 0.05);
+  }
+</style>
+</head>
+<body>
+
+<div class="section-label">Mockup: AI Interactive Section &mdash; replacing Spline robot</div>
+
+<div class="ai-section" id="aiSection">
+  <!-- Left: Neural Orb -->
+  <div class="orb-container">
+    <div class="state-badge" id="stateBadge">Idle</div>
+    <div class="orb">
+      <div class="orb-ring"></div>
+      <div class="orb-ring-2"></div>
+      <div class="orb-core" id="orbCore">
+        <div class="connections">
+          <div class="conn-line c1"></div>
+          <div class="conn-line c2"></div>
+          <div class="conn-line c3"></div>
+          <div class="conn-line c4"></div>
+          <div class="conn-line c5"></div>
+        </div>
+        <div class="synapse s1"></div>
+        <div class="synapse s2"></div>
+        <div class="synapse s3"></div>
+        <div class="synapse s4"></div>
+        <div class="synapse s5"></div>
+        <div class="synapse s6"></div>
+        <div class="synapse s7"></div>
+        <div class="synapse s8"></div>
+      </div>
+    </div>
+    <div class="orb-label">Neural Core</div>
+  </div>
+
+  <!-- Right: Chat Interface -->
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="chat-header-dot"></div>
+      <div class="chat-header-text">Ask Nikolai's AI</div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg msg-ai">
+        Hey! I'm an AI trained on Nikolai's work, experience, and research. Ask me anything about his projects, skills, or background.
+      </div>
+      <div class="msg msg-user">
+        What does Nikolai do at NatureAlpha?
+      </div>
+      <div class="msg msg-ai">
+        <strong>Nikolai is an LLM Engineer at NatureAlpha</strong>, where he builds AI systems for biodiversity and nature-related financial risk analysis. He works on fine-tuning language models, building RAG pipelines, and developing tools that help financial institutions assess environmental impact using natural language processing.
+      </div>
+      <div class="msg msg-user">
+        What's his research background?
+      </div>
+      <div class="msg msg-ai" id="lastMsg" style="display:none">
+        He conducted research at <strong>Brown University</strong> on computational approaches to cognitive science, focusing on how language models can simulate aspects of human reasoning. His publication on psycholinguistic assessments of language models was presented at ACL 2023.
+      </div>
+      <div class="typing-indicator" id="typingDots">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div>
+
+    <div class="suggestions">
+      <div class="chip">What projects has he built?</div>
+      <div class="chip">Tell me about his education</div>
+      <div class="chip">What tech stack does he use?</div>
+    </div>
+
+    <div class="chat-input">
+      <input type="text" placeholder="Ask about Nikolai's work..." />
+      <button>Send</button>
+    </div>
+  </div>
+</div>
+
+<div class="demo-controls">
+  <p>Toggle states to see how the orb reacts to chat activity</p>
+  <button class="demo-btn active" onclick="setIdle()">Idle</button>
+  <button class="demo-btn" onclick="setThinking()">Thinking</button>
+  <button class="demo-btn" onclick="setResponding()">Responding</button>
+</div>
+
+<script>
+  const section = document.getElementById('aiSection');
+  const badge = document.getElementById('stateBadge');
+  const typing = document.getElementById('typingDots');
+  const lastMsg = document.getElementById('lastMsg');
+  const btns = document.querySelectorAll('.demo-btn');
+
+  function clearActive() {
+    btns.forEach(b => b.classList.remove('active'));
+  }
+
+  function setIdle() {
+    clearActive();
+    btns[0].classList.add('active');
+    section.classList.remove('thinking');
+    badge.textContent = 'Idle';
+    typing.style.display = 'flex';
+    lastMsg.style.display = 'none';
+  }
+
+  function setThinking() {
+    clearActive();
+    btns[1].classList.add('active');
+    section.classList.add('thinking');
+    badge.textContent = 'Processing...';
+    typing.style.display = 'flex';
+    lastMsg.style.display = 'none';
+  }
+
+  function setResponding() {
+    clearActive();
+    btns[2].classList.add('active');
+    section.classList.remove('thinking');
+    badge.textContent = 'Responding';
+    typing.style.display = 'none';
+    lastMsg.style.display = 'block';
+  }
+</script>
+
+</body>
+</html>

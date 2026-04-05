@@ -1,478 +1,421 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { ChevronDown, Github, Linkedin, Mail, MapPin } from 'lucide-react';
-import { personalInfo } from '../data/portfolio';
+"use client";
 
-const useTypewriter = (text: string, baseDelay: number = 50, startDelay: number = 0) => {
-  const [displayedText, setDisplayedText] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { motion } from "framer-motion";
+import { Github, Linkedin, Mail } from "lucide-react";
+import { createNoise3D } from "simplex-noise";
+import { personalInfo } from "@/data/portfolio";
+
+// ── Layer 1: Wavy Canvas Background ──────────────────────────────
+const WavyCanvas: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const noise = createNoise3D();
 
   useEffect(() => {
-    if (!text) return;
-    
-    const startTimer = setTimeout(() => {
-      setIsTyping(true);
-      let i = 0;
-      
-      const typeNextChar = () => {
-        if (i < text.length) {
-          setDisplayedText(text.slice(0, i + 1));
-          i++;
-          
-          // Variable delay to simulate realistic typing
-          let currentDelay = baseDelay;
-          const currentChar = text[i - 1];
-          
-          // Longer pause after punctuation
-          if (currentChar === ',' || currentChar === '.') {
-            currentDelay = baseDelay * 3;
-          }
-          // Shorter delay for common letters
-          else if ('aeiou'.includes(currentChar.toLowerCase())) {
-            currentDelay = baseDelay * 0.7;
-          }
-          // Slight random variation
-          currentDelay += (Math.random() - 0.5) * baseDelay * 0.5;
-          
-          setTimeout(typeNextChar, currentDelay);
-        } else {
-          setIsTyping(false);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let w = (canvas.width = window.innerWidth);
+    let h = (canvas.height = window.innerHeight);
+    ctx.filter = "blur(14px)";
+    let nt = 0;
+    let frameId: number;
+
+    const isDark = () => document.documentElement.classList.contains("dark");
+    const darkColors = ["#1a1a2e", "#16213e", "#0f3460", "#1a1a2e", "#1b1b3a"];
+    const lightColors = ["#dbeafe", "#c7d2fe", "#e0e7ff", "#ddd6fe", "#ede9fe"];
+
+    const handleResize = () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      ctx.filter = "blur(14px)";
+    };
+    window.addEventListener("resize", handleResize);
+
+    const render = () => {
+      ctx.fillStyle = isDark() ? "hsl(0, 0%, 2%)" : "hsl(0, 0%, 98%)";
+      ctx.globalAlpha = 0.4;
+      ctx.fillRect(0, 0, w, h);
+      nt += 0.0008;
+
+      for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.lineWidth = 60;
+        const colors = isDark() ? darkColors : lightColors;
+        ctx.strokeStyle = colors[i];
+        for (let x = 0; x < w; x += 5) {
+          const y = noise(x / 900, 0.3 * i, nt) * 120;
+          ctx.lineTo(x, y + h * 0.5);
         }
-      };
-      
-      typeNextChar();
-    }, startDelay);
+        ctx.stroke();
+        ctx.closePath();
+      }
+      frameId = requestAnimationFrame(render);
+    };
+    render();
 
-    return () => clearTimeout(startTimer);
-  }, [text, baseDelay, startDelay]);
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
-  return { displayedText, isTyping };
+  return <canvas ref={canvasRef} className="absolute inset-0 z-0 opacity-60" />;
 };
 
-const Hero: React.FC = () => {
-  const titleTypewriter = useTypewriter(personalInfo.title, 40, 1000);
-  
-  // Calculate sequential delays
-  const terminalCommandText = "~/biocomputing/genome_analysis $";
-  const analysisCommandText = "# Analysing DNA_sequences.fasta";
-  const foundCommandText = "# Found 23,146 base pairs";
-  
-  const terminalCommand = useTypewriter(terminalCommandText, 80, 500);
-  const analysisCommand = useTypewriter(analysisCommandText, 70, 500 + (terminalCommandText.length * 80) + 500);
-  const foundCommand = useTypewriter(foundCommandText, 70, 500 + (terminalCommandText.length * 80) + 500 + (analysisCommandText.length * 70) + 800);
+// ── Layer 2: Interactive Particle Field ──────────────────────────
+interface Particle {
+  x: number;
+  y: number;
+  originX: number;
+  originY: number;
+  vx: number;
+  vy: number;
+  size: number;
+}
 
+const ParticleField: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const particlesRef = useRef<Particle[]>([]);
+  const mouseRef = useRef({ x: -1000, y: -1000, isActive: false });
+  const frameIdRef = useRef<number>(0);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2
-      }
+  const initParticles = useCallback((width: number, height: number) => {
+    const count = Math.floor(width * height * 0.00015);
+    const particles: Particle[] = [];
+    for (let i = 0; i < count; i++) {
+      const x = Math.random() * width;
+      const y = Math.random() * height;
+      particles.push({
+        x, y, originX: x, originY: y,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        size: Math.random() * 1.5 + 0.3,
+      });
     }
-  };
+    particlesRef.current = particles;
+  }, []);
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
+  const animate = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const mouse = mouseRef.current;
+
+    for (const p of particlesRef.current) {
+      const dx = mouse.x - p.x;
+      const dy = mouse.y - p.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (mouse.isActive && dist < 150) {
+        const force = (150 - dist) / 150;
+        p.vx -= (dx / dist) * force * 4;
+        p.vy -= (dy / dist) * force * 4;
       }
-    }
-  };
 
+      // Gentle ambient drift — origins slowly wander
+      const time = Date.now() * 0.0003;
+      const driftX = Math.sin(time + p.originX * 0.01) * 0.15;
+      const driftY = Math.cos(time + p.originY * 0.01) * 0.15;
+      p.vx += driftX;
+      p.vy += driftY;
+
+      p.vx += (p.originX - p.x) * 0.02;
+      p.vy += (p.originY - p.y) * 0.02;
+      p.vx *= 0.96;
+      p.vy *= 0.96;
+      p.x += p.vx;
+      p.y += p.vy;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      const dark = document.documentElement.classList.contains("dark");
+      ctx.fillStyle = dark ? "rgba(255, 255, 255, 0.3)" : "rgba(0, 0, 0, 0.15)";
+      ctx.fill();
+    }
+
+    frameIdRef.current = requestAnimationFrame(animate);
+  }, []);
+
+  useEffect(() => {
+    const resize = () => {
+      if (!containerRef.current || !canvasRef.current) return;
+      const { width, height } = containerRef.current.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvasRef.current.width = width * dpr;
+      canvasRef.current.height = height * dpr;
+      canvasRef.current.style.width = `${width}px`;
+      canvasRef.current.style.height = `${height}px`;
+      const ctx = canvasRef.current.getContext("2d");
+      if (ctx) ctx.scale(dpr, dpr);
+      initParticles(width, height);
+    };
+    window.addEventListener("resize", resize);
+    resize();
+    return () => window.removeEventListener("resize", resize);
+  }, [initParticles]);
+
+  useEffect(() => {
+    frameIdRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameIdRef.current);
+  }, [animate]);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top, isActive: true };
+  };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-terminal-900 via-terminal-900 to-slate-900/40">
-      {/* Static Background */}
-      <div className="absolute inset-0">
-        {/* Main geometric pattern - static, no animation */}
-        <div 
-          className="absolute inset-0 opacity-15" 
-          style={{
-            background: `
-              radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.6) 0%, transparent 40%),
-              radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.5) 0%, transparent 50%),
-              radial-gradient(circle at 40% 80%, rgba(56, 189, 248, 0.4) 0%, transparent 60%),
-              radial-gradient(circle at 90% 90%, rgba(239, 68, 68, 0.5) 0%, transparent 40%),
-              radial-gradient(circle at 10% 70%, rgba(34, 197, 94, 0.3) 0%, transparent 30%)
-            `
-          }}></div>
-        
-        {/* Flowing lines */}
-        <motion.div 
-          className="absolute inset-0 opacity-25"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 0.25, scale: 1 }}
-          transition={{ duration: 4, delay: 1 }}
-        >
-          <svg className="w-full h-full" viewBox="0 0 1200 800" fill="none">
-            <defs>
-              <linearGradient id="flow1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="rgba(239, 68, 68, 0.9)" />
-                <stop offset="50%" stopColor="rgba(34, 197, 94, 0.8)" />
-                <stop offset="100%" stopColor="rgba(56, 189, 248, 0.7)" />
-              </linearGradient>
-              <linearGradient id="flow2" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="rgba(56, 189, 248, 0.8)" />
-                <stop offset="50%" stopColor="rgba(239, 68, 68, 0.7)" />
-                <stop offset="100%" stopColor="rgba(34, 197, 94, 0.6)" />
-              </linearGradient>
-            </defs>
-            <motion.path
-              d="M-100,200 Q300,100 600,300 T1300,200"
-              stroke="url(#flow1)"
-              strokeWidth="3"
-              fill="none"
-              className="animate-pulse"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 3, delay: 1.5 }}
-            />
-            <motion.path
-              d="M-100,400 Q300,500 600,200 T1300,600"
-              stroke="url(#flow2)"
-              strokeWidth="2.5"
-              fill="none"
-              className="animate-pulse"
-              style={{animationDelay: '1s'}}
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 3, delay: 2 }}
-            />
-            <motion.path
-              d="M-100,600 Q500,300 800,500 T1300,400"
-              stroke="url(#flow1)"
-              strokeWidth="2"
-              fill="none"
-              className="animate-pulse"
-              style={{animationDelay: '2s'}}
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 3, delay: 2.5 }}
-            />
-          </svg>
-        </motion.div>
-        
-        {/* Floating particles */}
-        <motion.div 
-          className="absolute inset-0 opacity-40"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.4 }}
-          transition={{ duration: 2, delay: 3 }}
-        >
-          <motion.div 
-            className="absolute top-1/4 left-1/4 w-3 h-3 bg-primary-400 rounded-full float-animation pulse-glow" 
-            style={{animationDelay: '0s'}}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 3 }}
-          ></motion.div>
-          <motion.div 
-            className="absolute top-1/3 right-1/4 w-2 h-2 bg-bio-400 rounded-full float-animation pulse-glow" 
-            style={{animationDelay: '0.5s'}}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 3.2 }}
-          ></motion.div>
-          <motion.div 
-            className="absolute bottom-1/3 left-1/3 w-2.5 h-2.5 bg-accent-400 rounded-full float-animation pulse-glow" 
-            style={{animationDelay: '1s'}}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 3.4 }}
-          ></motion.div>
-          <motion.div 
-            className="absolute top-1/2 right-1/3 w-2 h-2 bg-primary-400 rounded-full float-animation pulse-glow" 
-            style={{animationDelay: '1.5s'}}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 3.6 }}
-          ></motion.div>
-          <motion.div 
-            className="absolute bottom-1/4 right-1/2 w-3 h-3 bg-bio-400 rounded-full float-animation pulse-glow" 
-            style={{animationDelay: '2s'}}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 3.8 }}
-          ></motion.div>
-          <motion.div 
-            className="absolute top-3/4 left-1/2 w-1.5 h-1.5 bg-accent-400 rounded-full float-animation pulse-glow" 
-            style={{animationDelay: '2.5s'}}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 4 }}
-          ></motion.div>
-          <motion.div 
-            className="absolute bottom-1/2 right-1/4 w-2.5 h-2.5 bg-primary-400 rounded-full float-animation pulse-glow" 
-            style={{animationDelay: '3s'}}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 4.2 }}
-          ></motion.div>
-        </motion.div>
-        
-        {/* Neural network connections */}
-        <motion.div 
-          className="absolute inset-0 opacity-30"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.30, scale: 1 }}
-          transition={{ duration: 2.5, delay: 4.5 }}
-        >
-          <svg className="w-full h-full" viewBox="0 0 1200 800" fill="none">
-            <g className="neural-pulse">
-              <motion.circle 
-                cx="200" cy="150" r="4" fill="rgba(239, 68, 68, 0.9)" className="pulse-glow"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 4.5 }}
-              />
-              <motion.circle 
-                cx="400" cy="100" r="3" fill="rgba(34, 197, 94, 0.8)" className="pulse-glow"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 4.7 }}
-              />
-              <motion.circle 
-                cx="600" cy="200" r="3.5" fill="rgba(56, 189, 248, 0.8)" className="pulse-glow"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 4.9 }}
-              />
-              <motion.circle 
-                cx="800" cy="120" r="3" fill="rgba(239, 68, 68, 0.8)" className="pulse-glow"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 5.1 }}
-              />
-              <motion.circle 
-                cx="300" cy="300" r="3" fill="rgba(34, 197, 94, 0.9)" className="pulse-glow"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 5.3 }}
-              />
-              <motion.circle 
-                cx="700" cy="350" r="2.5" fill="rgba(56, 189, 248, 0.8)" className="pulse-glow"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 5.5 }}
-              />
-              
-              <motion.line 
-                x1="200" y1="150" x2="400" y2="100" stroke="rgba(239, 68, 68, 0.6)" strokeWidth="1.2" className="neural-pulse"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 1, delay: 5.7 }}
-              />
-              <motion.line 
-                x1="400" y1="100" x2="600" y2="200" stroke="rgba(34, 197, 94, 0.6)" strokeWidth="1.2" className="neural-pulse"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 1, delay: 5.9 }}
-              />
-              <motion.line 
-                x1="600" y1="200" x2="800" y2="120" stroke="rgba(56, 189, 248, 0.6)" strokeWidth="1.2" className="neural-pulse"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 1, delay: 6.1 }}
-              />
-              <motion.line 
-                x1="300" y1="300" x2="700" y2="350" stroke="rgba(239, 68, 68, 0.5)" strokeWidth="1" className="neural-pulse"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 1, delay: 6.3 }}
-              />
-              <motion.line 
-                x1="200" y1="150" x2="300" y2="300" stroke="rgba(34, 197, 94, 0.5)" strokeWidth="1" className="neural-pulse"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 1, delay: 6.5 }}
-              />
-            </g>
-          </svg>
-        </motion.div>
-      </div>
-      
-      {/* Bio-Terminal Header */}
-      <div className="absolute top-16 left-3 md:top-8 md:left-8 text-primary-400 font-mono text-xs md:text-sm opacity-40 space-y-1">
-        <div className="flex items-center space-x-2 mb-2">
-          <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
-          <div className="w-3 h-3 rounded-full bg-accent-500 animate-pulse" style={{animationDelay: '0.2s'}}></div>
-          <div className="w-3 h-3 rounded-full bg-bio-500 animate-pulse" style={{animationDelay: '0.4s'}}></div>
-        </div>
-        <div>
-          {terminalCommand.displayedText}
-        </div>
-        <div className="text-xs opacity-70">
-          <span className="text-bio-400">{analysisCommand.displayedText}</span>
-        </div>
-        <div className="text-xs opacity-70">
-          <span className="text-terminal-500">{foundCommand.displayedText}</span>
-        </div>
-      </div>
-      
-      {/* DNA-inspired pattern */}
-      <div className="absolute top-0 right-0 w-64 h-64 opacity-5">
-        <div className="dna-helix w-full h-full"></div>
-      </div>
-      
-      {/* DNA Sequence Easter Egg */}
-      <div className="absolute bottom-8 right-8 text-primary-400 font-mono text-xs opacity-20 max-w-xs">
-        <div className="text-bio-400 mb-1"># Human Chromosome 1 (sample)</div>
-        <div className="break-all leading-tight">
-          <span className="text-primary-400">ATCG</span>
-          <span className="text-accent-400">TGCA</span>
-          <span className="text-bio-400">CGAT</span>
-          <span className="text-primary-400">TACG</span>
-          <span className="text-accent-400">GCTA</span>
-          <span className="text-bio-400">ATGC</span>
-        </div>
-      </div>
-
-      <div className="container-custom relative z-10">
-        <motion.div
-          className="text-center max-w-4xl mx-auto"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {/* Name and Title */}
-          <motion.div variants={itemVariants}>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-3 md:mb-6 leading-tight font-futuristic tracking-wider">
-              <span className="gradient-text">NIKOLAI</span>
-              <br />
-              <span className="text-terminal-100">TENNANT</span>
-            </h1>
-          </motion.div>
-
-          {/* Animated Title */}
-          <motion.div variants={itemVariants}>
-            <div
-              className="text-base sm:text-lg md:text-xl text-terminal-300 mb-4 md:mb-8 min-h-5 md:min-h-8 font-mono select-none relative" 
-              style={{
-                caretColor: 'transparent', 
-                userSelect: 'none', 
-                cursor: 'default',
-                outline: 'none',
-                WebkitUserSelect: 'none',
-                MozUserSelect: 'none',
-                msUserSelect: 'none'
-              }}
-              tabIndex={-1}
-            >
-              <span className="text-primary-400">{'>'}</span> {titleTypewriter.displayedText}
-              <span 
-                className="inline-block ml-1 text-terminal-100" 
-                style={{
-                  animation: titleTypewriter.isTyping 
-                    ? 'none' 
-                    : 'blink 1s infinite'
-                }}
-              >|</span>
-            </div>
-          </motion.div>
-
-          {/* Location */}
-          <motion.div 
-            variants={itemVariants}
-            className="flex items-center justify-center mb-6 md:mb-8 text-gray-600 dark:text-gray-400"
-          >
-            <MapPin className="w-5 h-5 mr-2" />
-            <span className="text-sm md:text-lg">{personalInfo.location}</span>
-          </motion.div>
-
-          {/* Social Links */}
-          <motion.div 
-            variants={itemVariants}
-            className="flex items-center justify-center space-x-4 md:space-x-6 mb-8 md:mb-12"
-          >
-            <motion.a
-              href={personalInfo.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="tooltip p-2 md:p-3 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-lg shadow-lg hover:shadow-xl hover:border-primary-500/50 transition-all duration-300 group"
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Github className="w-5 h-5 md:w-6 md:h-6 text-terminal-300 group-hover:text-primary-400" />
-              <span className="tooltip-content">GitHub</span>
-            </motion.a>
-            
-            <motion.a
-              href={personalInfo.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="tooltip p-2 md:p-3 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-lg shadow-lg hover:shadow-xl hover:border-primary-500/50 transition-all duration-300 group"
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Linkedin className="w-5 h-5 md:w-6 md:h-6 text-terminal-300 group-hover:text-primary-400" />
-              <span className="tooltip-content">LinkedIn</span>
-            </motion.a>
-            
-            <motion.a
-              href={`mailto:${personalInfo.email}`}
-              className="tooltip p-2 md:p-3 bg-terminal-800/50 backdrop-blur-sm border border-primary-500/30 rounded-lg shadow-lg hover:shadow-xl hover:border-primary-500/50 transition-all duration-300 group"
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Mail className="w-5 h-5 md:w-6 md:h-6 text-terminal-300 group-hover:text-primary-400" />
-              <span className="tooltip-content">Email</span>
-            </motion.a>
-            
-          </motion.div>
-
-          {/* CTA Buttons */}
-          <motion.div 
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 md:space-x-6 mb-12 md:mb-16 justify-center"
-          >
-            <motion.a
-              href="#projects"
-              className="px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 text-white font-semibold font-mono rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-primary-500/50 flex items-center text-sm md:text-base"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="text-terminal-200 mr-2">{'>'}</span>View My Work
-            </motion.a>
-            
-            <motion.a
-              href="#contact"
-              className="px-6 py-3 md:px-8 md:py-4 bg-terminal-800/50 backdrop-blur-sm border-2 border-primary-500 text-primary-400 font-semibold font-mono rounded-lg hover:bg-terminal-700/70 hover:border-primary-400 transition-all duration-300 flex items-center text-sm md:text-base"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="text-primary-300 mr-2">{'>'}</span>Get In Touch
-            </motion.a>
-          </motion.div>
-        </motion.div>
-
-      </div>
-      
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-0 right-0 flex justify-center">
-        <motion.button 
-          className="p-2 rounded-full hover:bg-terminal-800/50 transition-colours cursor-pointer"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        onClick={() => {
-          const aboutSection = document.querySelector('#about');
-          if (aboutSection) {
-            aboutSection.scrollIntoView({ behavior: 'smooth' });
-          }
-        }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        <ChevronDown className="w-6 h-6 text-primary-400 opacity-70" />
-        </motion.button>
-      </div>
-    </section>
+    <div
+      ref={containerRef}
+      className="absolute inset-0 z-[1]"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => { mouseRef.current.isActive = false; }}
+    >
+      <canvas ref={canvasRef} className="block w-full h-full" />
+    </div>
   );
 };
 
-export default Hero;
+// ── Layer 3: Glitch Decode + Spring Anaglyph ────────────────────
+const GlitchText: React.FC<{ text: string; className?: string; delay?: number }> = ({
+  text, className = "", delay = 0,
+}) => {
+  const [display, setDisplay] = useState("");
+  const [started, setStarted] = useState(false);
+  const h1Ref = useRef<HTMLHeadingElement>(null);
+  const lastMouse = useRef({ x: 0, y: 0, t: 0 });
+  const target = useRef({ x: 3, y: -1.5 });
+  const current = useRef({ x: 3, y: -1.5 });
+  const frameRef = useRef<number>(0);
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&";
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setStarted(true);
+      let iteration = 0;
+      const interval = setInterval(() => {
+        setDisplay(
+          text.split("").map((_, idx) =>
+            idx < iteration ? text[idx] : chars[Math.floor(Math.random() * chars.length)]
+          ).join("")
+        );
+        if (iteration >= text.length) clearInterval(interval);
+        iteration += 1 / 3;
+      }, 30);
+      return () => clearInterval(interval);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, [text, delay]);
+
+  // Spring animation loop — always running, smoothly interpolates
+  useEffect(() => {
+    const tick = () => {
+      current.current.x += (target.current.x - current.current.x) * 0.1;
+      current.current.y += (target.current.y - current.current.y) * 0.1;
+
+      if (h1Ref.current && started) {
+        const x = current.current.x;
+        const y = current.current.y;
+        h1Ref.current.style.textShadow =
+          `${x}px ${y}px 0 rgba(0,229,255,0.8), ${-x}px ${-y}px 0 rgba(255,0,64,0.65), ` +
+          `${x * 0.5}px ${y * 0.5}px 8px rgba(0,229,255,0.25), ${-x * 0.5}px ${-y * 0.5}px 8px rgba(255,0,64,0.15)`;
+      }
+      frameRef.current = requestAnimationFrame(tick);
+    };
+    frameRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameRef.current);
+  }, [started]);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const now = Date.now();
+    const dt = Math.max(1, now - lastMouse.current.t);
+    const vx = (e.clientX - lastMouse.current.x) / dt * 16;
+    const vy = (e.clientY - lastMouse.current.y) / dt * 16;
+    lastMouse.current = { x: e.clientX, y: e.clientY, t: now };
+
+    const speed = Math.sqrt(vx * vx + vy * vy);
+    const force = Math.min(speed * 0.6, 8);
+
+    if (speed > 0.3) {
+      target.current = { x: (vx / speed) * force, y: (vy / speed) * force };
+    }
+  };
+
+  const handleMouseLeave = () => {
+    target.current = { x: 3, y: -1.5 };
+  };
+
+  return (
+    <div className="relative inline select-none">
+      <h1
+        ref={h1Ref}
+        className={`font-bold tracking-tighter inline ${className}`}
+        style={{ textShadow: "3px -1.5px 0 rgba(0,229,255,0.5), -3px 1.5px 0 rgba(255,0,64,0.4)" }}
+        onMouseEnter={(e) => { lastMouse.current = { x: e.clientX, y: e.clientY, t: Date.now() }; }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        {display}
+      </h1>
+    </div>
+  );
+};
+
+// ── Layer 4: Typing Cursor ───────────────────────────────────────
+const TypingText: React.FC<{ text: string; className?: string; delay?: number }> = ({
+  text, className = "", delay = 2000,
+}) => {
+  const [displayed, setDisplayed] = useState("");
+  const [cursor, setCursor] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < text.length) {
+          setDisplayed(text.substring(0, i + 1));
+          i++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 80);
+      return () => clearInterval(interval);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, [text, delay]);
+
+  useEffect(() => {
+    const blink = setInterval(() => setCursor((p) => !p), 530);
+    return () => clearInterval(blink);
+  }, []);
+
+  return (
+    <div className={className}>
+      {displayed}
+      <span className={`inline-block w-[2px] h-[1em] bg-white/70 ml-1 align-middle transition-opacity ${cursor ? "opacity-100" : "opacity-0"}`} />
+    </div>
+  );
+};
+
+// ── Main Hero ────────────────────────────────────────────────────
+export default function Hero() {
+  return (
+    <section id="hero" className="relative w-full h-screen bg-background overflow-hidden">
+      {/* Layer 1: Deep wavy canvas */}
+      <WavyCanvas />
+
+      {/* Layer 2: Interactive particles */}
+      <ParticleField />
+
+      {/* Bottom fade — dots gradually dissolve instead of hard cutoff */}
+      <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-t from-background via-background/60 to-transparent z-[2] pointer-events-none" />
+
+      {/* Layer 3: Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full px-4">
+        <div className="max-w-5xl w-full text-center space-y-6">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
+            className="text-[10px] uppercase tracking-[0.3em] text-foreground/30 font-mono"
+          >
+            {personalInfo.citizenship} &middot; {personalInfo.location}
+          </motion.div>
+
+          {/* Name with glitch decode + anaglyph + scan lines */}
+          <div className="relative inline-block">
+            <GlitchText
+              text={personalInfo.name.toUpperCase()}
+              className="text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] text-foreground leading-[0.9]"
+              delay={800}
+            />
+            {/* Scan lines — clipped to text shape only */}
+            <div
+              className="absolute inset-0 pointer-events-none font-bold tracking-tighter text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] leading-[0.9] select-none"
+              aria-hidden="true"
+              style={{
+                background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(128,128,128,0.35) 2px, rgba(128,128,128,0.35) 4px)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                opacity: 0.3,
+              }}
+            >
+              {personalInfo.name.toUpperCase()}
+            </div>
+          </div>
+
+          {/* Title with typing effect */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 0.8 }}
+          >
+            <TypingText
+              text={personalInfo.title}
+              className="text-lg md:text-xl text-foreground/50 font-light tracking-widest uppercase font-mono"
+              delay={2500}
+            />
+          </motion.div>
+
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 4, duration: 1 }}
+            className="text-sm text-foreground/25 tracking-wide"
+          >
+            {personalInfo.subtitle}
+          </motion.p>
+
+          {/* Social links */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 4.5, duration: 0.8 }}
+            className="flex justify-center items-center gap-6 pt-4"
+          >
+            {[
+              { icon: Github, href: personalInfo.github },
+              { icon: Linkedin, href: personalInfo.linkedin },
+              { icon: Mail, href: `mailto:${personalInfo.email}` },
+            ].map(({ icon: Icon, href }) => (
+              <a
+                key={href}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground/30 hover:text-foreground transition-colors duration-300"
+              >
+                <Icon size={18} />
+              </a>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Bottom hint */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 5, duration: 1 }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10"
+      >
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          className="w-[1px] h-8 bg-gradient-to-b from-white/30 to-transparent"
+        />
+      </motion.div>
+    </section>
+  );
+}

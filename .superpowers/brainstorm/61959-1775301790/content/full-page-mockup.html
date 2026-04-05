@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Page Flow Mockup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #e5e5e5;
+    font-family: 'Inter', -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ---- Floating section indicator ---- */
+  .section-indicator {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 999px;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #666;
+  }
+
+  /* ---- Nav ---- */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10,10,10,0.6);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #e5e5e5;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
+    color: #888;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: #e5e5e5; }
+  .nav-links .active { color: #e5e5e5; }
+
+  /* ---- Section base ---- */
+  section {
+    position: relative;
+    width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .section-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #555;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 1rem;
+  }
+
+  /* ---- HERO ---- */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 50%, rgba(30, 40, 80, 0.3) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 30%, rgba(20, 30, 60, 0.2) 0%, transparent 60%);
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .hero h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 span { color: #666; }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    color: #888;
+    max-width: 500px;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .hero-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .hero-links a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: #888;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .hero-links a:hover {
+    border-color: rgba(255,255,255,0.15);
+    color: #ccc;
+  }
+
+  /* ---- AI SECTION (replaces Spline robot) ---- */
+  .ai-section {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    padding: 4rem;
+    position: relative;
+  }
+
+  .ai-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .ai-left h2 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .ai-left p {
+    font-size: 0.9rem;
+    color: #888;
+    max-width: 400px;
+    line-height: 1.6;
+  }
+
+  .ai-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .ai-stat-val {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #e5e5e5;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .ai-stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #555;
+    margin-top: 0.25rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .ai-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 550px;
+  }
+
+  /* Orb */
+  .orb-wrap {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    width: 220px;
+    height: 220px;
+  }
+
+  .orb-glow {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%,
+      rgba(120, 180, 255, 0.25) 0%,
+      rgba(80, 120, 220, 0.12) 30%,
+      rgba(40, 60, 140, 0.06) 60%,
+      transparent 70%
+    );
+    box-shadow:
+      0 0 60px rgba(100, 160, 255, 0.12),
+      0 0 120px rgba(80, 130, 240, 0.06);
+    animation: orbFloat 6s ease-in-out infinite;
+  }
+
+  .orb-ring-a {
+    position: absolute;
+    inset: -15px;
+    border-radius: 50%;
+    border: 1px solid rgba(100, 160, 255, 0.06);
+    animation: spin 25s linear infinite;
+  }
+
+  .orb-ring-a::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(120, 180, 255, 0.4);
+    box-shadow: 0 0 8px rgba(120, 180, 255, 0.4);
+  }
+
+  .orb-ring-b {
+    position: absolute;
+    inset: -35px;
+    border-radius: 50%;
+    border: 1px solid rgba(100, 160, 255, 0.03);
+    animation: spin 40s linear infinite reverse;
+  }
+
+  /* Chat panel */
+  .chat-panel {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 320px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .chat-head {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.75rem;
+    color: #888;
+  }
+
+  .chat-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(100, 200, 130, 0.7);
+    box-shadow: 0 0 6px rgba(100, 200, 130, 0.3);
+  }
+
+  .chat-body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-height: 280px;
+    overflow: hidden;
+  }
+
+  .cb { padding: 0.6rem 0.8rem; border-radius: 10px; font-size: 0.8rem; line-height: 1.45; }
+  .cb-ai { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #aaa; align-self: flex-start; max-width: 90%; }
+  .cb-user { background: rgba(100,160,255,0.1); border: 1px solid rgba(100,160,255,0.12); color: #b8d4ff; align-self: flex-end; max-width: 80%; }
+
+  .chat-chips {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    padding: 0.5rem 1rem 0.75rem;
+  }
+
+  .chip {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+    color: #666;
+  }
+
+  .chat-foot {
+    padding: 0.6rem 1rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .chat-foot input {
+    flex: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 0.4rem 0.75rem;
+    color: #ccc;
+    font-size: 0.75rem;
+    outline: none;
+    font-family: inherit;
+  }
+
+  .chat-foot input::placeholder { color: #444; }
+
+  .chat-foot button {
+    background: rgba(100,160,255,0.12);
+    border: 1px solid rgba(100,160,255,0.15);
+    border-radius: 6px;
+    color: rgba(140,190,255,0.7);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* Connection line between orb and chat */
+  .orb-chat-conn {
+    position: absolute;
+    top: 50%;
+    left: calc(25% + 130px);
+    width: calc(75% - 320px - 130px);
+    height: 1px;
+    background: linear-gradient(90deg, rgba(100,160,255,0.15), rgba(100,160,255,0.03));
+    transform: translateY(-50%);
+  }
+
+  /* ---- EDUCATION (new explicit section) ---- */
+  .education {
+    padding: 6rem 4rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .education h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .edu-subtitle {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 3rem;
+  }
+
+  .edu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .edu-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 1.75rem;
+    transition: border-color 0.3s;
+  }
+
+  .edu-card:hover { border-color: rgba(255,255,255,0.12); }
+
+  .edu-school {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #555;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 0.75rem;
+  }
+
+  .edu-degree {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .edu-meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 1rem;
+  }
+
+  .edu-gpa {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .edu-gpa-badge {
+    background: rgba(100, 200, 130, 0.1);
+    border: 1px solid rgba(100, 200, 130, 0.15);
+    border-radius: 4px;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.7rem;
+    color: rgba(130, 210, 150, 0.8);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .edu-detail {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  .edu-tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .edu-tag {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: #777;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ---- Remaining sections (simplified placeholders) ---- */
+  .placeholder-section {
+    padding: 5rem 4rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .placeholder-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .placeholder-section .sub {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  .placeholder-block {
+    background: rgba(255,255,255,0.015);
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 1rem;
+    color: #555;
+    font-size: 0.8rem;
+  }
+
+  .placeholder-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .placeholder-card {
+    background: rgba(255,255,255,0.015);
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 1.5rem;
+    color: #555;
+    font-size: 0.8rem;
+  }
+
+  /* ---- Footer ---- */
+  footer {
+    text-align: center;
+    padding: 3rem;
+    font-size: 0.7rem;
+    color: #444;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  /* ---- Page flow annotation ---- */
+  .flow-label {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(100, 160, 255, 0.25);
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+  }
+
+  .new-badge {
+    display: inline-block;
+    background: rgba(100, 160, 255, 0.1);
+    border: 1px solid rgba(100, 160, 255, 0.2);
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.6rem;
+    color: rgba(140, 190, 255, 0.7);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-left: 0.75rem;
+    vertical-align: middle;
+  }
+
+  .changed-badge {
+    display: inline-block;
+    background: rgba(255, 180, 50, 0.08);
+    border: 1px solid rgba(255, 180, 50, 0.15);
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.6rem;
+    color: rgba(255, 190, 80, 0.6);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-left: 0.75rem;
+    vertical-align: middle;
+  }
+
+  .kept-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.6rem;
+    color: #555;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-left: 0.75rem;
+    vertical-align: middle;
+  }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="section-indicator">Full Page Flow &mdash; Scroll to see all sections</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">NT</div>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Education</a></li>
+    <li><a href="#">Experience</a></li>
+    <li><a href="#">Projects</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- 1. HERO -->
+<section class="hero">
+  <span class="flow-label">Section 1 &mdash; Hero</span>
+  <div class="hero-content">
+    <div class="section-tag">LLM Engineer &middot; London</div>
+    <h1>Nikolai<br>Tennant<span>.</span></h1>
+    <p class="hero-subtitle">Building agentic AI systems at NatureAlpha. Designing and deploying LLM-powered pipelines for sustainable finance data.</p>
+    <div class="hero-links">
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Resume</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-size:0.65rem;color:#444;font-family:'JetBrains Mono',monospace;">scroll</div>
+</section>
+
+<!-- 2. AI INTERACTIVE SECTION (replaces Spline robot) -->
+<section class="ai-section">
+  <span class="flow-label">Section 2 &mdash; AI Interactive <span style="transform:rotate(-90deg);display:inline-block">&#x2728;</span> Replaces Spline Robot</span>
+  <div class="ai-left">
+    <div class="section-tag">About</div>
+    <h2>I build things<br>that think.</h2>
+    <p>I build agentic AI systems at NatureAlpha, designing and deploying LLM-powered pipelines for sustainable finance data. Previously at dunnhumby and Brown University's Singh Lab.</p>
+    <div class="ai-stats">
+      <div><div class="ai-stat-val">4.0</div><div class="ai-stat-label">MSc GPA</div></div>
+      <div><div class="ai-stat-val">1st</div><div class="ai-stat-label">Author, Nature</div></div>
+      <div><div class="ai-stat-val">Top 1%</div><div class="ai-stat-label">Hackathon</div></div>
+      <div><div class="ai-stat-val">&pound;829K</div><div class="ai-stat-label">Business Value</div></div>
+    </div>
+    <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#555;font-family:'JetBrains Mono',monospace;">London, UK &middot; Dual US/UK</div>
+  </div>
+
+  <div class="ai-right">
+    <div class="orb-wrap">
+      <div class="orb-ring-a"></div>
+      <div class="orb-ring-b"></div>
+      <div class="orb-glow"></div>
+    </div>
+    <div class="orb-chat-conn"></div>
+    <div class="chat-panel">
+      <div class="chat-head">
+        <div class="chat-dot"></div>
+        Ask Nikolai's AI
+      </div>
+      <div class="chat-body">
+        <div class="cb cb-ai">Hey! Ask me about Nikolai's work, research, or background.</div>
+        <div class="cb cb-user">What does he do at NatureAlpha?</div>
+        <div class="cb cb-ai">He builds agentic AI systems &mdash; LLM pipelines, RAG systems, and multi-agent workflows for ESG and biodiversity data analysis.</div>
+      </div>
+      <div class="chat-chips">
+        <div class="chip">His research</div>
+        <div class="chip">Tech stack</div>
+        <div class="chip">Projects</div>
+      </div>
+      <div class="chat-foot">
+        <input type="text" placeholder="Ask anything..." />
+        <button>Send</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. EDUCATION (new dedicated section) -->
+<section class="education">
+  <span class="flow-label">Section 3 &mdash; Education</span>
+  <div class="section-tag">Education</div>
+  <h2>Brown University <span class="new-badge">New Section</span></h2>
+  <p class="edu-subtitle">Providence, Rhode Island &middot; 2018 &ndash; 2023</p>
+
+  <div class="edu-grid">
+    <div class="edu-card">
+      <div class="edu-school">Graduate</div>
+      <div class="edu-degree">MSc Data Science</div>
+      <div class="edu-meta">
+        <span>2022 &ndash; 2023</span>
+        <span class="edu-gpa"><span class="edu-gpa-badge">4.0 / 4.0</span></span>
+      </div>
+      <div class="edu-detail">Concentration in machine learning and natural language processing. Thesis work on deep learning ageing clocks published in Nature Scientific Reports.</div>
+      <div class="edu-tags">
+        <span class="edu-tag">Machine Learning</span>
+        <span class="edu-tag">NLP</span>
+        <span class="edu-tag">Deep Learning</span>
+        <span class="edu-tag">Statistics</span>
+      </div>
+    </div>
+
+    <div class="edu-card">
+      <div class="edu-school">Undergraduate</div>
+      <div class="edu-degree">BA History</div>
+      <div class="edu-meta">
+        <span>2018 &ndash; 2022</span>
+        <span class="edu-gpa"><span class="edu-gpa-badge">3.6 / 4.0</span></span>
+      </div>
+      <div class="edu-detail">Data Science minor. Interdisciplinary approach combining computational methods with historical analysis. Research assistant at Singh Lab from sophomore year.</div>
+      <div class="edu-tags">
+        <span class="edu-tag">Data Science Minor</span>
+        <span class="edu-tag">Research</span>
+        <span class="edu-tag">Computational Methods</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. PUBLICATION -->
+<section class="placeholder-section">
+  <span class="flow-label">Section 4 &mdash; Publication</span>
+  <div class="section-tag">Research</div>
+  <h2>Publication <span class="kept-badge">Kept</span></h2>
+  <p class="sub">Published in Nature Scientific Reports</p>
+  <div class="placeholder-block">
+    <strong style="color:#aaa">TimeFlies: an RNA-seq ageing clock for Drosophila</strong><br><br>
+    Tennant, N.*, Okonkwo, A.*, et al. &mdash; 1D CNN achieving 95% accuracy, 0.99 AUC on age prediction. Identified sex-biased ageing mechanisms with in vivo validation.
+  </div>
+</section>
+
+<!-- 5. EXPERIENCE -->
+<section class="placeholder-section">
+  <span class="flow-label">Section 5 &mdash; Experience</span>
+  <div class="section-tag">Experience</div>
+  <h2>Work <span class="kept-badge">Kept</span></h2>
+  <p class="sub">Timeline of roles</p>
+  <div class="placeholder-block"><strong style="color:#aaa">NatureAlpha</strong> &mdash; LLM Engineer &middot; 2025 &ndash; Present<br>Building agentic AI systems for sustainable finance</div>
+  <div class="placeholder-block"><strong style="color:#aaa">dunnhumby</strong> &mdash; Research Engineer &middot; 2023 &ndash; 2025<br>NLP/LLM systems, ML pipeline on 5M customer dataset, &pound;829K value</div>
+  <div class="placeholder-block"><strong style="color:#aaa">Singh Lab, Brown</strong> &mdash; Research Assistant &middot; 2022 &ndash; 2023<br>Deep learning for ageing biology, Nature publication</div>
+</section>
+
+<!-- 6. PROJECTS -->
+<section class="placeholder-section">
+  <span class="flow-label">Section 6 &mdash; Projects</span>
+  <div class="section-tag">Projects</div>
+  <h2>Projects <span class="kept-badge">Kept</span></h2>
+  <p class="sub">Selected work</p>
+  <div class="placeholder-grid">
+    <div class="placeholder-card"><strong style="color:#aaa">RAG Scholar AI</strong><br>Document Q&A with citations</div>
+    <div class="placeholder-card"><strong style="color:#aaa">PL Projections</strong><br>ML pipeline, 457 data points</div>
+    <div class="placeholder-card"><strong style="color:#aaa">SenID</strong><br>CV for senescent cells, 0.96 AUC</div>
+  </div>
+</section>
+
+<!-- 7. SKILLS -->
+<section class="placeholder-section">
+  <span class="flow-label">Section 7 &mdash; Skills</span>
+  <div class="section-tag">Skills</div>
+  <h2>Skills <span class="kept-badge">Kept</span></h2>
+  <p class="sub">Flowing tags with hover glow</p>
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+    <div class="chip">Python</div><div class="chip">PyTorch</div><div class="chip">LangChain</div>
+    <div class="chip">RAG Systems</div><div class="chip">Agentic AI</div><div class="chip">SQL</div>
+    <div class="chip">AWS</div><div class="chip">PySpark</div><div class="chip">Docker</div>
+    <div class="chip">TypeScript</div><div class="chip">Deep Learning</div><div class="chip">NLP</div>
+  </div>
+</section>
+
+<!-- 8. CONTACT -->
+<section class="placeholder-section">
+  <span class="flow-label">Section 8 &mdash; Contact</span>
+  <div class="section-tag">Contact</div>
+  <h2>Get in Touch <span class="kept-badge">Kept</span></h2>
+  <p class="sub">Email, LinkedIn, GitHub links</p>
+  <div class="placeholder-block">Contact form / terminal UI / links</div>
+</section>
+
+<!-- Footer -->
+<footer>&copy; 2025 Nikolai Tennant &middot; Built with Next.js</footer>
+
+</body>
+</html>

@@ -11,7 +11,7 @@ import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
-const GhostCompanion = dynamic(() => import("@/components/ghost/GhostCompanion"), { ssr: false });
+const GhostPeek = dynamic(() => import("@/components/ghost/GhostPeek"), { ssr: false });
 
 export default function Home() {
   return (
@@ -27,7 +27,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
-      <GhostCompanion />
+      <GhostPeek />
     </>
   );
 }

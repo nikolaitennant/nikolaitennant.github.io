@@ -11,7 +11,7 @@ export default function Publications() {
   const inView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section id="publications" className="relative px-6 py-32" ref={ref}>
+    <section id="publications" className="relative px-6 py-32" ref={ref} data-peeks='[{"msg":"Published in Nature Scientific Reports!","s":"r","y":"40%"},{"msg":"95% accuracy on the ageing clock","s":"l","y":"50%"},{"msg":"Ask me about the Drosophila paper!","s":"r","y":"35%"}]'>
       <div className="mx-auto max-w-4xl">
         <motion.p
           initial={{ opacity: 0, y: 20 }}

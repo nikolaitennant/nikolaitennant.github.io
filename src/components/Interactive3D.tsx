@@ -1,8 +1,11 @@
 "use client";
 
 import { useRef } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { personalInfo, stats, education } from "@/data/portfolio";
+
+const GhostMain = dynamic(() => import("@/components/ghost/GhostMain"), { ssr: false });
 
 export default function Interactive3D() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -13,6 +16,7 @@ export default function Interactive3D() {
       ref={sectionRef}
       className="relative min-h-screen w-full overflow-hidden bg-background py-24 md:py-0 md:h-screen"
     >
+      <GhostMain />
       {/* Content */}
       <div className="relative z-10 flex h-full items-start pt-20 md:items-center md:pt-0 pointer-events-none">
         <div className="w-full max-w-xl pl-6 pr-4 sm:pl-10 md:pl-16 lg:pl-24 space-y-6 md:space-y-8">

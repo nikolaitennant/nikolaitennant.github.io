@@ -95,6 +95,20 @@ a[href*="spline.design"] {
 }
 
 /* ── Ghost AI Companion ──────────────────────────── */
+/* Reset Tailwind preflight for ghost SVG and structural elements */
+.gw svg *, .peek-wrap svg *, .g-glow, .g-shape, .g-eyes, .ghost, .sparkles, .spark, .thought::before, .thought::after {
+  border: none;
+}
+
+/* Main ghost — lives inside About section */
+.gw-main {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  will-change: left, top;
+}
+
+/* Peek ghost — page-level fixed overlay */
 .gw {
   position: fixed;
   z-index: 1000;
@@ -106,8 +120,8 @@ a[href*="spline.design"] {
 .gw.hidden { opacity: 0; pointer-events: none; }
 
 .ghost {
-  width: 90px;
-  height: 105px;
+  width: 130px;
+  height: 152px;
   position: relative;
   cursor: pointer;
   pointer-events: all;
@@ -118,19 +132,19 @@ a[href*="spline.design"] {
 
 .g-glow {
   position: absolute;
-  top: -20px;
-  left: -20px;
-  width: 130px;
-  height: 130px;
+  top: -30px;
+  left: -30px;
+  width: 190px;
+  height: 190px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(150, 200, 255, 0.12) 0%, rgba(130, 185, 255, 0.04) 40%, transparent 60%);
+  background: radial-gradient(circle, rgba(150, 200, 255, 0.18) 0%, rgba(130, 185, 255, 0.08) 40%, transparent 60%);
   pointer-events: none;
   animation: glowPulse 4s ease-in-out infinite;
 }
 
 .g-eyes {
   position: absolute;
-  top: 28px;
+  top: 40px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -139,8 +153,8 @@ a[href*="spline.design"] {
 }
 
 .eye {
-  width: 12px;
-  height: 14px;
+  width: 17px;
+  height: 20px;
   background: rgba(210, 230, 255, 0.06);
   border-radius: 50%;
   position: relative;
@@ -148,8 +162,8 @@ a[href*="spline.design"] {
 }
 
 .pupil {
-  width: 7px;
-  height: 8px;
+  width: 10px;
+  height: 11px;
   background: radial-gradient(circle at 40% 35%, rgba(230, 245, 255, 0.95), rgba(180, 215, 255, 0.7));
   border-radius: 50%;
   position: absolute;
@@ -183,17 +197,17 @@ a[href*="spline.design"] {
 .ghost.blink .lid { height: 110%; }
 .ghost.squint .lid { height: 25%; }
 
-.mw { position: absolute; top: 50px; left: 50%; transform: translateX(-50%); z-index: 2; }
+.mw { position: absolute; top: 72px; left: 50%; transform: translateX(-50%); z-index: 2; }
 .m-idle { width: 8px; height: 4px; border: 1.5px solid rgba(200,230,255,0.3); border-top: none; border-radius: 0 0 8px 8px; }
 .m-happy { width: 14px; height: 7px; border: 1.5px solid rgba(200,230,255,0.5); border-top: none; border-radius: 0 0 12px 12px; }
-.m-talk { width: 10px; height: 9px; border: 1.5px solid rgba(200,230,255,0.4); border-radius: 50%; animation: ghost-talk 0.3s infinite; }
+.m-talk { width: 10px; height: 9px; border: 1.5px solid rgba(200,230,255,0.4); border-radius: 50%; animation: talk 0.3s infinite; }
 .m-ooh { width: 7px; height: 8px; border: 1.5px solid rgba(200,230,255,0.35); border-radius: 50%; }
 
 .sparkles { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
 .spark { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: rgba(170, 215, 255, 0.5); box-shadow: 0 0 4px rgba(170, 215, 255, 0.3); }
-.s1 { bottom: 0; left: 20%; animation: ghost-spark-drift 2s 0s infinite; }
-.s2 { bottom: 5px; left: 50%; animation: ghost-spark-drift 2.5s 0.6s infinite; }
-.s3 { bottom: 0; left: 75%; animation: ghost-spark-drift 2s 1.2s infinite; }
+.s1 { bottom: 0; left: 20%; animation: sparkDrift 2s 0s infinite; }
+.s2 { bottom: 5px; left: 50%; animation: sparkDrift 2.5s 0.6s infinite; }
+.s3 { bottom: 0; left: 75%; animation: sparkDrift 2s 1.2s infinite; }
 
 .ghost-svg-defs {
   position: absolute;
@@ -214,7 +228,8 @@ a[href*="spline.design"] {
   padding: 0.5rem 1rem;
   font-size: 0.78rem;
   color: rgba(220, 230, 255, 0.7);
-  max-width: 300px;
+  width: max-content;
+  max-width: 350px;
   text-align: center;
   line-height: 1.45;
   pointer-events: none;
@@ -225,6 +240,7 @@ a[href*="spline.design"] {
 }
 
 .thought.show { opacity: 1; scale: 1; }
+.thought.long { white-space: normal; width: 320px; }
 
 .thought::before {
   content: '';
@@ -316,7 +332,7 @@ a[href*="spline.design"] {
   height: 5px;
   border-radius: 50%;
   background: rgba(160, 200, 255, 0.3);
-  animation: ghost-think-bounce 1.2s infinite;
+  animation: thinkBounce 1.2s infinite;
 }
 
 .thinking span:nth-child(2) { animation-delay: 0.15s; }
@@ -361,7 +377,7 @@ a[href*="spline.design"] {
 
 .peek-wrap {
   position: fixed;
-  z-index: 999;
+  z-index: 1100;
   pointer-events: none;
   opacity: 0;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
@@ -381,7 +397,8 @@ a[href*="spline.design"] {
 }
 .peek-wrap.from-l.vis { transform: translateX(0); }
 
-.peek-wrap .ghost { width: 65px; height: 76px; }
+.peek-wrap .ghost { transform: scale(0.55); transform-origin: top right; }
+.peek-wrap.from-l .ghost { transform-origin: top left; }
 
 .peek-msg {
   position: absolute;
@@ -399,7 +416,56 @@ a[href*="spline.design"] {
 .peek-wrap.from-r .peek-msg { right: 75px; top: 20px; }
 .peek-wrap.from-l .peek-msg { left: 75px; top: 20px; }
 
+/* Ghost NPC input */
+.ghost-input-wrap {
+  position: absolute;
+  top: calc(100% + 20px);
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: all;
+}
+
+.ghost-input {
+  width: 240px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  color: rgba(220, 230, 255, 0.8);
+  font-size: 0.8rem;
+  outline: none;
+  font-family: inherit;
+  text-align: center;
+}
+
+.ghost-input::placeholder {
+  color: rgba(180, 200, 230, 0.3);
+}
+
+.ghost-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ghost-input-dots {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  padding: 0.4rem 0;
+}
+
+.ghost-input-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(160, 200, 255, 0.3);
+  animation: thinkBounce 1.2s infinite;
+}
+
+.ghost-input-dots span:nth-child(2) { animation-delay: 0.15s; }
+.ghost-input-dots span:nth-child(3) { animation-delay: 0.3s; }
+
 @keyframes glowPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
-@keyframes ghost-talk { 0%, 100% { height: 9px; } 50% { height: 4px; } }
-@keyframes ghost-spark-drift { 0% { opacity: 0.5; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-25px) scale(0.2); } }
-@keyframes ghost-think-bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.3; } 30% { transform: translateY(-4px); opacity: 0.8; } }
+@keyframes talk { 0%, 100% { height: 9px; } 50% { height: 4px; } }
+@keyframes sparkDrift { 0% { opacity: 0.5; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-25px) scale(0.2); } }
+@keyframes thinkBounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.3; } 30% { transform: translateY(-4px); opacity: 0.8; } }

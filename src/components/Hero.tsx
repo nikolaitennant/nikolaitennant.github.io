@@ -308,7 +308,7 @@ const TypingText: React.FC<{ text: string; className?: string; delay?: number }>
 // ── Main Hero ────────────────────────────────────────────────────
 export default function Hero() {
   return (
-    <section className="relative w-full h-screen bg-background overflow-hidden">
+    <section id="hero" className="relative w-full h-screen bg-background overflow-hidden">
       {/* Layer 1: Deep wavy canvas */}
       <WavyCanvas />
 

@@ -13,7 +13,7 @@ export default function Projects() {
   const inView = useInView(ref, { once: true, amount: 0.1 });
 
   return (
-    <section id="projects" className="relative px-6 py-32" ref={ref}>
+    <section id="projects" className="relative px-6 py-32" ref={ref} data-peeks='[{"msg":"RAG Scholar AI is his proudest side project","s":"r","y":"50%"},{"msg":"0.96 AUC on SenID — impressive","s":"l","y":"40%"},{"msg":"225 people in that hackathon!","s":"r","y":"60%"}]'>
       <div className="mx-auto max-w-6xl">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}

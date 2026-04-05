@@ -11,7 +11,7 @@ export default function Skills() {
   const allSkills = Object.entries(skills);
 
   return (
-    <section className="relative px-6 py-32 overflow-hidden" ref={ref}>
+    <section id="skills" className="relative px-6 py-32 overflow-hidden" ref={ref}>
       <div className="mx-auto max-w-6xl">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}

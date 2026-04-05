@@ -11,7 +11,7 @@ export default function Experience() {
   const inView = useInView(ref, { once: true, amount: 0.1 });
 
   return (
-    <section id="experience" className="relative px-6 py-32" ref={ref}>
+    <section id="experience" className="relative px-6 py-32" ref={ref} data-peeks='[{"msg":"NatureAlpha is his favorite role so far","s":"l","y":"45%"},{"msg":"£829K value at dunnhumby","s":"r","y":"35%"},{"msg":"He loved research at Singh Lab","s":"l","y":"55%"}]'>
       <div className="mx-auto max-w-4xl">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}

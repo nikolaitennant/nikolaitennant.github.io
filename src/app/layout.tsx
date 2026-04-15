@@ -19,6 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
+      </head>
       <body className="min-h-screen bg-background antialiased">{children}</body>
     </html>
   );

@@ -96,8 +96,10 @@ a[href*="spline.design"] {
 
 /* ── Ghost AI Companion ──────────────────────────── */
 /* Reset Tailwind preflight for ghost SVG and structural elements */
-.gw svg *, .peek-wrap svg *, .g-glow, .g-shape, .g-eyes, .ghost, .sparkles, .spark, .thought::before, .thought::after {
-  border: none;
+.gw svg *, .gw-main svg *, .peek-wrap svg *, .g-glow, .g-shape, .g-eyes, .ghost, .sparkles, .spark, .thought, .thought::before, .thought::after, .peek-msg, .ghost-input, .ghost-bubble-body, .ghost-bubble-connector, .ghost-bubble-connector-sm, .ghost-bubble-input, .ghost-bubble-msg {
+  border-style: none;
+  border-width: 0;
+  border-color: transparent;
 }
 
 /* Main ghost — lives inside About section */
@@ -416,35 +418,150 @@ a[href*="spline.design"] {
 .peek-wrap.from-r .peek-msg { right: 75px; top: 20px; }
 .peek-wrap.from-l .peek-msg { left: 75px; top: 20px; }
 
-/* Ghost NPC input */
+/* ── Thought-bubble chat ──────────────────────── */
+.ghost-bubble-chat {
+  position: absolute;
+  top: -20px;
+  right: calc(100% + 12px);
+  pointer-events: all;
+  animation: bubbleIn 0.3s ease-out;
+}
+
+/* Connector dots pointing right toward the ghost */
+.ghost-bubble-connector {
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+}
+
+.ghost-bubble-connector-sm {
+  position: absolute;
+  right: -18px;
+  top: calc(50% + 8px);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ghost-bubble-body {
+  background: rgba(18, 18, 26, 0.92);
+  backdrop-filter: blur(24px);
+  border-radius: 18px;
+  width: 300px;
+  overflow: hidden;
+}
+
+.ghost-bubble-msgs {
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  scrollbar-width: none;
+}
+
+.ghost-bubble-msgs::-webkit-scrollbar { display: none; }
+
+.ghost-bubble-msg {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  padding: 0.4rem 0.65rem;
+  border-radius: 12px;
+  max-width: 88%;
+}
+
+.ghost-bubble-ai {
+  color: rgba(220, 230, 255, 0.75);
+  background: rgba(255, 255, 255, 0.04);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.ghost-bubble-user {
+  color: rgba(180, 210, 255, 0.7);
+  background: rgba(100, 160, 255, 0.08);
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.ghost-bubble-thinking {
+  display: flex;
+  gap: 4px;
+  padding: 0.2rem 0;
+}
+
+.ghost-bubble-thinking span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(160, 200, 255, 0.3);
+  animation: thinkBounce 1.2s infinite;
+}
+
+.ghost-bubble-thinking span:nth-child(2) { animation-delay: 0.15s; }
+.ghost-bubble-thinking span:nth-child(3) { animation-delay: 0.3s; }
+
+.ghost-bubble-input {
+  width: 100%;
+  background: none;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 0.5rem 0.85rem;
+  color: rgba(220, 230, 255, 0.7);
+  font-size: 0.75rem;
+  outline: none;
+  font-family: inherit;
+}
+
+.ghost-bubble-input::placeholder {
+  color: rgba(180, 200, 230, 0.2);
+}
+
+@keyframes bubbleIn {
+  from { opacity: 0; transform: scale(0.85) translateX(15px); }
+  to { opacity: 1; transform: scale(1) translateX(0); }
+}
+
+/* Ghost NPC input (legacy, keep for peek) */
 .ghost-input-wrap {
   position: absolute;
-  top: calc(100% + 20px);
+  top: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
   pointer-events: all;
 }
 
 .ghost-input {
-  width: 240px;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(20px);
+  width: 160px;
+  background: none;
   border: none;
-  border-radius: 20px;
-  padding: 0.5rem 1rem;
-  color: rgba(220, 230, 255, 0.8);
-  font-size: 0.8rem;
+  border-bottom: 1px solid rgba(180, 210, 255, 0.12);
+  border-radius: 0;
+  padding: 0.35rem 0;
+  color: rgba(220, 230, 255, 0.7);
+  font-size: 0.75rem;
   outline: none;
   font-family: inherit;
   text-align: center;
+  transition: border-color 0.2s;
 }
 
 .ghost-input::placeholder {
-  color: rgba(180, 200, 230, 0.3);
+  color: rgba(180, 200, 230, 0.2);
+  font-size: 0.7rem;
 }
 
 .ghost-input:focus {
-  background: rgba(255, 255, 255, 0.08);
+  border-bottom-color: rgba(180, 210, 255, 0.25);
 }
 
 .ghost-input-dots {
@@ -464,6 +581,43 @@ a[href*="spline.design"] {
 
 .ghost-input-dots span:nth-child(2) { animation-delay: 0.15s; }
 .ghost-input-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+/* Ghost emotional states */
+.ghost-happy .g-glow,
+.g-glow.ghost-happy {
+  background: radial-gradient(circle, rgba(150, 220, 255, 0.25) 0%, rgba(130, 200, 255, 0.1) 40%, transparent 60%) !important;
+  animation: glowPulse 2s ease-in-out infinite !important;
+}
+
+.g-glow.ghost-thinking {
+  background: radial-gradient(circle, rgba(130, 180, 255, 0.08) 0%, transparent 50%) !important;
+  animation: glowPulse 1s ease-in-out infinite !important;
+}
+
+.g-glow.ghost-scared {
+  background: radial-gradient(circle, rgba(255, 180, 150, 0.2) 0%, transparent 50%) !important;
+}
+
+/* Ghost dizzy from fast scroll */
+.ghost-dizzy {
+  animation: ghostDizzy 0.5s ease-in-out 3 !important;
+}
+
+/* Ghost spin easter egg */
+.ghost-spin {
+  animation: ghostSpin 0.6s ease-in-out 2 !important;
+}
+
+@keyframes ghostDizzy {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-15deg); }
+  75% { transform: rotate(15deg); }
+}
+
+@keyframes ghostSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
 @keyframes glowPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
 @keyframes talk { 0%, 100% { height: 9px; } 50% { height: 4px; } }

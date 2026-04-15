@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghost v3 — Free Roaming + Multi-Peek</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #e5e5e5;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2 { font-family: 'Space Grotesk', sans-serif; }
+
+  /* ============================================
+     GHOST CHARACTER
+     ============================================ */
+  .ghost-wrap {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    transition: opacity 0.5s;
+  }
+
+  .ghost-wrap.hidden { opacity: 0; pointer-events: none; }
+
+  .ghost {
+    width: 80px;
+    height: 90px;
+    position: relative;
+    cursor: pointer;
+    pointer-events: all;
+    animation: ghostBob 3s ease-in-out infinite;
+  }
+
+  .ghost.anchored {
+    animation: ghostBobSmall 3s ease-in-out infinite;
+  }
+
+  .ghost-body {
+    width: 65px;
+    height: 58px;
+    background: radial-gradient(ellipse at 50% 25%,
+      rgba(185, 215, 255, 0.28) 0%,
+      rgba(145, 185, 255, 0.16) 35%,
+      rgba(110, 155, 245, 0.08) 65%,
+      rgba(85, 135, 225, 0.03) 100%
+    );
+    border-radius: 32px 32px 16px 16px;
+    position: relative;
+    left: 7px;
+    border: 1px solid rgba(165, 205, 255, 0.1);
+    filter: drop-shadow(0 0 25px rgba(140, 190, 255, 0.15));
+  }
+
+  .ghost-body::after {
+    content: '';
+    position: absolute;
+    bottom: -13px;
+    left: -1px;
+    right: -1px;
+    height: 18px;
+    background: radial-gradient(ellipse at 50% 0%,
+      rgba(155, 195, 255, 0.12) 0%,
+      rgba(110, 160, 240, 0.05) 100%
+    );
+    clip-path: polygon(
+      0% 0%, 12% 100%, 22% 30%, 38% 100%, 50% 25%, 62% 100%, 78% 30%, 88% 100%, 100% 0%
+    );
+    animation: tailWave 3s ease-in-out infinite;
+  }
+
+  .ghost-core {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(150, 200, 255, 0.12) 0%, transparent 70%);
+    animation: corePulse 3s ease-in-out infinite;
+  }
+
+  /* Eyes */
+  .ghost-eyes {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+  }
+
+  .eye {
+    width: 12px;
+    height: 14px;
+    background: rgba(210, 230, 255, 0.08);
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pupil {
+    width: 7px;
+    height: 8px;
+    background: rgba(200, 225, 255, 0.75);
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 2.5px;
+    transition: transform 0.2s ease-out;
+    box-shadow: 0 0 8px rgba(180, 215, 255, 0.5);
+  }
+
+  .pupil::after {
+    content: '';
+    position: absolute;
+    width: 2.5px;
+    height: 2.5px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    top: 1px;
+    right: 1px;
+  }
+
+  .eye-lid {
+    position: absolute;
+    inset: -1px;
+    height: 0;
+    background: rgba(120, 160, 220, 0.2);
+    border-radius: 50% 50% 0 0;
+    transition: height 0.08s;
+    z-index: 2;
+  }
+
+  .ghost.blinking .eye-lid { height: 110%; border-radius: 50%; }
+
+  /* Mouth */
+  .mouth { position: absolute; top: 35px; left: 50%; transform: translateX(-50%); }
+
+  .m-default { width: 8px; height: 4px; border: 1.5px solid rgba(200, 225, 255, 0.35); border-top: none; border-radius: 0 0 8px 8px; }
+  .m-happy { width: 12px; height: 6px; border: 1.5px solid rgba(200, 225, 255, 0.45); border-top: none; border-radius: 0 0 10px 10px; }
+  .m-talk { width: 10px; height: 8px; border: 1.5px solid rgba(200, 225, 255, 0.4); border-radius: 50%; animation: talkAnim 0.35s infinite; }
+  .m-curious { width: 6px; height: 6px; border: 1.5px solid rgba(200, 225, 255, 0.35); border-radius: 50%; }
+
+  /* Sparkles */
+  .sp {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: rgba(160, 210, 255, 0.4);
+    pointer-events: none;
+  }
+  .sp1 { bottom: -22px; left: 18px; animation: sparkUp 2.5s 0s infinite; }
+  .sp2 { bottom: -18px; left: 38px; animation: sparkUp 2.5s 0.8s infinite; }
+  .sp3 { bottom: -20px; left: 55px; animation: sparkUp 2.5s 1.6s infinite; }
+
+  /* ============================================
+     PEEK GHOST — can appear from any edge
+     ============================================ */
+  .peek-wrap {
+    position: fixed;
+    z-index: 999;
+    pointer-events: none;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+    opacity: 0;
+  }
+
+  .peek-wrap.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Position presets */
+  .peek-wrap.from-right  { right: 0; transform: translateX(80px); }
+  .peek-wrap.from-right.visible { transform: translateX(15px); }
+
+  .peek-wrap.from-left   { left: 0; transform: translateX(-80px); }
+  .peek-wrap.from-left.visible { transform: translateX(-15px); }
+
+  .peek-wrap.from-top    { top: 80px; transform: translateY(-80px); }
+  .peek-wrap.from-top.visible { transform: translateY(0); }
+
+  .peek-wrap.from-bottom { bottom: 80px; transform: translateY(80px); }
+  .peek-wrap.from-bottom.visible { transform: translateY(0); }
+
+  .peek-ghost {
+    width: 60px;
+    height: 70px;
+    position: relative;
+    cursor: pointer;
+    pointer-events: all;
+    animation: peekBob 2s ease-in-out infinite;
+  }
+
+  .pk-body {
+    width: 52px;
+    height: 46px;
+    background: radial-gradient(ellipse at 50% 25%,
+      rgba(185, 215, 255, 0.22) 0%,
+      rgba(145, 185, 255, 0.12) 40%,
+      rgba(110, 155, 245, 0.05) 100%
+    );
+    border-radius: 26px 26px 13px 13px;
+    position: relative;
+    border: 1px solid rgba(165, 205, 255, 0.08);
+    filter: drop-shadow(0 0 18px rgba(140, 190, 255, 0.12));
+  }
+
+  .pk-body::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: -1px;
+    right: -1px;
+    height: 13px;
+    background: rgba(145, 185, 255, 0.08);
+    clip-path: polygon(0% 0%, 15% 100%, 35% 30%, 55% 100%, 75% 30%, 100% 100%, 100% 0%);
+  }
+
+  .pk-eyes {
+    position: absolute;
+    top: 13px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+  }
+
+  .pk-eye {
+    width: 7px;
+    height: 8px;
+    background: rgba(200, 225, 255, 0.65);
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(180, 215, 255, 0.4);
+  }
+
+  /* Peek speech bubble — positioned dynamically */
+  .peek-msg {
+    position: absolute;
+    background: rgba(12, 12, 22, 0.92);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(140, 180, 255, 0.1);
+    border-radius: 10px;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.72rem;
+    color: #aaa;
+    white-space: nowrap;
+    pointer-events: none;
+    line-height: 1.4;
+  }
+
+  /* Arrow for right-side peek */
+  .peek-wrap.from-right .peek-msg {
+    right: 70px;
+    top: 12px;
+  }
+  .peek-wrap.from-right .peek-msg::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 10px; height: 10px;
+    background: rgba(12, 12, 22, 0.92);
+    border-right: 1px solid rgba(140, 180, 255, 0.1);
+    border-top: 1px solid rgba(140, 180, 255, 0.1);
+  }
+
+  /* Arrow for left-side peek */
+  .peek-wrap.from-left .peek-msg {
+    left: 70px;
+    top: 12px;
+  }
+  .peek-wrap.from-left .peek-msg::after {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 10px; height: 10px;
+    background: rgba(12, 12, 22, 0.92);
+    border-left: 1px solid rgba(140, 180, 255, 0.1);
+    border-bottom: 1px solid rgba(140, 180, 255, 0.1);
+  }
+
+  /* Arrow for top peek */
+  .peek-wrap.from-top .peek-msg {
+    top: 75px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Arrow for bottom peek */
+  .peek-wrap.from-bottom .peek-msg {
+    bottom: 75px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* ============================================
+     CHAT BUBBLE — anchors near ghost
+     ============================================ */
+  .chat-bubble {
+    position: fixed;
+    z-index: 1001;
+    background: rgba(12, 12, 22, 0.94);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(140, 180, 255, 0.1);
+    border-radius: 16px;
+    padding: 1rem;
+    width: 320px;
+    opacity: 0;
+    scale: 0.92;
+    pointer-events: none;
+    transition: opacity 0.25s, scale 0.25s;
+  }
+
+  .chat-bubble.open { opacity: 1; scale: 1; pointer-events: all; }
+
+  /* Arrow pointing toward ghost */
+  .chat-arrow {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: rgba(12, 12, 22, 0.94);
+    border: 1px solid rgba(140, 180, 255, 0.1);
+    transform: rotate(45deg);
+  }
+
+  .chat-arrow.arrow-left { left: -6px; top: 30px; border-right: none; border-top: none; }
+  .chat-arrow.arrow-right { right: -6px; top: 30px; border-left: none; border-bottom: none; }
+  .chat-arrow.arrow-bottom { bottom: -6px; left: 30px; border-left: none; border-top: none; }
+
+  .ch { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+  .ch-title { font-size: 0.7rem; color: rgba(160,200,255,0.5); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; }
+  .ch-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(100,200,130,0.7); box-shadow: 0 0 6px rgba(100,200,130,0.3); }
+  .ch-close { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); background: none; color: #555; font-size: 0.65rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+  .chat-msgs { display: flex; flex-direction: column; gap: 0.5rem; max-height: 220px; overflow-y: auto; margin-bottom: 0.6rem; }
+  .cm { padding: 0.5rem 0.7rem; border-radius: 10px; font-size: 0.78rem; line-height: 1.45; }
+  .cm-ai { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #aaa; align-self: flex-start; max-width: 90%; }
+  .cm-user { background: rgba(100,160,255,0.1); border: 1px solid rgba(100,160,255,0.12); color: #b8d4ff; align-self: flex-end; max-width: 80%; }
+
+  .chat-chips { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+  .cc { font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); color: #666; cursor: pointer; background: none; font-family: inherit; transition: all 0.15s; }
+  .cc:hover { border-color: rgba(140,180,255,0.15); color: #999; }
+
+  .ci { display: flex; gap: 0.4rem; }
+  .ci input { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 0.45rem 0.7rem; color: #ccc; font-size: 0.78rem; outline: none; font-family: inherit; }
+  .ci input::placeholder { color: #444; }
+  .ci input:focus { border-color: rgba(140,180,255,0.15); }
+  .ci button { background: rgba(100,160,255,0.12); border: 1px solid rgba(100,160,255,0.15); border-radius: 8px; color: rgba(140,190,255,0.7); padding: 0.45rem 0.7rem; font-size: 0.72rem; cursor: pointer; font-family: inherit; }
+
+  /* ============================================
+     PAGE SECTIONS
+     ============================================ */
+  .sec {
+    min-height: 100vh;
+    padding: 6rem 4rem;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .stag { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: #444; font-family: 'JetBrains Mono', monospace; margin-bottom: 1rem; }
+  .sec h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+  .sec p { font-size: 0.9rem; color: #666; max-width: 500px; line-height: 1.6; }
+
+  .side { position: absolute; right: 2rem; top: 50%; transform: translateY(-50%) rotate(90deg); font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: #2a2a2a; font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+
+  /* ============================================
+     ANIMATIONS
+     ============================================ */
+  @keyframes ghostBob {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-8px) rotate(1deg); }
+  }
+
+  @keyframes ghostBobSmall {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+
+  @keyframes tailWave {
+    0%, 100% { clip-path: polygon(0% 0%, 12% 100%, 22% 30%, 38% 100%, 50% 25%, 62% 100%, 78% 30%, 88% 100%, 100% 0%); }
+    50% { clip-path: polygon(0% 0%, 12% 80%, 22% 50%, 38% 100%, 50% 40%, 62% 100%, 78% 45%, 88% 90%, 100% 0%); }
+  }
+
+  @keyframes corePulse {
+    0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.9; transform: translateX(-50%) scale(1.1); }
+  }
+
+  @keyframes sparkUp {
+    0% { opacity: 0.5; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-25px) scale(0.2); }
+  }
+
+  @keyframes talkAnim {
+    0%, 100% { height: 8px; width: 10px; }
+    50% { height: 4px; width: 8px; }
+  }
+
+  @keyframes peekBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== MAIN GHOST ===== -->
+<div class="ghost-wrap" id="gw">
+  <div class="ghost" id="ghost" onclick="toggleChat()">
+    <div class="ghost-core"></div>
+    <div class="ghost-body">
+      <div class="ghost-eyes">
+        <div class="eye"><div class="eye-lid"></div><div class="pupil" id="pL"></div></div>
+        <div class="eye"><div class="eye-lid"></div><div class="pupil" id="pR"></div></div>
+      </div>
+      <div class="mouth" id="mouth"><div class="m-default"></div></div>
+    </div>
+    <div class="sp sp1"></div>
+    <div class="sp sp2"></div>
+    <div class="sp sp3"></div>
+  </div>
+</div>
+
+<!-- ===== PEEK GHOST ===== -->
+<div class="peek-wrap" id="peekWrap">
+  <div class="peek-msg" id="peekMsg">Want to know more?</div>
+  <div class="peek-ghost" onclick="openFromPeek()">
+    <div class="pk-body">
+      <div class="pk-eyes"><div class="pk-eye"></div><div class="pk-eye"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CHAT BUBBLE ===== -->
+<div class="chat-bubble" id="cb">
+  <div class="chat-arrow arrow-left" id="cbArrow"></div>
+  <div class="ch">
+    <div class="ch-title"><span class="ch-dot"></span> Nikolai's AI</div>
+    <button class="ch-close" onclick="closeChat()">&times;</button>
+  </div>
+  <div class="chat-msgs" id="msgs">
+    <div class="cm cm-ai">Hey! Ask me anything about Nikolai's work, research, or projects.</div>
+  </div>
+  <div class="chat-chips">
+    <button class="cc" onclick="ask(this.textContent)">What does he do?</button>
+    <button class="cc" onclick="ask(this.textContent)">His research</button>
+    <button class="cc" onclick="ask(this.textContent)">Tech stack</button>
+    <button class="cc" onclick="ask(this.textContent)">Education</button>
+  </div>
+  <div class="ci">
+    <input type="text" placeholder="Ask me anything..." id="chatIn" onkeydown="if(event.key==='Enter')ask(this.value)" />
+    <button onclick="ask(document.getElementById('chatIn').value)">Ask</button>
+  </div>
+</div>
+
+<!-- ===== SECTIONS ===== -->
+<section class="sec" id="s-hero" style="background:linear-gradient(135deg,#0a0a0a 60%,#0d0d1a)">
+  <div class="stag">Hero</div>
+  <h2>Nikolai Tennant.</h2>
+  <p>Your existing hero with particles and glitch text. Unchanged.</p>
+  <div class="side">Hero &mdash; unchanged</div>
+</section>
+
+<section class="sec" id="s-about" style="background:#0a0a0a">
+  <div class="stag">About &mdash; Ghost roams freely here</div>
+  <h2>I build things<br>that think.</h2>
+  <p>Ghost wanders around this entire section autonomously. Eyes track your cursor. Click it to chat. Bio, stats, and location on the left side.</p>
+  <div class="side">Ghost home &mdash; free roaming</div>
+</section>
+
+<section class="sec" id="s-edu" data-peeks='[{"msg":"Curious about Brown?","side":"right","y":"40%"},{"msg":"4.0 GPA — ask me about it!","side":"left","y":"55%"},{"msg":"Want to know his coursework?","side":"right","y":"30%"}]' style="background:#0b0b0b">
+  <div class="stag">Education &mdash; New</div>
+  <h2>Brown University</h2>
+  <p>Ghost peeks from different edges with different messages. Click the peek to open chat.</p>
+  <div class="side">New section &mdash; multi-peek</div>
+</section>
+
+<section class="sec" id="s-exp" data-peeks='[{"msg":"Want to hear about NatureAlpha?","side":"left","y":"45%"},{"msg":"He built ML pipelines at dunnhumby","side":"right","y":"35%"},{"msg":"£829K in business value — ask me!","side":"bottom","y":""}]' style="background:#0a0a0a">
+  <div class="stag">Experience</div>
+  <h2>Work</h2>
+  <p>Ghost peeks from left, right, or bottom with work-related prompts.</p>
+  <div class="side">Existing &mdash; ghost peeks in</div>
+</section>
+
+<section class="sec" id="s-proj" data-peeks='[{"msg":"Ask me about RAG Scholar AI!","side":"right","y":"50%"},{"msg":"0.96 AUC on SenID — curious?","side":"left","y":"40%"},{"msg":"Top 1% hackathon finish 🏆","side":"right","y":"60%"}]' style="background:#0b0b0b">
+  <div class="stag">Projects</div>
+  <h2>Projects</h2>
+  <p>Project-specific peeks from random positions.</p>
+  <div class="side">Existing &mdash; ghost peeks in</div>
+</section>
+
+<script>
+  // ===== Elements =====
+  const gw = document.getElementById('gw');
+  const ghost = document.getElementById('ghost');
+  const mouth = document.getElementById('mouth');
+  const pL = document.getElementById('pL');
+  const pR = document.getElementById('pR');
+  const cb = document.getElementById('cb');
+  const cbArrow = document.getElementById('cbArrow');
+  const peekWrap = document.getElementById('peekWrap');
+  const peekMsg = document.getElementById('peekMsg');
+
+  let chatOpen = false;
+  let mouseX = 0, mouseY = 0;
+  let ghostPosX = window.innerWidth * 0.65;
+  let ghostPosY = window.innerHeight * 0.35;
+  let targetX = ghostPosX, targetY = ghostPosY;
+  let currentSection = 's-about';
+  let isAnchored = false;
+  let peekTimer = null;
+  let peekIndex = {};
+
+  // ===== Mouse tracking for eyes =====
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  // ===== Autonomous wandering =====
+  function pickNewTarget() {
+    if (isAnchored) return;
+
+    // Wander within a large area of the viewport
+    const margin = 100;
+    targetX = margin + Math.random() * (window.innerWidth - margin * 2 - 80);
+    targetY = margin + Math.random() * (window.innerHeight - margin * 2 - 90);
+  }
+
+  // Pick new destination every 2-4 seconds
+  setInterval(() => {
+    if (!isAnchored) pickNewTarget();
+  }, 2000 + Math.random() * 2000);
+
+  // Smooth movement toward target
+  function moveGhost() {
+    if (!isAnchored) {
+      ghostPosX += (targetX - ghostPosX) * 0.012;
+      ghostPosY += (targetY - ghostPosY) * 0.012;
+    }
+
+    gw.style.left = ghostPosX + 'px';
+    gw.style.top = ghostPosY + 'px';
+
+    // Slight tilt based on movement direction
+    const dx = targetX - ghostPosX;
+    const tilt = Math.max(-8, Math.min(8, dx * 0.03));
+    ghost.style.transform = ghost.style.transform.replace(/rotate\([^)]*\)/, '') ;
+
+    requestAnimationFrame(moveGhost);
+  }
+  moveGhost();
+  pickNewTarget();
+
+  // ===== Eye tracking =====
+  function updateEyes() {
+    const rect = gw.getBoundingClientRect();
+    const cx = rect.left + 40;
+    const cy = rect.top + 30;
+    const dx = mouseX - cx;
+    const dy = mouseY - cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const max = 2.5;
+    const sx = (dx / Math.max(dist, 80)) * max;
+    const sy = (dy / Math.max(dist, 80)) * max;
+
+    pL.style.transform = `translate(${sx}px, ${sy}px)`;
+    pR.style.transform = `translate(${sx}px, ${sy}px)`;
+    requestAnimationFrame(updateEyes);
+  }
+  updateEyes();
+
+  // ===== Random eye wander when cursor is far =====
+  setInterval(() => {
+    const rect = gw.getBoundingClientRect();
+    const dist = Math.sqrt(Math.pow(mouseX - rect.left - 40, 2) + Math.pow(mouseY - rect.top - 30, 2));
+    if (dist > 350) {
+      const rx = (Math.random() - 0.5) * 4;
+      const ry = (Math.random() - 0.5) * 3;
+      pL.style.transform = `translate(${rx}px, ${ry}px)`;
+      pR.style.transform = `translate(${rx}px, ${ry}px)`;
+    }
+  }, 2500);
+
+  // ===== Blinking =====
+  function blink() {
+    ghost.classList.add('blinking');
+    setTimeout(() => {
+      ghost.classList.remove('blinking');
+      if (Math.random() < 0.3) {
+        setTimeout(() => {
+          ghost.classList.add('blinking');
+          setTimeout(() => ghost.classList.remove('blinking'), 100);
+        }, 200);
+      }
+    }, 120);
+    setTimeout(blink, 2000 + Math.random() * 4000);
+  }
+  setTimeout(blink, 1000);
+
+  // ===== Mouth =====
+  function setMouth(type) {
+    const cls = { default: 'm-default', happy: 'm-happy', talk: 'm-talk', curious: 'm-curious' };
+    mouth.innerHTML = `<div class="${cls[type] || cls.default}"></div>`;
+  }
+
+  // ===== Chat — anchors to ghost position =====
+  function toggleChat() {
+    if (chatOpen) closeChat();
+    else openChat();
+  }
+
+  function openChat() {
+    chatOpen = true;
+    isAnchored = true;
+    ghost.classList.add('anchored');
+    setMouth('talk');
+    setTimeout(() => setMouth('happy'), 1200);
+
+    // Position chat bubble next to ghost
+    const rect = gw.getBoundingClientRect();
+    const spaceRight = window.innerWidth - rect.right;
+    const spaceLeft = rect.left;
+
+    if (spaceRight > 340) {
+      // Place to the right
+      cb.style.left = (rect.right + 15) + 'px';
+      cb.style.top = Math.max(20, rect.top - 50) + 'px';
+      cb.style.right = 'auto';
+      cbArrow.className = 'chat-arrow arrow-left';
+    } else if (spaceLeft > 340) {
+      // Place to the left
+      cb.style.left = (rect.left - 335) + 'px';
+      cb.style.top = Math.max(20, rect.top - 50) + 'px';
+      cb.style.right = 'auto';
+      cbArrow.className = 'chat-arrow arrow-right';
+    } else {
+      // Place below
+      cb.style.left = Math.max(10, rect.left - 120) + 'px';
+      cb.style.top = (rect.bottom + 15) + 'px';
+      cb.style.right = 'auto';
+      cbArrow.className = 'chat-arrow arrow-bottom';
+    }
+
+    cb.classList.add('open');
+  }
+
+  function closeChat() {
+    chatOpen = false;
+    isAnchored = false;
+    ghost.classList.remove('anchored');
+    cb.classList.remove('open');
+    setMouth('default');
+    pickNewTarget();
+  }
+
+  function openFromPeek() {
+    peekWrap.classList.remove('visible');
+    gw.classList.remove('hidden');
+    setTimeout(openChat, 300);
+  }
+
+  function ask(q) {
+    if (!q) return;
+    const msgs = document.getElementById('msgs');
+    msgs.innerHTML += `<div class="cm cm-user">${q}</div>`;
+    setMouth('talk');
+
+    setTimeout(() => {
+      let a = "He's an LLM Engineer at NatureAlpha, building agentic AI systems for sustainable finance.";
+      const ql = q.toLowerCase();
+      if (ql.includes('research') || ql.includes('nature')) a = "His research at Brown's Singh Lab led to a Nature publication — a deep learning ageing clock with 95% accuracy and 0.99 AUC.";
+      if (ql.includes('tech') || ql.includes('stack')) a = "Python, PyTorch, LangChain, RAG systems, AWS, PySpark, Docker, and TypeScript.";
+      if (ql.includes('edu') || ql.includes('brown')) a = "MSc Data Science (4.0 GPA) and BA History from Brown University, 2018–2023.";
+      if (ql.includes('rag') || ql.includes('scholar')) a = "RAG Scholar AI is a document Q&A tool with smart citations, built with LangChain and FAISS.";
+      if (ql.includes('829') || ql.includes('dunnhumby') || ql.includes('business')) a = "At dunnhumby, he built an ML pipeline on 5M Tesco Mobile customers using autoencoders, delivering £829K in business value.";
+
+      msgs.innerHTML += `<div class="cm cm-ai">${a}</div>`;
+      msgs.scrollTop = msgs.scrollHeight;
+      setMouth('happy');
+    }, 1200);
+
+    document.getElementById('chatIn').value = '';
+  }
+
+  // ===== Section observer — ghost visibility + peek =====
+  const sections = document.querySelectorAll('.sec');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+        const id = entry.target.id;
+        currentSection = id;
+
+        if (id === 's-about') {
+          gw.classList.remove('hidden');
+          peekWrap.classList.remove('visible');
+          if (peekTimer) clearTimeout(peekTimer);
+        } else {
+          if (!chatOpen) gw.classList.add('hidden');
+          schedulePeek(entry.target);
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+
+  sections.forEach(s => obs.observe(s));
+
+  // ===== Multi-peek system =====
+  function schedulePeek(section) {
+    peekWrap.classList.remove('visible');
+    // Remove old position classes
+    peekWrap.classList.remove('from-right', 'from-left', 'from-top', 'from-bottom');
+
+    if (peekTimer) clearTimeout(peekTimer);
+
+    const peeksData = section.dataset.peeks;
+    if (!peeksData) return;
+
+    const peeks = JSON.parse(peeksData);
+    if (!peekIndex[section.id]) peekIndex[section.id] = 0;
+
+    const idx = peekIndex[section.id] % peeks.length;
+    const peek = peeks[idx];
+    peekIndex[section.id]++;
+
+    peekTimer = setTimeout(() => {
+      peekMsg.textContent = peek.msg;
+
+      // Position
+      const side = peek.side || 'right';
+      peekWrap.classList.add('from-' + side);
+
+      if (side === 'right') {
+        peekWrap.style.top = peek.y || '45%';
+        peekWrap.style.left = 'auto';
+        peekWrap.style.bottom = 'auto';
+        peekWrap.style.right = '0';
+      } else if (side === 'left') {
+        peekWrap.style.top = peek.y || '45%';
+        peekWrap.style.right = 'auto';
+        peekWrap.style.bottom = 'auto';
+        peekWrap.style.left = '0';
+      } else if (side === 'bottom') {
+        peekWrap.style.top = 'auto';
+        peekWrap.style.left = '50%';
+        peekWrap.style.right = 'auto';
+        peekWrap.style.bottom = '80px';
+      }
+
+      peekWrap.classList.add('visible');
+
+      // Auto-hide after 4s, then schedule next peek
+      setTimeout(() => {
+        peekWrap.classList.remove('visible');
+        // Schedule another peek after a bit
+        setTimeout(() => {
+          peekWrap.classList.remove('from-right', 'from-left', 'from-top', 'from-bottom');
+          if (currentSection === section.id) schedulePeek(section);
+        }, 1500);
+      }, 4000);
+    }, 1200 + Math.random() * 1500);
+  }
+</script>
+
+</body>
+</html>

@@ -335,12 +335,12 @@ export default function Hero() {
           <div className="relative inline-block">
             <GlitchText
               text={personalInfo.name.toUpperCase()}
-              className="text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] text-foreground leading-[0.9]"
+              className="text-[clamp(2.5rem,8vw,7rem)] text-foreground leading-[0.9] whitespace-nowrap"
               delay={800}
             />
             {/* Scan lines — clipped to text shape only */}
             <div
-              className="absolute inset-0 pointer-events-none font-bold tracking-tighter text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] leading-[0.9] select-none"
+              className="absolute inset-0 pointer-events-none font-bold tracking-tighter text-[clamp(2.5rem,8vw,7rem)] leading-[0.9] whitespace-nowrap select-none"
               aria-hidden="true"
               style={{
                 background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(128,128,128,0.35) 2px, rgba(128,128,128,0.35) 4px)",

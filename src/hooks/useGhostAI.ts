@@ -3,7 +3,7 @@
 import { useCallback } from "react";
 import { personalInfo, experience, education, projects, publication, skills, stats } from "@/data/portfolio";
 
-const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+const PROXY_URL = process.env.NEXT_PUBLIC_GHOST_PROXY_URL || "";
 
 function buildInstructions(): string {
   const skillsList = Object.entries(skills)
@@ -50,22 +50,60 @@ function matchFallback(query: string): string {
   const q = query.toLowerCase();
 
   if (q.match(/research|paper|nature|publication|timeflies|ageing|clock|drosophila/)) {
-    return "Nikolai published a deep learning ageing clock in Nature Scientific Reports — 95% accuracy and 0.99 AUC. The model generalises across all cell types and identified sex-biased ageing mechanisms with in vivo validation.";
+    return "He published a deep learning ageing clock in Nature Scientific Reports — 95% accuracy and 0.99 AUC! The model works across all cell types and even found sex-biased ageing mechanisms.";
   }
 
   if (q.match(/tech|stack|python|language|tool|framework|pytorch|langchain|faiss|aws/)) {
-    return "Python, PyTorch, and LangChain for AI/ML, FAISS for vector search, AWS for cloud. PySpark for big data, TypeScript for frontend.";
+    return "His go-to stack is Python, PyTorch, and LangChain for AI/ML, with FAISS for vector search and AWS for cloud infrastructure. He also does TypeScript on the frontend!";
   }
 
   if (q.match(/edu|school|university|brown|degree|gpa|study|graduate/)) {
-    return "Brown University — MSc Data Science with a perfect 4.0 GPA, and BA History with a Data Science minor.";
+    return "He went to Brown University — got an MSc in Data Science with a perfect 4.0 GPA, plus a BA in History with a Data Science minor. Pretty impressive combo!";
   }
 
   if (q.match(/rag|scholar|project|build/)) {
-    return "RAG Scholar AI is a document Q&A tool with smart citations, built with LangChain and FAISS. Live at ragscholarai.web.app!";
+    return "RAG Scholar AI is one of his coolest projects — it's a document Q&A tool with smart citations, built with LangChain and FAISS. You can try it at ragscholarai.web.app!";
   }
 
-  return "Nikolai is an LLM Engineer at NatureAlpha, building agentic AI systems for sustainable finance — LLM pipelines, RAG systems, and multi-agent workflows. What would you like to know?";
+  if (q.match(/who|about|tell me|what does|what do|introduce|background/)) {
+    return "He's an LLM Engineer at NatureAlpha, building agentic AI for sustainable finance. Think LLM pipelines, RAG systems, and multi-agent workflows — the fun stuff!";
+  }
+
+  if (q.match(/job|work|company|naturealpha|nature alpha|career|role|position/)) {
+    return "He works at NatureAlpha as an LLM Engineer, building AI systems that help with sustainable finance decisions. He's also built out their NLP pipelines and data infrastructure.";
+  }
+
+  if (q.match(/skill|good at|capable|strength|best|expert/)) {
+    return "He's strongest in ML engineering — PyTorch, LLMs, RAG systems. But he's also solid in data engineering with PySpark, cloud infra on AWS, and full-stack dev with React/TypeScript.";
+  }
+
+  if (q.match(/contact|reach|email|hire|connect|linkedin/)) {
+    return "You can connect with him on LinkedIn or check out his GitHub — links are in the header! He's always up for interesting conversations about AI.";
+  }
+
+  if (q.match(/hi|hey|hello|sup|yo|what'?s up|how are/)) {
+    const greetings = [
+      "Hey! Welcome to the portfolio — ask me anything about his work, research, or projects!",
+      "Hi there! I know a lot about what he's built — fire away with any questions!",
+      "Hey! Good to chat. Curious about his research, skills, or experience? Just ask!",
+    ];
+    return greetings[Math.floor(Math.random() * greetings.length)];
+  }
+
+  if (q.match(/experience|year|senior|junior|how long/)) {
+    return "He's been building ML systems professionally since his time at Brown. At NatureAlpha, he's the lead LLM engineer — built their AI pipelines from the ground up and generated £829K in value.";
+  }
+
+  if (q.match(/you|ghost|this|what are|who are/)) {
+    return "I'm his little AI companion! I live on this portfolio and know a bunch about his work. Ask me about his projects, research, tech stack — anything!";
+  }
+
+  const fallbacks = [
+    "Hmm, I'm not sure about that one — but I can tell you about his research, projects, skills, or experience! What interests you?",
+    "That's a bit outside my knowledge! I'm best at chatting about his work — try asking about his projects, tech stack, or that Nature paper!",
+    "Good question! I'm mostly an expert on his portfolio though. Want to know about his AI work, education, or research?",
+  ];
+  return fallbacks[Math.floor(Math.random() * fallbacks.length)];
 }
 
 function simulatedDelay(): Promise<void> {
@@ -75,20 +113,16 @@ function simulatedDelay(): Promise<void> {
 
 export function useGhostAI() {
   const sendMessage = useCallback(async (userMessage: string): Promise<string> => {
-    if (!OPENAI_API_KEY) {
+    if (!PROXY_URL) {
       await simulatedDelay();
       return matchFallback(userMessage);
     }
 
     try {
-      const response = await fetch("https://api.openai.com/v1/responses", {
+      const response = await fetch(`${PROXY_URL}/api/chat`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "gpt-5-mini",
           instructions: buildInstructions(),
           input: userMessage,
           max_output_tokens: 300,
@@ -97,18 +131,14 @@ export function useGhostAI() {
 
       if (response.status === 429) {
         await new Promise((r) => setTimeout(r, 2000));
-        const retry = await fetch("https://api.openai.com/v1/responses", {
+        const retry = await fetch(`${PROXY_URL}/api/chat`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${OPENAI_API_KEY}`,
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            model: "gpt-5-mini",
             instructions: buildInstructions(),
             input: userMessage,
             max_output_tokens: 300,
-            }),
+          }),
         });
         if (retry.ok) {
           const retryData = await retry.json() as { output_text: string };
@@ -117,7 +147,7 @@ export function useGhostAI() {
       }
 
       if (!response.ok) {
-        console.warn("[GhostAI] API error:", response.status);
+        console.warn("[GhostAI] proxy error:", response.status);
         await simulatedDelay();
         return matchFallback(userMessage);
       }

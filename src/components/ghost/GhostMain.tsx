@@ -3,56 +3,110 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useGhostAI } from "@/hooks/useGhostAI";
 
+// ===== SESSION MEMORY =====
+function getVisitCount(): number {
+  try { return parseInt(localStorage.getItem("ghost_visits") || "0", 10); } catch { return 0; }
+}
+function incrementVisits(): number {
+  const count = getVisitCount() + 1;
+  try { localStorage.setItem("ghost_visits", String(count)); } catch {}
+  return count;
+}
+function getLastVisitName(): string | null {
+  try { return localStorage.getItem("ghost_visitor_name"); } catch { return null; }
+}
+function saveVisitorName(name: string) {
+  try { localStorage.setItem("ghost_visitor_name", name); } catch {}
+}
+function getTimeGreeting(): string {
+  const h = new Date().getHours();
+  if (h < 6) return "burning the midnight oil?";
+  if (h < 12) return "good morning!";
+  if (h < 17) return "good afternoon!";
+  if (h < 21) return "good evening!";
+  return "it's getting late — thanks for visiting!";
+}
+
+interface ChatMsg { role: "ai" | "user"; text: string; }
+
 export default function GhostMain() {
   const initialized = useRef(false);
-  const [inputVisible, setInputVisible] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [thinking, setThinking] = useState(false);
+  const msgsEndRef = useRef<HTMLDivElement>(null);
   const { sendMessage } = useGhostAI();
   const sendMessageRef = useRef(sendMessage);
   sendMessageRef.current = sendMessage;
+
+  // Scroll chat to bottom (within container only, not the page)
+  useEffect(() => {
+    const el = msgsEndRef.current?.parentElement;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages, thinking]);
+
+  // ===== EASTER EGGS =====
+  function checkEasterEgg(text: string): string | null {
+    const lower = text.toLowerCase();
+    const gh = document.getElementById("gh-main");
+
+    if (lower === "dance" || lower === "spin") {
+      if (gh) gh.classList.add("ghost-spin");
+      setTimeout(() => gh?.classList.remove("ghost-spin"), 2000);
+      return "wheeeee!";
+    }
+    if (lower === "boo") {
+      const glow = document.getElementById("glow-main");
+      if (glow) glow.classList.add("ghost-scared");
+      setTimeout(() => glow?.classList.remove("ghost-scared"), 2500);
+      return "YOU scared ME!";
+    }
+    const nameMatch = text.match(/(?:i'm|i am|my name is|call me)\s+(\w+)/i);
+    if (nameMatch) {
+      saveVisitorName(nameMatch[1]);
+      return `nice to meet you, ${nameMatch[1]}!`;
+    }
+    return null;
+  }
 
   async function handleSend() {
     const text = inputValue.trim();
     if (!text || thinking) return;
     setInputValue("");
-    setThinking(true);
 
-    // Show user's message briefly as a thought
-    const thought = document.getElementById("thought-main");
-    const mw = document.getElementById("mw-main");
-    if (mw) mw.innerHTML = '<div class="m-talk"></div>';
+    setMessages(prev => [...prev, { role: "user", text }]);
 
-    // Show thinking state
-    if (thought) {
-      thought.classList.remove("long");
-      thought.textContent = "hmm, let me think...";
-      thought.classList.add("show");
+    // Check easter eggs
+    const egg = checkEasterEgg(text);
+    if (egg) {
+      setMessages(prev => [...prev, { role: "ai", text: egg }]);
+      return;
     }
 
-    try {
-      const reply = await sendMessageRef.current(text);
-      if (thought) {
-        thought.textContent = reply;
-        if (reply.length > 40) thought.classList.add("long");
-        else thought.classList.remove("long");
-        thought.classList.add("show");
-      }
-      if (mw) mw.innerHTML = '<div class="m-happy"></div>';
+    setThinking(true);
+    const mw = document.getElementById("mw-main");
+    const glow = document.getElementById("glow-main");
+    if (mw) mw.innerHTML = '<div class="m-talk"></div>';
+    if (glow) glow.classList.add("ghost-thinking");
 
-      // Keep response visible longer for longer text
-      const readTime = Math.max(4000, reply.length * 50);
+    try {
+      // Multi-turn context
+      const recent = messages.slice(-6).map(m => `${m.role}: ${m.text}`).join("\n");
+      const contextual = recent ? `Previous:\n${recent}\n\nNow: ${text}` : text;
+      const reply = await sendMessageRef.current(contextual);
+
+      setMessages(prev => [...prev, { role: "ai", text: reply }]);
+      if (mw) mw.innerHTML = '<div class="m-happy"></div>';
+      if (glow) { glow.classList.remove("ghost-thinking"); glow.classList.add("ghost-happy"); }
       setTimeout(() => {
-        thought?.classList.remove("show");
         if (mw) mw.innerHTML = '<div class="m-idle"></div>';
-      }, readTime);
+        if (glow) glow.classList.remove("ghost-happy");
+      }, 3000);
     } catch {
-      if (thought) {
-        thought.textContent = "sorry, brain fog...";
-        thought.classList.add("show");
-        setTimeout(() => thought.classList.remove("show"), 3000);
-      }
+      setMessages(prev => [...prev, { role: "ai", text: "sorry, brain fog..." }]);
       if (mw) mw.innerHTML = '<div class="m-idle"></div>';
+      if (glow) glow.classList.remove("ghost-thinking");
     } finally {
       setThinking(false);
     }
@@ -68,13 +122,22 @@ export default function GhostMain() {
     const pL = document.getElementById("pL-main")!;
     const pR = document.getElementById("pR-main")!;
     const thought = document.getElementById("thought-main")!;
+    const glow = document.getElementById("glow-main");
 
     if (!gw || !gh || !mw || !pL || !pR || !thought) return;
+
+    const visitCount = incrementVisits();
+    const visitorName = getLastVisitName();
+    const isReturning = visitCount > 1;
+    const timeGreeting = getTimeGreeting();
 
     let conversing = false;
     let mx = 0, my = 0;
     let cursorNear = false;
     let cursorGreeted = false;
+    let lastScrollY = window.scrollY;
+    let scrollSpeed = 0;
+    let scrollDizzy = false;
     const section = gw.parentElement!;
     let gx = section.offsetWidth * 0.65, gy = section.offsetHeight * 0.4;
     let vx = 0, vy = 0, time = 0;
@@ -82,22 +145,25 @@ export default function GhostMain() {
     let idleTimeout: ReturnType<typeof setTimeout> | null = null;
 
     const thoughts = [
-      "ooh someone's visiting!",
+      timeGreeting,
+      isReturning ? (visitorName ? `${visitorName}! you're back!` : "welcome back!") : "ooh someone's visiting!",
       "click me, I don't bite",
       "that Nature paper was wild",
       "wonder what they'll ask me",
-      "Brown was a good time",
       "should I say hi?",
       "his code is pretty cool",
       "RAG Scholar AI is neat",
       "£829K in value... not bad",
       "0.99 AUC, just saying",
       "I know things, ask me!",
-      "LLMs are my jam",
       "psst... click me",
     ];
 
     document.addEventListener("mousemove", (e) => { mx = e.clientX; my = e.clientY; });
+    document.addEventListener("scroll", () => {
+      scrollSpeed = Math.abs(window.scrollY - lastScrollY);
+      lastScrollY = window.scrollY;
+    });
 
     function noise(t: number, seed: number): number {
       return Math.sin(t * 0.7 + seed) * 0.5 + Math.sin(t * 1.3 + seed * 2.1) * 0.3 + Math.sin(t * 2.1 + seed * 0.7) * 0.2;
@@ -138,8 +204,7 @@ export default function GhostMain() {
         vy += (Math.random() - 0.5) * 2;
       }
 
-      gx += vx;
-      gy += vy;
+      gx += vx; gy += vy;
 
       const leftBound = sw * 0.35;
       if (gx < leftBound) { gx = leftBound; vx = Math.abs(vx) * 0.4; }
@@ -151,13 +216,33 @@ export default function GhostMain() {
       gw.style.top = gy + "px";
 
       const tilt = Math.max(-10, Math.min(10, vx * 2.5));
-      gh.style.transform = `rotate(${tilt}deg)`;
+      const lean = cursorNear ? Math.max(-5, Math.min(5, dx * 0.02)) : 0;
+      gh.style.transform = `rotate(${tilt + lean}deg)`;
 
       const speed = Math.sqrt(vx * vx + vy * vy);
       if (speed > 1.5 && !conversing) gh.classList.add("squint");
       else gh.classList.remove("squint");
 
-      // ===== CURSOR PROXIMITY =====
+      // Scroll reaction
+      if (scrollSpeed > 50 && !scrollDizzy && !conversing) {
+        scrollDizzy = true;
+        stopThoughts();
+        setMouth("ooh");
+        gh.classList.add("ghost-dizzy");
+        thought.classList.remove("long");
+        thought.textContent = scrollSpeed > 100 ? "whoa slow down!" : "wheee!";
+        thought.classList.add("show");
+        setTimeout(() => {
+          thought.classList.remove("show");
+          gh.classList.remove("ghost-dizzy");
+          setMouth("idle");
+          scrollDizzy = false;
+          if (!conversing) startThoughts();
+        }, 2000);
+      }
+      scrollSpeed *= 0.9;
+
+      // Cursor proximity
       const ghostScreenX = sRect.left + gx + 65;
       const ghostScreenY = sRect.top + gy + 75;
       const cursorDist = Math.sqrt(Math.pow(mx - ghostScreenX, 2) + Math.pow(my - ghostScreenY, 2));
@@ -168,17 +253,17 @@ export default function GhostMain() {
           cursorGreeted = true;
           stopThoughts();
           setMouth("happy");
-          thought.textContent = "oh, hey there!";
+          if (glow) glow.classList.add("ghost-happy");
+          thought.classList.remove("long");
+          thought.textContent = isReturning ? (visitorName ? `hey ${visitorName}!` : "oh, you're back!") : "oh, hey there!";
           thought.classList.add("show");
           setTimeout(() => {
             thought.classList.remove("show");
+            if (glow) glow.classList.remove("ghost-happy");
             setMouth("idle");
             thought.textContent = "click me to chat!";
             thought.classList.add("show");
-            setTimeout(() => {
-              thought.classList.remove("show");
-              if (!conversing) startThoughts();
-            }, 2500);
+            setTimeout(() => { thought.classList.remove("show"); if (!conversing) startThoughts(); }, 2500);
           }, 2000);
         }
       } else if (cursorDist > 250) {
@@ -227,7 +312,7 @@ export default function GhostMain() {
     (async function loadThoughts() {
       try {
         const reply = await sendMessageRef.current(
-          "Generate 10 short idle thoughts (3-6 words each) as Nikolai's AI assistant on his portfolio site. Mix of: curious about the visitor, proud of his work, playful, inviting them to chat. One per line. No numbering, no quotes."
+          `${getTimeGreeting()} ${isReturning ? "Returning visitor." : "First visit."} Generate 10 short idle thoughts (3-6 words each) as Nikolai's AI. Mix: curious, proud, playful, time-aware. One per line. No numbering, no quotes.`
         );
         const lines = reply.split("\n").map((l: string) => l.trim()).filter((l: string) => l.length > 0 && l.length < 45);
         if (lines.length >= 3) generatedThoughts = lines;
@@ -237,7 +322,7 @@ export default function GhostMain() {
     function startThoughts() {
       stopThoughts();
       function show() {
-        if (conversing) return;
+        if (conversing || scrollDizzy) return;
         thought.classList.remove("long");
         thought.textContent = generatedThoughts[thoughtIdx++ % generatedThoughts.length];
         thought.classList.add("show");
@@ -257,16 +342,18 @@ export default function GhostMain() {
     }
 
     // ===== INTRO =====
-    let introShown = false;
     function showIntro() {
-      if (introShown) return;
-      introShown = true;
       setMouth("happy");
+      if (glow) glow.classList.add("ghost-happy");
       setTimeout(() => {
-        thought.textContent = "Hi! I\u2019m Nikolai\u2019s AI";
+        thought.classList.remove("long");
+        thought.textContent = isReturning && visitorName
+          ? `hey ${visitorName}, welcome back!`
+          : isReturning ? "welcome back!" : "Hi! I\u2019m Nikolai\u2019s AI";
         thought.classList.add("show");
         setTimeout(() => {
           thought.classList.remove("show");
+          if (glow) glow.classList.remove("ghost-happy");
           setTimeout(() => {
             thought.textContent = "click me to chat!";
             thought.classList.add("show");
@@ -277,78 +364,68 @@ export default function GhostMain() {
       }, 1500);
     }
 
-    // ===== CLICK → START CONVERSATION =====
+    // ===== CLICK → OPEN THOUGHT-BUBBLE CHAT =====
     gh.addEventListener("click", () => {
       if (conversing) {
-        // Already conversing — toggle input off
         conversing = false;
-        setInputVisible(false);
+        setChatOpen(false);
         if (idleTimeout) clearTimeout(idleTimeout);
+        setMouth("idle");
         setTimeout(() => startThoughts(), 2000);
         return;
       }
 
       conversing = true;
       stopThoughts();
+      thought.classList.remove("show");
       setMouth("happy");
+      if (glow) glow.classList.add("ghost-happy");
+      setTimeout(() => { if (glow) glow.classList.remove("ghost-happy"); }, 1500);
 
-      // Ghost greets
-      thought.textContent = "what would you like to know?";
-      thought.classList.add("show");
+      // Open the thought-bubble chat
+      setChatOpen(true);
+      const greetings = [
+        "what would you like to know?",
+        "ask me anything!",
+        visitorName ? `what's up, ${visitorName}?` : "hey! what's on your mind?",
+      ];
+      setMessages([{ role: "ai", text: greetings[Math.floor(Math.random() * greetings.length)] }]);
 
-      // Show input after a beat
-      setTimeout(() => {
-        setInputVisible(true);
-      }, 800);
-
-      // Auto-close conversation after 30s of no input
+      // Auto-close after 45s
       if (idleTimeout) clearTimeout(idleTimeout);
       idleTimeout = setTimeout(() => {
         if (conversing) {
           conversing = false;
-          setInputVisible(false);
-          thought.classList.remove("show");
+          setChatOpen(false);
           setMouth("idle");
-          setTimeout(() => startThoughts(), 2000);
+          thought.textContent = "come back anytime!";
+          thought.classList.add("show");
+          setTimeout(() => { thought.classList.remove("show"); startThoughts(); }, 2500);
         }
-      }, 30000);
+      }, 45000);
     });
 
-    // Expose conversing state for input handler
+    // Expose reset for input handler
     (window as unknown as Record<string, unknown>).__ghostResetIdle = () => {
       if (idleTimeout) clearTimeout(idleTimeout);
       idleTimeout = setTimeout(() => {
         if (conversing) {
           conversing = false;
-          setInputVisible(false);
-          thought.classList.remove("show");
-          const mwEl = document.getElementById("mw-main");
-          if (mwEl) mwEl.innerHTML = '<div class="m-idle"></div>';
+          setChatOpen(false);
+          mw.innerHTML = '<div class="m-idle"></div>';
           setTimeout(() => startThoughts(), 2000);
         }
-      }, 30000);
+      }, 45000);
     };
 
     showIntro();
   }, []);
 
-  function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
-      handleSend();
-      // Reset idle timeout
-      const resetIdle = (window as unknown as Record<string, unknown>).__ghostResetIdle as (() => void) | undefined;
-      if (resetIdle) resetIdle();
-    }
-    if (e.key === "Escape") {
-      setInputVisible(false);
-    }
-  }
-
   return (
     <>
       <div className="gw-main" id="gw-main">
         <div className="ghost" id="gh-main">
-          <div className="g-glow" />
+          <div className="g-glow" id="glow-main" />
           <div className="g-shape" dangerouslySetInnerHTML={{ __html: `
             <svg viewBox="0 0 90 105" fill="none">
               <defs>
@@ -381,27 +458,46 @@ export default function GhostMain() {
           </div>
         </div>
 
-        {/* Thought bubble */}
+        {/* Idle thought bubble (when not chatting) */}
         <div className="thought" id="thought-main" />
 
-        {/* Floating input — appears when conversing */}
-        {inputVisible && (
-          <div className="ghost-input-wrap">
-            <input
-              className="ghost-input"
-              type="text"
-              placeholder="ask me anything..."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={onInputKeyDown}
-              autoFocus
-              disabled={thinking}
-            />
-            {thinking && (
-              <div className="ghost-input-dots">
-                <span /><span /><span />
+        {/* Thought-bubble chat (expands from ghost) */}
+        {chatOpen && (
+          <div className="ghost-bubble-chat">
+            <div className="ghost-bubble-connector" />
+            <div className="ghost-bubble-connector-sm" />
+            <div className="ghost-bubble-body">
+              <div className="ghost-bubble-msgs">
+                {messages.map((msg, i) => (
+                  <div key={i} className={`ghost-bubble-msg ${msg.role === "ai" ? "ghost-bubble-ai" : "ghost-bubble-user"}`}>
+                    {msg.text}
+                  </div>
+                ))}
+                {thinking && (
+                  <div className="ghost-bubble-thinking">
+                    <span /><span /><span />
+                  </div>
+                )}
+                <div ref={msgsEndRef} />
               </div>
-            )}
+              <input
+                className="ghost-bubble-input"
+                type="text"
+                placeholder="type here..."
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSend();
+                    const resetIdle = (window as unknown as Record<string, unknown>).__ghostResetIdle as (() => void) | undefined;
+                    if (resetIdle) resetIdle();
+                  }
+                  if (e.key === "Escape") setChatOpen(false);
+                }}
+                autoFocus
+                disabled={thinking}
+              />
+            </div>
           </div>
         )}
       </div>
